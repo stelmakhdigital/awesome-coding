@@ -17,14 +17,12 @@ updated: 2026-09-06
 ## Код (Go, `segmentio/kafka-go`)
 
 ```go
-// Producer: idempotent, с подтверждением.
+// Producer: с подтверждением всех ISR-реплик.
 w := &kafka.Writer{
     Addr:         kafka.TCP("broker:9092"),
     Topic:        "orders.created",
     Balancer:     &kafka.Hash{}, // по ключу -> один партишн на сущность
-    RequiredAcks: kafka.RequireAll,
-    // Idempotent: producer не дублирует при ретраях.
-    TransactionMethod: kafka.TransactionNone,
+    RequiredAcks: kafka.RequireAll, // все ISR-реплики подтвердили запись
 }
 defer w.Close()
 

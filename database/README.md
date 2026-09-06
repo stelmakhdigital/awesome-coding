@@ -4,7 +4,9 @@
 - **PostgreSQL 18** (latest: 18.6); fallback: 17.
 - **Redis 8** (latest: 8.10.1); fallback: 8.0.
 
-> SQL/Redis-примеры — рецензированы, не прогонялись на живом сервере.
+> Статус кода: SQL — прогнан на живом PostgreSQL 18.6 (индексы, EXPLAIN, транзакции, savepoint,
+> advisory locks, ON CONFLICT, CREATE INDEX CONCURRENTLY, материализованные представления,
+> pg_stat_statements); Go (Redis) — скомпилирован (go-redis v9, Go 1.27.1).
 > Перед применением в критичных местах проверьте `EXPLAIN`.
 
 ## Конвенции

@@ -22,7 +22,8 @@
 
 1. `<section>/README.md` — версии и конвенции.
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
-   (есть в: go, csharp, kotlin, unity, database; нет в: shared, messaging, cicd, architecture).
+   (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database;
+   нет в: shared, messaging, cicd, architecture).
 3. Конкретная запись — по тегам в `index/manifest.yaml` (поиск: `grep -i "тег" index/manifest.yaml`).
 4. Выбор библиотеки/подхода — `<section>/decisions.md` (таблицы решений), если есть.
 

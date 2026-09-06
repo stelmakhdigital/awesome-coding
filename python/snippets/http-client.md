@@ -2,7 +2,7 @@
 id: py-http-client
 title: HTTP client (httpx, sync + async)
 lang: python
-min_version: "3.11"
+min_version: "3.14"
 category: snippet
 tags: [http, httpx, async, client]
 status: stable
@@ -24,8 +24,13 @@ import httpx
 class HttpClient:
     """Обёртка над httpx.Client: base_url, таймауты, raise_for_status."""
 
-    def __init__(self, base_url: str, timeout: float = 10.0) -> None:
-        self._client = httpx.Client(base_url=base_url, timeout=timeout)
+    def __init__(
+        self,
+        base_url: str,
+        timeout: float = 10.0,
+        transport: httpx.BaseTransport | None = None,  # DI: MockTransport в тестах
+    ) -> None:
+        self._client = httpx.Client(base_url=base_url, timeout=timeout, transport=transport)
 
     def get(self, path: str, **kwargs: object) -> httpx.Response:
         return self._request("GET", path, **kwargs)
@@ -49,17 +54,35 @@ class HttpClient:
 
 
 # Использование (sync): соединение переиспользуется.
-with HttpClient("https://api.example.com") as client:
-    res = client.get("/items")
-    items: list[dict[str, object]] = res.json()
+def fetch_items_sync() -> list[dict[str, object]]:
+    with HttpClient("https://api.example.com") as client:
+        res = client.get("/items")
+        return res.json()
 
 
 # Async-вариант.
-async def fetch_items() -> list[dict[str, object]]:
+async def fetch_items_async() -> list[dict[str, object]]:
     async with httpx.AsyncClient(base_url="https://api.example.com", timeout=10.0) as client:
         res = await client.get("/items")
         res.raise_for_status()
         return res.json()
+
+
+# Самопроверка без сети: MockTransport.
+def _handler(request: httpx.Request) -> httpx.Response:
+    return httpx.Response(200, json=[{"id": 1}])
+
+
+def main() -> None:
+    client = HttpClient("https://api.test", transport=httpx.MockTransport(_handler))
+    items: list[dict[str, object]] = client.get("/items").json()
+    assert items == [{"id": 1}]
+    client.close()
+    print("ok")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 ## Pitfalls

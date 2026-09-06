@@ -8,4 +8,4 @@
 | N+1 | детект (`pg_stat_statements`) и 4 способа лечения | [n-plus-one.md](n-plus-one.md) |
 | Redis | cache-aside, TTL, структуры данных, rate limit | [redis.md](redis.md) |
 
-SQL/Redis — рецензированы, не прогонялись на живом сервере.
+SQL — прогнан на живом PostgreSQL 18.6; Go (Redis) — скомпилирован (go-redis v9).

@@ -5,15 +5,14 @@
 ## Состав раздела
 
 - `README.md` — этот файл (версия, конвенции)
-- `rules.md` — guardrails (запланировано)
-- `idioms.md` — идиомы (запланировано)
-- `decisions.md` — таблицы решений (запланировано)
-- [snippets/](snippets/) — готовые сниппеты
-- `patterns/` — паттерны (запланировано)
+- [rules.md](rules.md) — guardrails (✅/❌)
+- [idioms.md](idioms.md) — идиомы (dataclass, match, walrus, contextlib)
+- [decisions.md](decisions.md) — таблицы решений (web, HTTP, данные, тесты)
+- [snippets/](snippets/) — готовые сниппеты (http-client, error-handling, testing, json)
 
 ## Конвенции
 
-- Пейтинг: PEP 8 + `ruff` (форматтер + линтер в одном).
+- Стиль: PEP 8 + `ruff` (форматтер + линтер в одном).
 - Type hints — обязательно для публичного API; проверка `mypy --strict` (или `pyright`).
 - Виртуальное окружение: `uv venv` / `venv`; зависимости — `uv` или `pip-tools`.
 - Имена: `snake_case` (функции, переменные), `PascalCase` (классы), `UPPER_SNAKE` (константы).

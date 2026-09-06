@@ -5,15 +5,14 @@
 ## Состав раздела
 
 - `README.md` — этот файл (версия, конвенции)
-- `rules.md` — guardrails (запланировано)
-- `idioms.md` — идиомы (запланировано)
-- `decisions.md` — таблицы решений (запланировано)
-- [snippets/](snippets/) — готовые сниппеты
-- `patterns/` — паттерны (запланировано)
+- [rules.md](rules.md) — guardrails (✅/❌)
+- [idioms.md](idioms.md) — идиомы (init/cleanup, C23: auto/typeof/nullptr)
+- [decisions.md](decisions.md) — таблицы решений (язык, аллокатор, строки, тесты)
+- [snippets/](snippets/) — готовые сниппеты (error-handling, memory, strings, testing)
 
 ## Конвенции
 
-- Компиляция: `clang -std=c2x -Wall -Wextra -Werror -Wpedantic` (GCC: `-std=c2x`).
+- Компиляция: `clang -std=c23 -Wall -Wextra -Werror -Wpedantic` (GCC: `-std=c23`).
 - Sanitizers в dev/CI: `-fsanitize=address,undefined`.
 - Имена: `snake_case`; функции-геттеры/сеттеры — `obj_get_field`/`obj_set_field`.
 - Ошибки: коды возврата + `errno` для системных вызовов; cleanup — через `goto` (идиома).

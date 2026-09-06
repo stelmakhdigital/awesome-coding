@@ -18,14 +18,19 @@ updated: 2026-09-06
 
 ```kotlin
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.contentnegotiation.*
 import kotlinx.coroutines.delay
+import kotlinx.serialization.Serializable
 
+// @Serializable: обязателен для body<T>() с kotlinx-json.
+@Serializable
 data class Order(val id: String, val total: Int)
 
 // Клиент: один на приложение, с таймаутами и ретраями.

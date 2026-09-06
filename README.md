@@ -90,12 +90,16 @@ awesome-coding/
 | `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
 | `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14, код компилируется) |
 | `unity/` | полный: snippets, patterns, rules, idioms, decisions + HLSL-шейдеры (6.3 LTS, Android) |
-| `kotlin/` | полный: rules, idioms, decisions, 3 сниппета (2.3, JVM/Android) |
+| `kotlin/` | полный: rules, idioms, decisions, 3 сниппета (2.3; корутины — скомпилированы и выполнены, Ktor — скомпилирован) |
 | `shared/` | полный: 8 кросс-языковых концепций |
-| `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов) |
-| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 2 сниппета) |
+| `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов; SQL прогнан на живом PG 18.6) |
+| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 2 сниппета; Go-код скомпилирован) |
 | `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes |
-| `typescript/`, `javascript/`, `python/`, `c/`, `bash/` | каркас + эталонный сниппет |
+| `typescript/` | полный: rules, idioms, decisions, 5 сниппетов (tsc 7.0.2 strict — код проверен) |
+| `javascript/` | полный: rules, idioms, decisions, 4 сниппета (node 22 — код выполнен, node:test 5/5) |
+| `python/` | полный: rules, idioms, decisions, 4 сниппета (Python 3.14.7 — код выполнен, pytest) |
+| `c/` | полный: rules, idioms, decisions, 4 сниппета (clang -std=c23, ASan-чисто) |
+| `bash/` | полный: rules, idioms, decisions, 3 сниппета (bash 5.3 — код выполнен) |
 
 ## License
 

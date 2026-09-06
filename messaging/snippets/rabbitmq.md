@@ -32,19 +32,20 @@ if err != nil {
 }
 
 // Идемпотентная топология (Declare — не создаёт дубли).
-if err := ch.ExchangeDeclare("tasks", "topic", true, false, false, nil); err != nil {
+if err := ch.ExchangeDeclare("tasks", "topic", true, false, false, false, nil); err != nil {
     return err
 }
-if err := ch.ExchangeDeclare("dlx", "fanout", true, false, false, nil); err != nil {
+if err := ch.ExchangeDeclare("dlx", "fanout", true, false, false, false, nil); err != nil {
     return err
 }
 q, err := ch.QueueDeclare("order.queue", true, false, false, false, amqp091.Table{
     "x-dead-letter-exchange": "dlx", // после 3 nack -> DLQ
     "x-delivery-limit":       3,
-}); err != nil {
+})
+if err != nil {
     return err
 }
-if _, err := ch.QueueBind(q.Name, "order.created", "tasks", false, nil); err != nil {
+if err := ch.QueueBind(q.Name, "order.created", "tasks", false, nil); err != nil {
     return err
 }
 if _, err := ch.QueueDeclare("order.dlq", true, false, false, false, nil); err != nil {

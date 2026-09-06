@@ -18,6 +18,9 @@ updated: 2026-09-06
 
 ```kotlin
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
+
+data class Order(val id: String, val total: Int)
 
 // Scope: явный жизненный цикл (не GlobalScope).
 val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -38,8 +41,16 @@ suspend fun fetchAll(ids: List<String>): List<Order> {
     }
 }
 
+// Flow: холодный поток событий.
+fun orderUpdates(): Flow<Order> = flow {
+    while (true) {
+        emit(fetchOrder("42"))
+        delay(1000)
+    }
+}
+
 // Отмена: Job.cancel() -> CancellationException в точках подвеса.
-fun main() {
+fun main() = runBlocking {
     val job = scope.launch {
         repeat(1000) {
             delay(10) // точка подвеса: отмена сработает здесь
@@ -49,20 +60,22 @@ fun main() {
     delay(50)
     job.cancel() // остановить
     job.join()   // дождаться завершения
-}
 
-// Flow: холодный поток событий.
-fun orderUpdates(): Flow<Order> = flow {
-    while (true) {
-        emit(fetchOrder("42"))
-        delay(1000)
-    }
-}
+    // Параллелизм: 3 заказа ~ за 100 мс, а не 300.
+    val t0 = System.currentTimeMillis()
+    val orders = fetchAll(listOf("1", "2", "3"))
+    println("orders=${orders.size} time=${System.currentTimeMillis() - t0}ms")
 
-// StateFlow: горячее состояние (UI).
-val state = MutableStateFlow(0)
-state.collectLatest { value ->
-    // UI: обновить (auto-cancel при завершении scope)
+    // Flow в действии: take(2), чтобы не зациклиться.
+    val first = orderUpdates().take(2).toList()
+    println("flow: ${first.size}")
+
+    // StateFlow: горячее состояние (UI).
+    val state = MutableStateFlow(0)
+    val collector = launch { state.collectLatest { value -> println("state=$value") } }
+    state.emit(1)
+    delay(50)
+    collector.cancel()
 }
 ```
 

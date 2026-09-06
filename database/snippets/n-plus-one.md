@@ -24,11 +24,13 @@ updated: 2026-09-06
 ```sql
 -- Логи запросов (PG): включите log_min_duration_statement.
 ALTER SYSTEM SET log_min_duration_statement = '100ms';
--- или: pg_stat_statements — топ по total_time / calls
+-- или: pg_stat_statements — топ по total_exec_time / calls
+-- Важно: расширение требует shared_preload_libraries='pg_stat_statements'
+-- (postgresql.conf) + рестарт; CREATE EXTENSION — после этого.
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-SELECT query, calls, total_time, mean_time
+SELECT query, calls, total_exec_time, mean_exec_time
 FROM pg_stat_statements
-ORDER BY total_time DESC
+ORDER BY total_exec_time DESC
 LIMIT 20;
 -- признак N+1: высокий calls + низкий mean_time + похожие запросы
 ```

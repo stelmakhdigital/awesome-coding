@@ -2,7 +2,7 @@
 id: bash-error-handling
 title: "Error handling: strict mode, ERR/EXIT traps"
 lang: bash
-min_version: "5.2"
+min_version: "5.3"
 category: snippet
 tags: [errors, traps, strict-mode, cleanup]
 status: stable
@@ -50,7 +50,6 @@ require_cmd() {
 }
 
 main() {
-  require_cmd curl
   require_cmd jq
 
   tmpdir="$(mktemp -d)"
@@ -58,8 +57,8 @@ main() {
 
   # Внешние команды: проверяйте явно, если результат важен.
   local data
-  data="$(curl -fsS https://api.example.com/items)" || return 1
-  printf '%s\n' "$data" | jq -r '.[]'
+  data="$(printf '["a","b"]' | jq -r '.[]')" || return 1
+  printf '%s\n' "$data"
 }
 
 main "$@"

@@ -67,12 +67,18 @@ func UpdateUser(ctx context.Context, u User) error {
 
 ```go
 // Rate limit: sliding window через sorted set.
-// key = "rl:user:42"; score = timestamp; member = уникальный id запроса
-rdb.ZAdd(ctx, key, redis.Z{Score: now, Member: reqID})
-rdb.ZRemRangeByScore(ctx, key, "-inf", fmt.Sprint(now-window))
-count, _ := rdb.ZCard(ctx, key).Result()
-if count > limit { /* 429 */ }
-rdb.Expire(ctx, key, window+time.Minute)
+// key = "rl:user:42"; score = timestamp; member = уникальный id запроса.
+func rateLimit(ctx context.Context, key, reqID string, window time.Duration, limit int64) error {
+    now := time.Now()
+    rdb.ZAdd(ctx, key, redis.Z{Score: float64(now.Unix()), Member: reqID})
+    rdb.ZRemRangeByScore(ctx, key, "-inf", fmt.Sprint(now.Add(-window).Unix()))
+    count, _ := rdb.ZCard(ctx, key).Result()
+    if count > limit {
+        return ErrRateLimited // 429
+    }
+    rdb.Expire(ctx, key, window+time.Minute)
+    return nil
+}
 ```
 
 ## Ошибки

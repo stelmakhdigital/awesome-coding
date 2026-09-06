@@ -5,11 +5,10 @@
 ## Состав раздела
 
 - `README.md` — этот файл (версия, конвенции)
-- `rules.md` — guardrails (запланировано)
-- `idioms.md` — идиомы (запланировано)
-- `decisions.md` — таблицы решений (запланировано)
-- [snippets/](snippets/) — готовые сниппеты
-- `patterns/` — паттерны (запланировано)
+- [rules.md](rules.md) — guardrails (✅/❌)
+- [idioms.md](idioms.md) — идиомы (массивы, mapfile, функции, строки)
+- [decisions.md](decisions.md) — таблицы решений (bash vs python, инструменты)
+- [snippets/](snippets/) — готовые сниппеты (error-handling, functions, files)
 
 ## Конвенции
 

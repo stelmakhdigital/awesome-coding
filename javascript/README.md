@@ -5,11 +5,10 @@
 ## Состав раздела
 
 - `README.md` — этот файл (версия, конвенции)
-- `rules.md` — guardrails (запланировано)
-- `idioms.md` — идиомы (запланировано)
-- `decisions.md` — таблицы решений (запланировано)
-- [snippets/](snippets/) — готовые сниппеты
-- `patterns/` — паттерны (запланировано)
+- [rules.md](rules.md) — guardrails (✅/❌)
+- [idioms.md](idioms.md) — идиомы (ES2025: iterators, groupBy, withResolvers)
+- [decisions.md](decisions.md) — таблицы решений (рантайм, тесты, HTTP)
+- [snippets/](snippets/) — готовые сниппеты (error-handling, testing, json, async)
 
 ## Конвенции
 

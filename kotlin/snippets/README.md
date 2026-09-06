@@ -6,4 +6,5 @@
 | Compose | state-driven UI, ViewModel, StateFlow | [compose.md](compose.md) |
 | HTTP (Ktor) | таймауты, ретраи, отмена | [http.md](http.md) |
 
-Код рецензирован, не компилируется (нет kotlinc в окружении).
+Статус кода: `coroutines.md` — скомпилирован (kotlinc 2.3.0) и выполнен; `http.md` — скомпилирован
+(Ktor 3.5.2 + OkHttp 5.3.2); `compose.md` — рецензирован (нет Android SDK).

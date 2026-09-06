@@ -97,43 +97,203 @@ languages:
         status: stable
   typescript:
     version: "7.0"
+    rule_set:
+      - id: ts-rules
+        title: TypeScript Rules
+        path: typescript/rules.md
+        tags: [rules, guardrails, strict, types, style]
+        status: stable
+    idioms:
+      - id: ts-idioms
+        title: TypeScript Idioms
+        path: typescript/idioms.md
+        tags: [idioms, style, type-narrowing, generics, discriminated-unions]
+        status: stable
+    decisions:
+      - id: ts-decisions
+        title: TypeScript Decisions (инструменты, фреймворки)
+        path: typescript/decisions.md
+        tags: [decisions, tooling, build, testing, validation, choices]
+        status: stable
     snippets:
       - id: ts-http-client
-        title: "HTTP client (fetch + AbortController)"
+        title: HTTP client (fetch + AbortController)
         path: typescript/snippets/http-client.md
         tags: [http, fetch, async, timeout]
         status: stable
+      - id: ts-testing
+        title: "TypeScript: Testing (vitest, table-driven, async)"
+        path: typescript/snippets/testing.md
+        tags: [testing, vitest, unit-tests, async, mocking]
+        status: stable
+      - id: ts-json
+        title: "TypeScript: JSON (zod, unknown на границе)"
+        path: typescript/snippets/json.md
+        tags: [json, zod, validation, serialization, api]
+        status: stable
+      - id: ts-async
+        title: "TypeScript: async (таймауты, ретраи, лимит параллелизма)"
+        path: typescript/snippets/async.md
+        tags: [async, timeout, retry, abort, concurrency, promise]
+        status: stable
   javascript:
     version: "ES2025"
+    rule_set:
+      - id: js-rules
+        title: JavaScript Rules
+        path: javascript/rules.md
+        tags: [rules, guardrails, esm, async, style]
+        status: stable
+    idioms:
+      - id: js-idioms
+        title: JavaScript Idioms
+        path: javascript/idioms.md
+        tags: [idioms, style, destructuring, iterators, es2025]
+        status: stable
+    decisions:
+      - id: js-decisions
+        title: JavaScript Decisions (рантайм, тесты, инструменты)
+        path: javascript/decisions.md
+        tags: [decisions, runtime, node, testing, tooling, choices]
+        status: stable
     snippets:
       - id: js-error-handling
         title: "Error handling: custom errors, timeout, global handlers"
         path: javascript/snippets/error-handling.md
         tags: [errors, async, node, timeout]
         status: stable
+      - id: js-testing
+        title: "JavaScript: Testing (node:test, stdlib)"
+        path: javascript/snippets/testing.md
+        tags: [testing, node-test, unit-tests, mocking, stdlib]
+        status: stable
+      - id: js-json
+        title: "JavaScript: JSON (валидация, structuredClone, Date)"
+        path: javascript/snippets/json.md
+        tags: [json, validation, structured-clone, api]
+        status: stable
+      - id: js-async
+        title: "JavaScript: async (таймауты, ретраи, лимит параллелизма)"
+        path: javascript/snippets/async.md
+        tags: [async, timeout, retry, abort, concurrency, promise]
+        status: stable
   python:
     version: "3.14"
+    rule_set:
+      - id: py-rules
+        title: Python Rules
+        path: python/rules.md
+        tags: [rules, guardrails, style, typing, errors]
+        status: stable
+    idioms:
+      - id: py-idioms
+        title: Python Idioms
+        path: python/idioms.md
+        tags: [idioms, style, dataclass, match, walrus, contextlib]
+        status: stable
+    decisions:
+      - id: py-decisions
+        title: Python Decisions (библиотеки, фреймворки)
+        path: python/decisions.md
+        tags: [decisions, libraries, http, testing, web, choices]
+        status: stable
     snippets:
       - id: py-http-client
-        title: "HTTP client (httpx, sync + async)"
+        title: HTTP client (httpx, sync + async)
         path: python/snippets/http-client.md
         tags: [http, httpx, async, client]
         status: stable
+      - id: py-error-handling
+        title: "Python: Error handling (исключения, contextlib, ретраи)"
+        path: python/snippets/error-handling.md
+        tags: [errors, exceptions, contextlib, retry, cleanup]
+        status: stable
+      - id: py-testing
+        title: "Python: Testing (pytest, параметризация, фикстуры)"
+        path: python/snippets/testing.md
+        tags: [testing, pytest, fixtures, parametrize, unit-tests]
+        status: stable
+      - id: py-json
+        title: "Python: JSON (pydantic, dataclasses, валидация)"
+        path: python/snippets/json.md
+        tags: [json, pydantic, dataclass, validation, api]
+        status: stable
   c:
     version: "C23"
+    rule_set:
+      - id: c-rules
+        title: C Rules
+        path: c/rules.md
+        tags: [rules, guardrails, memory, safety, c23]
+        status: stable
+    idioms:
+      - id: c-idioms
+        title: C Idioms (C23)
+        path: c/idioms.md
+        tags: [idioms, style, c23, structs, static-assert]
+        status: stable
+    decisions:
+      - id: c-decisions
+        title: C Decisions (язык, аллокатор, строки, тесты)
+        path: c/decisions.md
+        tags: [decisions, allocator, strings, testing, choices]
+        status: stable
     snippets:
       - id: c-error-handling
         title: "Error handling: коды возврата, errno, cleanup через goto"
         path: c/snippets/error-handling.md
         tags: [errors, errno, cleanup, memory]
         status: stable
+      - id: c-memory
+        title: "C: память (ownership, cleanup, arena)"
+        path: c/snippets/memory.md
+        tags: [memory, malloc, cleanup, arena, ownership]
+        status: stable
+      - id: c-strings
+        title: "C: строки (C23 stdstring.h, builder)"
+        path: c/snippets/strings.md
+        tags: [strings, stdstring, cstr, buffer, builder]
+        status: stable
+      - id: c-testing
+        title: "C: Testing (harness + assert, санитайзеры)"
+        path: c/snippets/testing.md
+        tags: [testing, assert, harness, sanitizers, unit-tests]
+        status: stable
   bash:
     version: "5.3"
+    rule_set:
+      - id: bash-rules
+        title: Bash Rules
+        path: bash/rules.md
+        tags: [rules, guardrails, strict-mode, safety, scripting]
+        status: stable
+    idioms:
+      - id: bash-idioms
+        title: Bash Idioms (5.x)
+        path: bash/idioms.md
+        tags: [idioms, style, arrays, mapfile, functions]
+        status: stable
+    decisions:
+      - id: bash-decisions
+        title: Bash Decisions (bash vs python, инструменты)
+        path: bash/decisions.md
+        tags: [decisions, scripting, python, tooling, choices]
+        status: stable
     snippets:
       - id: bash-error-handling
         title: "Error handling: strict mode, ERR/EXIT traps"
         path: bash/snippets/error-handling.md
         tags: [errors, traps, strict-mode, cleanup]
+        status: stable
+      - id: bash-functions
+        title: "Bash: функции (ошибки, таймауты, параллелизм)"
+        path: bash/snippets/functions.md
+        tags: [functions, errors, timeout, parallel, xargs]
+        status: stable
+      - id: bash-files
+        title: "Bash: файлы (безопасность, блокировки, temp)"
+        path: bash/snippets/files.md
+        tags: [files, temp, flock, safety, paths]
         status: stable
   csharp:
     version: "14 (.NET 10)"
