@@ -97,9 +97,9 @@ awesome-coding/
 | `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes |
 | `typescript/` | полный: rules, idioms, decisions, 5 сниппетов (tsc 7.0.2 strict — код проверен) |
 | `javascript/` | полный: rules, idioms, decisions, 4 сниппета (node 22 — код выполнен, node:test 5/5) |
-| `python/` | полный: rules, idioms, decisions, 5 сниппетов (Python 3.14.7 — код выполнен, pytest) |
+| `python/` | полный: rules, idioms, decisions, 6 сниппетов (Python 3.14.7 — код выполнен, pytest) |
 | `c/` | полный: rules, idioms, decisions, 4 сниппета (clang -std=c23, ASan-чисто) |
-| `bash/` | полный: rules, idioms, decisions, 3 сниппета (bash 5.3 — код выполнен) |
+| `bash/` | полный: rules, idioms, decisions, 4 сниппета (bash 5.3 — код выполнен) |
 
 ## License
 

@@ -7,5 +7,6 @@
 | `bash-error-handling` | [error-handling.md](error-handling.md) | errors, traps, strict-mode, cleanup |
 | `bash-functions` | [functions.md](functions.md) | functions, errors, timeout, parallel, xargs |
 | `bash-files` | [files.md](files.md) | files, temp, flock, safety, paths |
+| `bash-curl` | [curl.md](curl.md) | curl, http, json, retry, download |
 
 Код проверен на bash 5.3.0 (выполнен).

@@ -10,5 +10,6 @@
 | Android Build | IL2CPP, AAB, ProGuard, чек-лист | [android-build.md](android-build.md) |
 | Async | корутины vs async/await, UniTask | [async.md](async.md) |
 | Physics | Rigidbody, коллизии, raycast, слои | [physics.md](physics.md) |
+| Addressables | динамический контент, handle-цикл, сцены | [addressables.md](addressables.md) |
 
 Код рецензирован, не компилируется (нужен Unity Editor).

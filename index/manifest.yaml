@@ -99,6 +99,12 @@ languages:
         tags: [sql, postgres, pgx, database, transactions, pool]
         status: stable
         verified: reviewed
+      - id: go-grpc
+        title: "gRPC: сервер, клиент, статусы, ctx-таймауты"
+        path: go/snippets/grpc.md
+        tags: [grpc, rpc, protobuf, server, client, status]
+        status: stable
+        verified: reviewed
     patterns:
       - id: go-functional-options
         title: "Functional Options"
@@ -280,6 +286,12 @@ languages:
         tags: [asyncio, async, concurrency, timeout, taskgroup, cancellation]
         status: stable
         verified: executed
+      - id: py-web-server
+        title: "Python: web-сервер (FastAPI, Pydantic v2, DI, lifespan)"
+        path: python/snippets/web-server.md
+        tags: [fastapi, web, http, server, pydantic, api]
+        status: stable
+        verified: executed
   c:
     version: "C23"
     rule_set:
@@ -370,6 +382,12 @@ languages:
         tags: [files, temp, flock, safety, paths]
         status: stable
         verified: executed
+      - id: bash-curl
+        title: "Bash: curl в скриптах (ошибки, JSON, ретраи, загрузка)"
+        path: bash/snippets/curl.md
+        tags: [curl, http, networking, json, retry, download]
+        status: stable
+        verified: executed
   csharp:
     version: "14 (.NET 10)"
     rule_set:
@@ -440,6 +458,12 @@ languages:
         title: "HTTP client: IHttpClientFactory + resilience pipeline"
         path: csharp/snippets/http-client.md
         tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
+        status: stable
+        verified: reviewed
+      - id: csharp-configuration
+        title: "Configuration: Options pattern (IOptions, валидация, hot-reload)"
+        path: csharp/snippets/configuration.md
+        tags: [configuration, options, ioptions, validation, env, 12-factor]
         status: stable
         verified: reviewed
     patterns:
@@ -531,6 +555,12 @@ languages:
         title: "Physics: Rigidbody, коллизии, raycast, слои"
         path: unity/snippets/physics.md
         tags: [physics, rigidbody, collision, raycast, layers]
+        status: stable
+        verified: reviewed
+      - id: unity-addressables
+        title: "Addressables: загрузка динамического контента"
+        path: unity/snippets/addressables.md
+        tags: [addressables, assets, loading, async, content-update]
         status: stable
         verified: reviewed
     patterns:

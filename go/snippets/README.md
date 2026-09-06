@@ -16,3 +16,4 @@
 | `go-file-io` | [file-io.md](file-io.md) | files, io |
 | `go-http-client` | [http-client.md](http-client.md) | http, client, timeout, retry |
 | `go-sql` | [sql.md](sql.md) | sql, postgres, pgx, transactions |
+| `go-grpc` | [grpc.md](grpc.md) | grpc, protobuf, rpc, status |

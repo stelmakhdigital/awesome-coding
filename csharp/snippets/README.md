@@ -10,5 +10,6 @@
 | Testing | xUnit: `Fact`, `Theory`, `InlineData` | [testing.md](testing.md) |
 | HTTP server | ASP.NET Core Minimal API: DI, валидация, OpenAPI | [http-server.md](http-server.md) |
 | HTTP client | `IHttpClientFactory` + resilience (ретраи, таймауты) | [http-client.md](http-client.md) |
+| Configuration | Options pattern: `IOptions`, валидация, hot-reload | [configuration.md](configuration.md) |
 
 Все блоки кода — самодостаточные файлы, компилируемые на .NET 10 (C# 14).
