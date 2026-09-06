@@ -66,7 +66,7 @@ awesome-coding/
 ├── kotlin/                    # Kotlin 2.3 (JVM/Android)
 ├── unity/                     # Unity 6.3 LTS: кроссплатформа + Android
 │   └── shaders/               # HLSL (URP)
-├── shared/                    # кросс-языковые концепции (10 тем)
+├── shared/                    # кросс-языковые концепции (11 тем)
 ├── database/                  # PostgreSQL 18 + Redis 8
 ├── messaging/                 # Kafka 4.3, RabbitMQ 4.3
 └── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes
@@ -109,7 +109,7 @@ awesome-coding/
 | `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14, код компилируется) |
 | `unity/` | полный: snippets, patterns, rules, idioms, decisions + HLSL-шейдеры (6.3 LTS, Android) |
 | `kotlin/` | полный: rules, idioms, decisions, 4 сниппета (2.3; корутины — скомпилированы и выполнены, Ktor — скомпилирован) |
-| `shared/` | полный: 10 кросс-языковых концепций |
+| `shared/` | полный: 11 кросс-языковых концепций |
 | `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов; SQL прогнан на живом PG 18.6) |
 | `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 2 сниппета; Go-код скомпилирован) |
 | `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes |

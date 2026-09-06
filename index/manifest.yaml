@@ -718,6 +718,12 @@ languages:
         tags: [code-review, review, quality, security, checklist, agent]
         status: stable
         verified: none
+      - id: shared-commits
+        title: "Shared: Commits (правила коммитинга для агентов)"
+        path: shared/commits.md
+        tags: [commits, git, version-control, conventions, agent]
+        status: stable
+        verified: none
 
 architecture:
   version: null
