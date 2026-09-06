@@ -26,7 +26,7 @@
 - **1.23**: `unique`, `math/rand/v2`, `slices.Collect`/`maps.Collect`, struct-типы в type parameters.
 - **1.24**: `testing/synctest` (экспериментальный), `t.Context()`, `crypto/hkdf`, `crypto/mlkem`, `crypto/ecdh`.
 - **1.26**: `new(expr)` — начальное значение через выражение (удобно для опциональных `*T`-полей); самореферентные generic-ограничения (`type Adder[A Adder[A]]`); переделанный `go fix`.
-- **1.27**: generic-методы (методы со своими type parameters; для интерфейсов не разрешены); ключи struct-литералов — любые field selector'ы (включая embedded); обобщённый function type inference; `@file` response files для compile/link/asm.
+- **1.27**: generic-методы (методы со своими type parameters; для интерфейсов не разрешены); ключи struct-литералов — любые field selector'ы (включая embedded); обобщённый function type inference; `@file` response files для compile/link/asm; **`encoding/json/v2`** + `encoding/json/jsontext` (v1 теперь работает на v2-реализации); новый пакет **`uuid`**; экспериментальный `simd` (`GOEXPERIMENT=simd`).
 
 ## Инструменты
 

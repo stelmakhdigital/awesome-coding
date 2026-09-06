@@ -42,8 +42,9 @@ updated: 2026-09-06
 
 | Задача | Рекомендация | Альтернатива | Когда |
 |---|---|---|---|
-| Marshal/Unmarshal | stdlib `encoding/json` | `goccy/go-json` | критичная производительность (проверьте бенчмарком) |
-| Строгий парсинг | `dec.DisallowUnknownFields()` | — | API-контракты |
+| Marshal/Unmarshal | stdlib `encoding/json/v2` (1.27+) | `encoding/json` (v1) | Go < 1.27 или нужны v1-семантики |
+| Строгий парсинг | дефолты v2 (отклоняют невалидный UTF-8, дубли имён) | v1: `dec.DisallowUnknownFields()` | API-контракты на v1 |
+| Критичная производительность | `goccy/go-json` | — | проверьте бенчмарком |
 
 ## Логирование
 
@@ -72,5 +73,5 @@ updated: 2026-09-06
 | Задача | Рекомендация | Альтернатива | Когда |
 |---|---|---|---|
 | Срезы/мапы | stdlib `slices`/`maps` (1.21+) | — | всегда |
-| UUID | `google/uuid` | `github.com/gofrs/uuid` | — |
+| UUID | stdlib `uuid` (1.27+) | `google/uuid` | Go < 1.27 или нужны расширенные возможности |
 | Валидация | stdlib + собственные проверки | `go-playground/validator` | DTO с кучей тегов |

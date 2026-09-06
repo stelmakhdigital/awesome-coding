@@ -50,9 +50,9 @@ languages:
         tags: [testing, benchmarks, subtests, stdlib]
         status: stable
       - id: go-json
-        title: JSON: encoding/json и streaming
+        title: JSON: encoding/json/v2 (1.27+) и v1
         path: go/snippets/json.md
-        tags: [json, encoding, stdlib]
+        tags: [json, encoding, stdlib, v2]
         status: stable
       - id: go-slices-maps
         title: Slices и Maps (stdlib, Go 1.21+)
