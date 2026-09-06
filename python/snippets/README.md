@@ -8,5 +8,6 @@
 | `py-error-handling` | [error-handling.md](error-handling.md) | errors, exceptions, contextlib, retry |
 | `py-testing` | [testing.md](testing.md) | testing, pytest, fixtures, parametrize |
 | `py-json` | [json.md](json.md) | json, pydantic, dataclass, validation |
+| `py-asyncio` | [asyncio.md](asyncio.md) | asyncio, taskgroup, timeout, cancellation |
 
 Код проверен на Python 3.14.7 (выполнен).

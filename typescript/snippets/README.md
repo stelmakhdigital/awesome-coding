@@ -8,5 +8,6 @@
 | `ts-testing` | [testing.md](testing.md) | testing, vitest, unit-tests, async |
 | `ts-json` | [json.md](json.md) | json, zod, validation, api |
 | `ts-async` | [async.md](async.md) | async, timeout, retry, abort, concurrency |
+| `ts-file-io` | [file-io.md](file-io.md) | files, fs, atomic, streams, node |
 
 Код проверен на tsc 7.0.2 (`strict: true`).

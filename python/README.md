@@ -8,7 +8,7 @@
 - [rules.md](rules.md) — guardrails (✅/❌)
 - [idioms.md](idioms.md) — идиомы (dataclass, match, walrus, contextlib)
 - [decisions.md](decisions.md) — таблицы решений (web, HTTP, данные, тесты)
-- [snippets/](snippets/) — готовые сниппеты (http-client, error-handling, testing, json)
+- [snippets/](snippets/) — готовые сниппеты (http-client, error-handling, testing, json, asyncio)
 
 ## Конвенции
 

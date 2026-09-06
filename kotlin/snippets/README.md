@@ -5,6 +5,7 @@
 | Coroutines | scope, `suspend`, `Flow`, отмена | [coroutines.md](coroutines.md) |
 | Compose | state-driven UI, ViewModel, StateFlow | [compose.md](compose.md) |
 | HTTP (Ktor) | таймауты, ретраи, отмена | [http.md](http.md) |
+| Room | Entity, DAO, `Flow`, авто-миграции | [room.md](room.md) |
 
 Статус кода: `coroutines.md` — скомпилирован (kotlinc 2.3.0) и выполнен; `http.md` — скомпилирован
-(Ktor 3.5.2 + OkHttp 5.3.2); `compose.md` — рецензирован (нет Android SDK).
+(Ktor 3.5.2 + OkHttp 5.3.2); `compose.md` — рецензирован (нет Android SDK); `room.md` — рецензирован.

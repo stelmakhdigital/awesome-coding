@@ -14,3 +14,5 @@
 | `go-logging` | [logging.md](logging.md) | slog, logging |
 | `go-graceful-shutdown` | [graceful-shutdown.md](graceful-shutdown.md) | signals, lifecycle |
 | `go-file-io` | [file-io.md](file-io.md) | files, io |
+| `go-http-client` | [http-client.md](http-client.md) | http, client, timeout, retry |
+| `go-sql` | [sql.md](sql.md) | sql, postgres, pgx, transactions |

@@ -1,7 +1,7 @@
 # Машиночитаемый каталог всех записей awesome-coding.
 # Формат: docs/FORMAT.md. Обновлять при каждом добавлении/изменении записи.
 version: 1
-updated: 2026-09-06
+updated: 2026-09-07
 languages:
   go:
     version: "1.27"
@@ -74,6 +74,16 @@ languages:
         path: go/snippets/file-io.md
         tags: [files, io, stdlib]
         status: stable
+      - id: go-http-client
+        title: "HTTP client: context, таймауты, JSON, ретраи"
+        path: go/snippets/http-client.md
+        tags: [http, client, context, timeout, retry, json]
+        status: stable
+      - id: go-sql
+        title: "SQL: database/sql + pgx (пул, ctx, транзакции, батчи)"
+        path: go/snippets/sql.md
+        tags: [sql, postgres, pgx, database, transactions, pool]
+        status: stable
     patterns:
       - id: go-functional-options
         title: "Functional Options"
@@ -135,6 +145,11 @@ languages:
         title: "TypeScript: async (таймауты, ретраи, лимит параллелизма)"
         path: typescript/snippets/async.md
         tags: [async, timeout, retry, abort, concurrency, promise]
+        status: stable
+      - id: ts-file-io
+        title: "TypeScript: файловый IO (fs/promises, атомарная запись, стримы)"
+        path: typescript/snippets/file-io.md
+        tags: [files, fs, promises, streams, atomic, node]
         status: stable
   javascript:
     version: "ES2025"
@@ -217,6 +232,11 @@ languages:
         title: "Python: JSON (pydantic, dataclasses, валидация)"
         path: python/snippets/json.md
         tags: [json, pydantic, dataclass, validation, api]
+        status: stable
+      - id: py-asyncio
+        title: "Python: asyncio (TaskGroup, timeout, semaphore, отмена)"
+        path: python/snippets/asyncio.md
+        tags: [asyncio, async, concurrency, timeout, taskgroup, cancellation]
         status: stable
   c:
     version: "C23"
@@ -346,6 +366,16 @@ languages:
         path: csharp/snippets/testing.md
         tags: [testing, xunit, unit-tests, theory]
         status: stable
+      - id: csharp-http-server
+        title: "HTTP server: ASP.NET Core Minimal API (.NET 10)"
+        path: csharp/snippets/http-server.md
+        tags: [http, aspnet-core, minimal-api, server, validation, openapi]
+        status: stable
+      - id: csharp-http-client
+        title: "HTTP client: IHttpClientFactory + resilience pipeline"
+        path: csharp/snippets/http-client.md
+        tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
+        status: stable
     patterns:
       - id: csharp-functional-options
         title: "C#: Functional Options (builder)"
@@ -412,6 +442,16 @@ languages:
         title: "Android Build: IL2CPP, AAB, ProGuard"
         path: unity/snippets/android-build.md
         tags: [android, il2cpp, aab, proguard, build]
+        status: stable
+      - id: unity-async
+        title: "Async: корутины vs async/await в Unity"
+        path: unity/snippets/async.md
+        tags: [async, coroutines, await, task, unittask]
+        status: stable
+      - id: unity-physics
+        title: "Physics: Rigidbody, коллизии, raycast, слои"
+        path: unity/snippets/physics.md
+        tags: [physics, rigidbody, collision, raycast, layers]
         status: stable
     patterns:
       - id: unity-composition
@@ -480,6 +520,11 @@ languages:
         title: "Kotlin: Ktor Client (таймауты, отмена, ретраи)"
         path: kotlin/snippets/http.md
         tags: [http, ktor, client, timeout, retry]
+        status: stable
+      - id: kotlin-room
+        title: "Kotlin: Room (Entity, DAO, Flow, миграции)"
+        path: kotlin/snippets/room.md
+        tags: [room, database, android, flow, migrations, persistence]
         status: stable
   shared:
     version: null

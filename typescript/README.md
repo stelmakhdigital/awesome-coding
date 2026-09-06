@@ -10,7 +10,7 @@
 - [rules.md](rules.md) — guardrails (✅/❌)
 - [idioms.md](idioms.md) — идиомы (narrowing, unions, satisfies, generics)
 - [decisions.md](decisions.md) — таблицы решений (сборка, тесты, валидация, HTTP)
-- [snippets/](snippets/) — готовые сниппеты (http-client, testing, json, async)
+- [snippets/](snippets/) — готовые сниппеты (http-client, testing, json, async, file-io)
 
 ## Конвенции
 
