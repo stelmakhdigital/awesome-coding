@@ -18,6 +18,7 @@
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
 | Нативный Android (Kotlin) | `kotlin/` |
 | Документирование проекта, ADR, диаграммы (mermaid) | `shared/documentation.md`, `shared/mermaid.md` |
+| Добавление записи в этот репозиторий (контрибьюция) | `docs/CONTRIBUTING.md`, `docs/FORMAT.md` |
 
 **Шаг 2 — внутри раздела:**
 
@@ -25,7 +26,8 @@
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
    (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database;
    нет в: shared, messaging, cicd, architecture).
-3. Конкретная запись — по тегам в `index/manifest.yaml` (поиск: `grep -i "тег" index/manifest.yaml`).
+3. Конкретная запись — по тегам в `index/manifest.yaml` (поиск: `grep -i "тег" index/manifest.yaml`;
+   без клона — GitHub code search по этому файлу или `make search Q=тег` после клона).
 4. Выбор библиотеки/подхода — `<section>/decisions.md` (таблицы решений), если есть.
 
 **Шаг 3 — приоритеты:** язык-специфика (`<lang>/`) важнее `shared/`, если запись явно не говорит об обратном.
