@@ -7,91 +7,91 @@ languages:
     version: "1.27"
     rule_set:
       - id: go-rules
-        title: Go Rules
+        title: "Go Rules"
         path: go/rules.md
         tags: [rules, guardrails, style, errors, concurrency]
         status: stable
     idioms:
       - id: go-idioms
-        title: Go Idioms
+        title: "Go Idioms"
         path: go/idioms.md
         tags: [idioms, style, patterns, stdlib]
         status: stable
     decisions:
       - id: go-decisions
-        title: Go Decisions
+        title: "Go Decisions"
         path: go/decisions.md
         tags: [decisions, libraries, choices, ecosystem]
         status: stable
     snippets:
       - id: go-error-handling
-        title: Error handling: wrap, sentinel, errors.Is/As
+        title: "Error handling: wrap, sentinel, errors.Is/As"
         path: go/snippets/error-handling.md
         tags: [errors, error-handling, stdlib]
         status: stable
       - id: go-http-server
-        title: HTTP server (stdlib, Go 1.22+)
+        title: "HTTP server (stdlib, Go 1.22+)"
         path: go/snippets/http-server.md
         tags: [http, net, server, stdlib]
         status: stable
       - id: go-context
-        title: Context: timeout, cancellation, values
+        title: "Context: timeout, cancellation, values"
         path: go/snippets/context.md
         tags: [context, cancellation, timeout, stdlib]
         status: stable
       - id: go-goroutines
-        title: Goroutines: WaitGroup, errgroup, worker pool
+        title: "Goroutines: WaitGroup, errgroup, worker pool"
         path: go/snippets/goroutines.md
         tags: [concurrency, goroutines, workers, errgroup]
         status: stable
       - id: go-testing
-        title: Testing: table-driven, subtests, benchmarks
+        title: "Testing: table-driven, subtests, benchmarks"
         path: go/snippets/testing.md
         tags: [testing, benchmarks, subtests, stdlib]
         status: stable
       - id: go-json
-        title: JSON: encoding/json/v2 (1.27+) и v1
+        title: "JSON: encoding/json/v2 (1.27+) и v1"
         path: go/snippets/json.md
         tags: [json, encoding, stdlib, v2]
         status: stable
       - id: go-slices-maps
-        title: Slices и Maps (stdlib, Go 1.21+)
+        title: "Slices и Maps (stdlib, Go 1.21+)"
         path: go/snippets/slices-maps.md
         tags: [slices, maps, stdlib, collections]
         status: stable
       - id: go-logging
-        title: Structured logging: log/slog
+        title: "Structured logging: log/slog"
         path: go/snippets/logging.md
         tags: [slog, logging, observability, stdlib]
         status: stable
       - id: go-graceful-shutdown
-        title: Graceful shutdown: signal.NotifyContext
+        title: "Graceful shutdown: signal.NotifyContext"
         path: go/snippets/graceful-shutdown.md
         tags: [signals, lifecycle, shutdown, stdlib]
         status: stable
       - id: go-file-io
-        title: File I/O: ReadFile, streaming, temp files
+        title: "File I/O: ReadFile, streaming, temp files"
         path: go/snippets/file-io.md
         tags: [files, io, stdlib]
         status: stable
     patterns:
       - id: go-functional-options
-        title: Functional Options
+        title: "Functional Options"
         path: go/patterns/functional-options.md
         tags: [design, configuration, api, options]
         status: stable
       - id: go-worker-pool
-        title: Worker Pool (ограниченный параллелизм)
+        title: "Worker Pool (ограниченный параллелизм)"
         path: go/patterns/worker-pool.md
         tags: [concurrency, workers, pool, errgroup]
         status: stable
       - id: go-repository
-        title: Repository (изоляция доступа к данным)
+        title: "Repository (изоляция доступа к данным)"
         path: go/patterns/repository.md
         tags: [architecture, data, sql, interface, di]
         status: stable
       - id: go-http-middleware
-        title: HTTP Middleware
+        title: "HTTP Middleware"
         path: go/patterns/http-middleware.md
         tags: [http, middleware, server, stdlib]
         status: stable
@@ -99,7 +99,7 @@ languages:
     version: "7.0"
     snippets:
       - id: ts-http-client
-        title: HTTP client (fetch + AbortController)
+        title: "HTTP client (fetch + AbortController)"
         path: typescript/snippets/http-client.md
         tags: [http, fetch, async, timeout]
         status: stable
@@ -107,7 +107,7 @@ languages:
     version: "ES2025"
     snippets:
       - id: js-error-handling
-        title: Error handling: custom errors, timeout, global handlers
+        title: "Error handling: custom errors, timeout, global handlers"
         path: javascript/snippets/error-handling.md
         tags: [errors, async, node, timeout]
         status: stable
@@ -115,7 +115,7 @@ languages:
     version: "3.14"
     snippets:
       - id: py-http-client
-        title: HTTP client (httpx, sync + async)
+        title: "HTTP client (httpx, sync + async)"
         path: python/snippets/http-client.md
         tags: [http, httpx, async, client]
         status: stable
@@ -123,7 +123,7 @@ languages:
     version: "C23"
     snippets:
       - id: c-error-handling
-        title: Error handling: коды возврата, errno, cleanup через goto
+        title: "Error handling: коды возврата, errno, cleanup через goto"
         path: c/snippets/error-handling.md
         tags: [errors, errno, cleanup, memory]
         status: stable
@@ -131,10 +131,109 @@ languages:
     version: "5.3"
     snippets:
       - id: bash-error-handling
-        title: Error handling: strict mode, ERR/EXIT traps
+        title: "Error handling: strict mode, ERR/EXIT traps"
         path: bash/snippets/error-handling.md
         tags: [errors, traps, strict-mode, cleanup]
         status: stable
   shared:
     version: null
     concepts: [] # запланировано: см. shared/README.md
+
+architecture:
+  version: null
+  decisions:
+    - id: arch-decisions
+      title: "Архитектура: таблицы решений"
+      path: architecture/decisions.md
+      tags: [architecture, decisions, ddd, choices, over-engineering]
+      status: stable
+  ddd:
+    overview:
+      - id: ddd-overview
+        title: "DDD: когда уместен"
+        path: architecture/ddd/README.md
+        tags: [ddd, domain, architecture, over-engineering]
+        status: stable
+    tactical:
+      - id: ddd-entity
+        title: "DDD: Entity"
+        path: architecture/ddd/tactical/entity.md
+        tags: [ddd, entity, identity, domain, go]
+        status: stable
+      - id: ddd-value-object
+        title: "DDD: Value Object"
+        path: architecture/ddd/tactical/value-object.md
+        tags: [ddd, value-object, immutability, domain, go]
+        status: stable
+      - id: ddd-aggregate
+        title: "DDD: Aggregate"
+        path: architecture/ddd/tactical/aggregate.md
+        tags: [ddd, aggregate, invariants, consistency, go]
+        status: stable
+      - id: ddd-domain-service
+        title: "DDD: Domain Service"
+        path: architecture/ddd/tactical/domain-service.md
+        tags: [ddd, domain-service, service, go]
+        status: stable
+      - id: ddd-domain-event
+        title: "DDD: Domain Event"
+        path: architecture/ddd/tactical/domain-event.md
+        tags: [ddd, domain-event, events, go]
+        status: stable
+      - id: ddd-repository
+        title: "DDD: Repository"
+        path: architecture/ddd/tactical/repository.md
+        tags: [ddd, repository, persistence, go]
+        status: stable
+    strategic:
+      - id: ddd-bounded-context
+        title: "DDD: Bounded Context"
+        path: architecture/ddd/strategic/bounded-context.md
+        tags: [ddd, bounded-context, strategic, boundaries, modules]
+        status: stable
+      - id: ddd-ubiquitous-language
+        title: "DDD: Ubiquitous Language"
+        path: architecture/ddd/strategic/ubiquitous-language.md
+        tags: [ddd, ubiquitous-language, naming, domain, communication]
+        status: stable
+      - id: ddd-context-mapping
+        title: "DDD: Context Mapping"
+        path: architecture/ddd/strategic/context-mapping.md
+        tags: [ddd, context-mapping, integration, acl, boundaries]
+        status: stable
+  patterns:
+    - id: arch-layered
+      title: "Архитектура: Layered (слоистая)"
+      path: architecture/patterns/layered.md
+      tags: [architecture, layered, handlers, services, go]
+      status: stable
+    - id: arch-hexagonal
+      title: "Архитектура: Hexagonal (Ports & Adapters)"
+      path: architecture/patterns/hexagonal.md
+      tags: [architecture, hexagonal, ports-adapters, clean, go]
+      status: stable
+    - id: arch-modular-monolith
+      title: "Архитектура: Modular Monolith"
+      path: architecture/patterns/modular-monolith.md
+      tags: [architecture, modular-monolith, modules, boundaries, go]
+      status: stable
+    - id: arch-microservices
+      title: "Архитектура: Microservices"
+      path: architecture/patterns/microservices.md
+      tags: [architecture, microservices, distributed, saga, go]
+      status: stable
+    - id: arch-cqrs
+      title: "Архитектура: CQRS"
+      path: architecture/patterns/cqrs.md
+      tags: [architecture, cqrs, read-write, projections, advanced, go]
+      status: experimental
+    - id: arch-event-sourcing
+      title: "Архитектура: Event Sourcing"
+      path: architecture/patterns/event-sourcing.md
+      tags: [architecture, event-sourcing, audit, projections, advanced, go]
+      status: experimental
+    - id: arch-event-driven
+      title: "Архитектура: Event-Driven"
+      path: architecture/patterns/event-driven.md
+      tags: [architecture, event-driven, outbox, messaging, advanced, go]
+      status: experimental

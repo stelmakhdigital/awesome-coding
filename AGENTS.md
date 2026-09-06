@@ -10,6 +10,8 @@
 3. Для конкретной задачи — найдите запись по тегам в `index/manifest.yaml` и откройте файл.
 4. Языконезависимые концепции (ошибки, конкурентность, безопасность, тесты) — `shared/`.
 5. Выбор библиотеки или подхода — `<lang>/decisions.md` (таблицы решений).
+6. Архитектура и DDD (уровень DDD, bounded contexts, CQRS, event-driven) — `architecture/`;
+   сначала `architecture/decisions.md` (какой уровень для проекта), затем конкретная запись.
 
 ## Жёсткие правила
 
@@ -35,6 +37,7 @@
 ## Структура
 
 - `<lang>/` — языковой раздел: `README.md`, `rules.md`, `idioms.md`, `decisions.md`, `snippets/`, `patterns/`.
+- `architecture/` — языконезависимая архитектура и DDD: `decisions.md`, `ddd/` (tactical + strategic), `patterns/`.
 - `shared/` — кросс-языковые концепции.
 - `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус).
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).

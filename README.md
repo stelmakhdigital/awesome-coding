@@ -30,6 +30,10 @@ awesome-coding/
 │   ├── decisions.md           # таблицы решений: что выбрать и когда
 │   ├── snippets/              # готовые сниппеты
 │   └── patterns/              # архитектурные/дизайн-паттерны
+├── architecture/              # языконезависимая архитектура и DDD
+│   ├── decisions.md           # какой уровень DDD / какая архитектура для проекта
+│   ├── ddd/                   # tactical (entity, VO, aggregate, …) + strategic (bounded contexts)
+│   └── patterns/              # layered, hexagonal, modular monolith, microservices, CQRS, ES, event-driven
 ├── typescript/                # (аналогичная структура)
 ├── javascript/
 ├── python/
@@ -63,6 +67,7 @@ awesome-coding/
 | Раздел | Статус |
 |---|---|
 | `go/` | ядро: snippets, patterns, rules, idioms, decisions |
+| `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
 | `typescript/`, `javascript/`, `python/`, `c/`, `bash/` | каркас + эталонный сниппет |
 | `shared/` | запланировано |
 
