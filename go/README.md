@@ -1,6 +1,6 @@
 # Go
 
-Целевая версия: **Go 1.25** (fallback: 1.24). Закреплено на 2026-09-06.
+Целевая версия: **Go 1.27** (fallback: 1.26). Закреплено на 2026-09-06 (сниппеты проверены на go1.27.1).
 
 ## Состав раздела
 
@@ -13,7 +13,7 @@
 ## Конвенции
 
 - `gofmt` / `goimports` — без исключений.
-- Модуль: директива `go 1.25` в `go.mod`.
+- Модуль: директива `go 1.27` в `go.mod`.
 - Структура проекта: `cmd/<app>` (entrypoint'ы), `internal/` (приватный код), `pkg/` (публичный API, только для библиотек).
 - Имена пакетов: короткие lowercase слова, без подчёркиваний; запрещены `util`, `common`, `helpers`, `misc`.
 - Ошибки: lowercase, без точки в конце, оборачивание через `%w`.
@@ -25,7 +25,8 @@
 - **1.22**: паттерны `http.ServeMux` (`GET /items/{id}`, `r.PathValue`); `range` по функции; `log/slog` в stdlib (с 1.21).
 - **1.23**: `unique`, `math/rand/v2`, `slices.Collect`/`maps.Collect`, struct-типы в type parameters.
 - **1.24**: `testing/synctest` (экспериментальный), `t.Context()`, `crypto/hkdf`, `crypto/mlkem`, `crypto/ecdh`.
-- **1.25**: см. официальные release notes; в этом разделе код целевой версии 1.25.
+- **1.26**: `new(expr)` — начальное значение через выражение (удобно для опциональных `*T`-полей); самореферентные generic-ограничения (`type Adder[A Adder[A]]`); переделанный `go fix`.
+- **1.27**: generic-методы (методы со своими type parameters; для интерфейсов не разрешены); ключи struct-литералов — любые field selector'ы (включая embedded); обобщённый function type inference; `@file` response files для compile/link/asm.
 
 ## Инструменты
 

@@ -4,7 +4,7 @@ version: 1
 updated: 2026-09-06
 languages:
   go:
-    version: "1.25"
+    version: "1.27"
     rule_set:
       - id: go-rules
         title: Go Rules
@@ -96,7 +96,7 @@ languages:
         tags: [http, middleware, server, stdlib]
         status: stable
   typescript:
-    version: "5.9"
+    version: "7.0"
     snippets:
       - id: ts-http-client
         title: HTTP client (fetch + AbortController)
@@ -104,7 +104,7 @@ languages:
         tags: [http, fetch, async, timeout]
         status: stable
   javascript:
-    version: "ES2024"
+    version: "ES2025"
     snippets:
       - id: js-error-handling
         title: Error handling: custom errors, timeout, global handlers
@@ -128,7 +128,7 @@ languages:
         tags: [errors, errno, cleanup, memory]
         status: stable
   bash:
-    version: "5.2"
+    version: "5.3"
     snippets:
       - id: bash-error-handling
         title: Error handling: strict mode, ERR/EXIT traps
