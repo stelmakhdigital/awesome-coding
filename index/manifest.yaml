@@ -1,0 +1,140 @@
+# Машиночитаемый каталог всех записей awesome-coding.
+# Формат: docs/FORMAT.md. Обновлять при каждом добавлении/изменении записи.
+version: 1
+updated: 2026-09-06
+languages:
+  go:
+    version: "1.25"
+    rule_set:
+      - id: go-rules
+        title: Go Rules
+        path: go/rules.md
+        tags: [rules, guardrails, style, errors, concurrency]
+        status: stable
+    idioms:
+      - id: go-idioms
+        title: Go Idioms
+        path: go/idioms.md
+        tags: [idioms, style, patterns, stdlib]
+        status: stable
+    decisions:
+      - id: go-decisions
+        title: Go Decisions
+        path: go/decisions.md
+        tags: [decisions, libraries, choices, ecosystem]
+        status: stable
+    snippets:
+      - id: go-error-handling
+        title: Error handling: wrap, sentinel, errors.Is/As
+        path: go/snippets/error-handling.md
+        tags: [errors, error-handling, stdlib]
+        status: stable
+      - id: go-http-server
+        title: HTTP server (stdlib, Go 1.22+)
+        path: go/snippets/http-server.md
+        tags: [http, net, server, stdlib]
+        status: stable
+      - id: go-context
+        title: Context: timeout, cancellation, values
+        path: go/snippets/context.md
+        tags: [context, cancellation, timeout, stdlib]
+        status: stable
+      - id: go-goroutines
+        title: Goroutines: WaitGroup, errgroup, worker pool
+        path: go/snippets/goroutines.md
+        tags: [concurrency, goroutines, workers, errgroup]
+        status: stable
+      - id: go-testing
+        title: Testing: table-driven, subtests, benchmarks
+        path: go/snippets/testing.md
+        tags: [testing, benchmarks, subtests, stdlib]
+        status: stable
+      - id: go-json
+        title: JSON: encoding/json и streaming
+        path: go/snippets/json.md
+        tags: [json, encoding, stdlib]
+        status: stable
+      - id: go-slices-maps
+        title: Slices и Maps (stdlib, Go 1.21+)
+        path: go/snippets/slices-maps.md
+        tags: [slices, maps, stdlib, collections]
+        status: stable
+      - id: go-logging
+        title: Structured logging: log/slog
+        path: go/snippets/logging.md
+        tags: [slog, logging, observability, stdlib]
+        status: stable
+      - id: go-graceful-shutdown
+        title: Graceful shutdown: signal.NotifyContext
+        path: go/snippets/graceful-shutdown.md
+        tags: [signals, lifecycle, shutdown, stdlib]
+        status: stable
+      - id: go-file-io
+        title: File I/O: ReadFile, streaming, temp files
+        path: go/snippets/file-io.md
+        tags: [files, io, stdlib]
+        status: stable
+    patterns:
+      - id: go-functional-options
+        title: Functional Options
+        path: go/patterns/functional-options.md
+        tags: [design, configuration, api, options]
+        status: stable
+      - id: go-worker-pool
+        title: Worker Pool (ограниченный параллелизм)
+        path: go/patterns/worker-pool.md
+        tags: [concurrency, workers, pool, errgroup]
+        status: stable
+      - id: go-repository
+        title: Repository (изоляция доступа к данным)
+        path: go/patterns/repository.md
+        tags: [architecture, data, sql, interface, di]
+        status: stable
+      - id: go-http-middleware
+        title: HTTP Middleware
+        path: go/patterns/http-middleware.md
+        tags: [http, middleware, server, stdlib]
+        status: stable
+  typescript:
+    version: "5.9"
+    snippets:
+      - id: ts-http-client
+        title: HTTP client (fetch + AbortController)
+        path: typescript/snippets/http-client.md
+        tags: [http, fetch, async, timeout]
+        status: stable
+  javascript:
+    version: "ES2024"
+    snippets:
+      - id: js-error-handling
+        title: Error handling: custom errors, timeout, global handlers
+        path: javascript/snippets/error-handling.md
+        tags: [errors, async, node, timeout]
+        status: stable
+  python:
+    version: "3.14"
+    snippets:
+      - id: py-http-client
+        title: HTTP client (httpx, sync + async)
+        path: python/snippets/http-client.md
+        tags: [http, httpx, async, client]
+        status: stable
+  c:
+    version: "C23"
+    snippets:
+      - id: c-error-handling
+        title: Error handling: коды возврата, errno, cleanup через goto
+        path: c/snippets/error-handling.md
+        tags: [errors, errno, cleanup, memory]
+        status: stable
+  bash:
+    version: "5.2"
+    snippets:
+      - id: bash-error-handling
+        title: Error handling: strict mode, ERR/EXIT traps
+        path: bash/snippets/error-handling.md
+        tags: [errors, traps, strict-mode, cleanup]
+        status: stable
+  shared:
+    version: null
+    concepts: [] # запланировано: см. shared/README.md
