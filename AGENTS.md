@@ -83,6 +83,7 @@
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
 - `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус, verified).
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).
+- `docs/adr/` — архитектурные решения репозитория (ADR).
 - `tools/validate.py` + `Makefile` — валидация (frontmatter, manifest, ссылки).
 
 ## Туллинг
