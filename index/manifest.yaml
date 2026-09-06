@@ -712,6 +712,12 @@ languages:
         tags: [mermaid, diagrams, flowchart, sequence, c4, documentation]
         status: stable
         verified: none
+      - id: shared-code-review
+        title: "Shared: Code Review (правила для агентов)"
+        path: shared/code-review.md
+        tags: [code-review, review, quality, security, checklist, agent]
+        status: stable
+        verified: none
 
 architecture:
   version: null

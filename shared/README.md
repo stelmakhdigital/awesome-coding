@@ -17,6 +17,7 @@
 | Configuration | [configuration.md](configuration.md) |
 | Documentation (ADR, agent-first) | [documentation.md](documentation.md) |
 | Mermaid (диаграммы и схемы) | [mermaid.md](mermaid.md) |
+| Code Review (правила для агентов) | [code-review.md](code-review.md) |
 
 ## Как использовать
 
