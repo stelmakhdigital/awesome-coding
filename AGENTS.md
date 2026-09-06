@@ -81,7 +81,7 @@
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
-- `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус).
+- `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус, verified).
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).
 - `tools/validate.py` + `Makefile` — валидация (frontmatter, manifest, ссылки).
 
@@ -92,9 +92,15 @@ make validate              # все проверки (frontmatter + manifest + �
 make validate-frontmatter  # только frontmatter
 make validate-manifest     # только manifest
 make validate-links        # только ссылки
+make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
+make search Q=async        # поиск записей в manifest по тегу/названию
+make check-versions        # сверка закреплённых версий с актуальными (сеть)
 ```
 
 Перед коммитом новых записей запустите `make validate`.
+
+**Свежесть версий:** раз в квартал — `make check-versions`; при ⚠️ обновите таблицу «Версии»
+(проверив фолбэк), заголовок `updated` в `index/manifest.yaml` и перепроверьте затронутые сниппеты.
 
 ## Статусы записей
 

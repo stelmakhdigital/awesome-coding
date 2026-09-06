@@ -1,0 +1,10 @@
+{
+  "name": "awesome-coding-tools",
+  "private": true,
+  "type": "module",
+  "description": "Туллинг awesome-coding: валидация mermaid-блоков",
+  "dependencies": {
+    "jsdom": "^25.0.0",
+    "mermaid": "^11.0.0"
+  }
+}

@@ -45,6 +45,7 @@ ALLOWED_LANGS = {
 }
 ALLOWED_CATEGORIES = {"concept", "rule-set", "idioms", "decisions", "snippet", "pattern"}
 ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
+ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
 ID_PREFIXES = (
     "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
     "shared", "ddd", "arch", "database", "messaging", "cicd",
@@ -71,7 +72,8 @@ def parse_frontmatter(path: Path) -> dict | None:
 
 
 def all_md_files() -> list[Path]:
-    return sorted(p for p in ROOT.rglob("*.md") if ".git" not in p.parts)
+    skip = {".git", "node_modules"}
+    return sorted(p for p in ROOT.rglob("*.md") if not (skip & set(p.parts)))
 
 
 def needs_frontmatter(path: Path) -> bool:
@@ -175,6 +177,12 @@ def check_manifest() -> list[str]:
     for section, entry in entries:
         rel = str(entry.get("path", ""))
         manifest_paths.add(rel)
+        verified = entry.get("verified")
+        if verified not in ALLOWED_VERIFIED:
+            issues.append(
+                f"manifest ({section}): '{rel}': verified={verified!r} "
+                f"не в списке {sorted(ALLOWED_VERIFIED)}"
+            )
         target = ROOT / rel
         if not target.exists():
             issues.append(f"manifest ({section}): путь '{rel}' не существует")

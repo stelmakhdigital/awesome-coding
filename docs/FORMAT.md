@@ -25,6 +25,25 @@
 | `status` | string | `stable` \| `experimental` \| `deprecated` |
 | `updated` | date | Дата последнего содержательного обновления, `YYYY-MM-DD` |
 
+## Manifest (`index/manifest.yaml`)
+
+Каждая запись каталога:
+
+| Поле | Тип | Описание |
+|---|---|---|
+| `id` | string | Совпадает с `id` в frontmatter файла |
+| `title` | string | Совпадает с `title` в frontmatter файла |
+| `path` | string | Путь к файлу относительно корня репозитория |
+| `tags` | [string] | Теги для поиска (совпадают с frontmatter) |
+| `status` | string | Совпадает со `status` в frontmatter |
+| `verified` | string | Уровень проверки кода: `compiled` (скомпилирован/прогнан через type-check), `executed` (выполнен), `reviewed` (рецензирован, не компилировался), `none` (в записи нет кода) |
+
+Правила:
+
+- `id`, `title`, `status` обязаны совпадать с frontmatter — проверяется валидатором.
+- `verified` отражает **факт проверки**, а не обещание: «код должен компилироваться» ≠ `compiled`.
+- При повышении уровня проверки (например, `reviewed` → `compiled`) обновляйте manifest и дату `updated`.
+
 ## Структура сниппета (category: snippet)
 
 ```markdown

@@ -11,100 +11,119 @@ languages:
         path: go/rules.md
         tags: [rules, guardrails, style, errors, concurrency]
         status: stable
+        verified: none
     idioms:
       - id: go-idioms
         title: "Go Idioms"
         path: go/idioms.md
         tags: [idioms, style, patterns, stdlib]
         status: stable
+        verified: reviewed
     decisions:
       - id: go-decisions
         title: "Go Decisions"
         path: go/decisions.md
         tags: [decisions, libraries, choices, ecosystem]
         status: stable
+        verified: none
     snippets:
       - id: go-error-handling
         title: "Error handling: wrap, sentinel, errors.Is/As"
         path: go/snippets/error-handling.md
         tags: [errors, error-handling, stdlib]
         status: stable
+        verified: reviewed
       - id: go-http-server
         title: "HTTP server (stdlib, Go 1.22+)"
         path: go/snippets/http-server.md
         tags: [http, net, server, stdlib]
         status: stable
+        verified: reviewed
       - id: go-context
         title: "Context: timeout, cancellation, values"
         path: go/snippets/context.md
         tags: [context, cancellation, timeout, stdlib]
         status: stable
+        verified: reviewed
       - id: go-goroutines
         title: "Goroutines: WaitGroup, errgroup, worker pool"
         path: go/snippets/goroutines.md
         tags: [concurrency, goroutines, workers, errgroup]
         status: stable
+        verified: reviewed
       - id: go-testing
         title: "Testing: table-driven, subtests, benchmarks"
         path: go/snippets/testing.md
         tags: [testing, benchmarks, subtests, stdlib]
         status: stable
+        verified: reviewed
       - id: go-json
         title: "JSON: encoding/json/v2 (1.27+) и v1"
         path: go/snippets/json.md
         tags: [json, encoding, stdlib, v2]
         status: stable
+        verified: reviewed
       - id: go-slices-maps
         title: "Slices и Maps (stdlib, Go 1.21+)"
         path: go/snippets/slices-maps.md
         tags: [slices, maps, stdlib, collections]
         status: stable
+        verified: reviewed
       - id: go-logging
         title: "Structured logging: log/slog"
         path: go/snippets/logging.md
         tags: [slog, logging, observability, stdlib]
         status: stable
+        verified: reviewed
       - id: go-graceful-shutdown
         title: "Graceful shutdown: signal.NotifyContext"
         path: go/snippets/graceful-shutdown.md
         tags: [signals, lifecycle, shutdown, stdlib]
         status: stable
+        verified: reviewed
       - id: go-file-io
         title: "File I/O: ReadFile, streaming, temp files"
         path: go/snippets/file-io.md
         tags: [files, io, stdlib]
         status: stable
+        verified: reviewed
       - id: go-http-client
         title: "HTTP client: context, таймауты, JSON, ретраи"
         path: go/snippets/http-client.md
         tags: [http, client, context, timeout, retry, json]
         status: stable
+        verified: compiled
       - id: go-sql
         title: "SQL: database/sql + pgx (пул, ctx, транзакции, батчи)"
         path: go/snippets/sql.md
         tags: [sql, postgres, pgx, database, transactions, pool]
         status: stable
+        verified: reviewed
     patterns:
       - id: go-functional-options
         title: "Functional Options"
         path: go/patterns/functional-options.md
         tags: [design, configuration, api, options]
         status: stable
+        verified: reviewed
       - id: go-worker-pool
         title: "Worker Pool (ограниченный параллелизм)"
         path: go/patterns/worker-pool.md
         tags: [concurrency, workers, pool, errgroup]
         status: stable
+        verified: reviewed
       - id: go-repository
         title: "Repository (изоляция доступа к данным)"
         path: go/patterns/repository.md
         tags: [architecture, data, sql, interface, di]
         status: stable
+        verified: reviewed
       - id: go-http-middleware
         title: "HTTP Middleware"
         path: go/patterns/http-middleware.md
         tags: [http, middleware, server, stdlib]
         status: stable
+        verified: reviewed
   typescript:
     version: "7.0"
     rule_set:
@@ -113,44 +132,52 @@ languages:
         path: typescript/rules.md
         tags: [rules, guardrails, strict, types, style]
         status: stable
+        verified: none
     idioms:
       - id: ts-idioms
         title: TypeScript Idioms
         path: typescript/idioms.md
         tags: [idioms, style, type-narrowing, generics, discriminated-unions]
         status: stable
+        verified: compiled
     decisions:
       - id: ts-decisions
         title: TypeScript Decisions (инструменты, фреймворки)
         path: typescript/decisions.md
         tags: [decisions, tooling, build, testing, validation, choices]
         status: stable
+        verified: none
     snippets:
       - id: ts-http-client
         title: HTTP client (fetch + AbortController)
         path: typescript/snippets/http-client.md
         tags: [http, fetch, async, timeout]
         status: stable
+        verified: compiled
       - id: ts-testing
         title: "TypeScript: Testing (vitest, table-driven, async)"
         path: typescript/snippets/testing.md
         tags: [testing, vitest, unit-tests, async, mocking]
         status: stable
+        verified: compiled
       - id: ts-json
         title: "TypeScript: JSON (zod, unknown на границе)"
         path: typescript/snippets/json.md
         tags: [json, zod, validation, serialization, api]
         status: stable
+        verified: compiled
       - id: ts-async
         title: "TypeScript: async (таймауты, ретраи, лимит параллелизма)"
         path: typescript/snippets/async.md
         tags: [async, timeout, retry, abort, concurrency, promise]
         status: stable
+        verified: compiled
       - id: ts-file-io
         title: "TypeScript: файловый IO (fs/promises, атомарная запись, стримы)"
         path: typescript/snippets/file-io.md
         tags: [files, fs, promises, streams, atomic, node]
         status: stable
+        verified: executed
   javascript:
     version: "ES2025"
     rule_set:
@@ -159,39 +186,46 @@ languages:
         path: javascript/rules.md
         tags: [rules, guardrails, esm, async, style]
         status: stable
+        verified: none
     idioms:
       - id: js-idioms
         title: JavaScript Idioms
         path: javascript/idioms.md
         tags: [idioms, style, destructuring, iterators, es2025]
         status: stable
+        verified: executed
     decisions:
       - id: js-decisions
         title: JavaScript Decisions (рантайм, тесты, инструменты)
         path: javascript/decisions.md
         tags: [decisions, runtime, node, testing, tooling, choices]
         status: stable
+        verified: none
     snippets:
       - id: js-error-handling
         title: "Error handling: custom errors, timeout, global handlers"
         path: javascript/snippets/error-handling.md
         tags: [errors, async, node, timeout]
         status: stable
+        verified: executed
       - id: js-testing
         title: "JavaScript: Testing (node:test, stdlib)"
         path: javascript/snippets/testing.md
         tags: [testing, node-test, unit-tests, mocking, stdlib]
         status: stable
+        verified: executed
       - id: js-json
         title: "JavaScript: JSON (валидация, structuredClone, Date)"
         path: javascript/snippets/json.md
         tags: [json, validation, structured-clone, api]
         status: stable
+        verified: executed
       - id: js-async
         title: "JavaScript: async (таймауты, ретраи, лимит параллелизма)"
         path: javascript/snippets/async.md
         tags: [async, timeout, retry, abort, concurrency, promise]
         status: stable
+        verified: executed
   python:
     version: "3.14"
     rule_set:
@@ -200,44 +234,52 @@ languages:
         path: python/rules.md
         tags: [rules, guardrails, style, typing, errors]
         status: stable
+        verified: none
     idioms:
       - id: py-idioms
         title: Python Idioms
         path: python/idioms.md
         tags: [idioms, style, dataclass, match, walrus, contextlib]
         status: stable
+        verified: executed
     decisions:
       - id: py-decisions
         title: Python Decisions (библиотеки, фреймворки)
         path: python/decisions.md
         tags: [decisions, libraries, http, testing, web, choices]
         status: stable
+        verified: none
     snippets:
       - id: py-http-client
         title: HTTP client (httpx, sync + async)
         path: python/snippets/http-client.md
         tags: [http, httpx, async, client]
         status: stable
+        verified: executed
       - id: py-error-handling
         title: "Python: Error handling (исключения, contextlib, ретраи)"
         path: python/snippets/error-handling.md
         tags: [errors, exceptions, contextlib, retry, cleanup]
         status: stable
+        verified: executed
       - id: py-testing
         title: "Python: Testing (pytest, параметризация, фикстуры)"
         path: python/snippets/testing.md
         tags: [testing, pytest, fixtures, parametrize, unit-tests]
         status: stable
+        verified: executed
       - id: py-json
         title: "Python: JSON (pydantic, dataclasses, валидация)"
         path: python/snippets/json.md
         tags: [json, pydantic, dataclass, validation, api]
         status: stable
+        verified: executed
       - id: py-asyncio
         title: "Python: asyncio (TaskGroup, timeout, semaphore, отмена)"
         path: python/snippets/asyncio.md
         tags: [asyncio, async, concurrency, timeout, taskgroup, cancellation]
         status: stable
+        verified: executed
   c:
     version: "C23"
     rule_set:
@@ -246,39 +288,46 @@ languages:
         path: c/rules.md
         tags: [rules, guardrails, memory, safety, c23]
         status: stable
+        verified: none
     idioms:
       - id: c-idioms
         title: C Idioms (C23)
         path: c/idioms.md
         tags: [idioms, style, c23, structs, static-assert]
         status: stable
+        verified: executed
     decisions:
       - id: c-decisions
         title: C Decisions (язык, аллокатор, строки, тесты)
         path: c/decisions.md
         tags: [decisions, allocator, strings, testing, choices]
         status: stable
+        verified: none
     snippets:
       - id: c-error-handling
         title: "Error handling: коды возврата, errno, cleanup через goto"
         path: c/snippets/error-handling.md
         tags: [errors, errno, cleanup, memory]
         status: stable
+        verified: executed
       - id: c-memory
         title: "C: память (ownership, cleanup, arena)"
         path: c/snippets/memory.md
         tags: [memory, malloc, cleanup, arena, ownership]
         status: stable
+        verified: executed
       - id: c-strings
         title: "C: строки (C23 stdstring.h, builder)"
         path: c/snippets/strings.md
         tags: [strings, stdstring, cstr, buffer, builder]
         status: stable
+        verified: executed
       - id: c-testing
         title: "C: Testing (harness + assert, санитайзеры)"
         path: c/snippets/testing.md
         tags: [testing, assert, harness, sanitizers, unit-tests]
         status: stable
+        verified: executed
   bash:
     version: "5.3"
     rule_set:
@@ -287,34 +336,40 @@ languages:
         path: bash/rules.md
         tags: [rules, guardrails, strict-mode, safety, scripting]
         status: stable
+        verified: none
     idioms:
       - id: bash-idioms
         title: Bash Idioms (5.x)
         path: bash/idioms.md
         tags: [idioms, style, arrays, mapfile, functions]
         status: stable
+        verified: executed
     decisions:
       - id: bash-decisions
         title: Bash Decisions (bash vs python, инструменты)
         path: bash/decisions.md
         tags: [decisions, scripting, python, tooling, choices]
         status: stable
+        verified: none
     snippets:
       - id: bash-error-handling
         title: "Error handling: strict mode, ERR/EXIT traps"
         path: bash/snippets/error-handling.md
         tags: [errors, traps, strict-mode, cleanup]
         status: stable
+        verified: executed
       - id: bash-functions
         title: "Bash: функции (ошибки, таймауты, параллелизм)"
         path: bash/snippets/functions.md
         tags: [functions, errors, timeout, parallel, xargs]
         status: stable
+        verified: executed
       - id: bash-files
         title: "Bash: файлы (безопасность, блокировки, temp)"
         path: bash/snippets/files.md
         tags: [files, temp, flock, safety, paths]
         status: stable
+        verified: executed
   csharp:
     version: "14 (.NET 10)"
     rule_set:
@@ -323,75 +378,89 @@ languages:
         path: csharp/rules.md
         tags: [rules, guardrails, async, exceptions, nullable, di]
         status: stable
+        verified: none
     idioms:
       - id: csharp-idioms
         title: "C# Idioms"
         path: csharp/idioms.md
         tags: [idioms, style, modern-csharp, primary-ctor, records]
         status: stable
+        verified: compiled
     decisions:
       - id: csharp-decisions
         title: "C# Decisions"
         path: csharp/decisions.md
         tags: [decisions, libraries, choices, ecosystem]
         status: stable
+        verified: none
     snippets:
       - id: csharp-error-handling
         title: "Error handling: исключения, фильтры, валидация аргументов"
         path: csharp/snippets/error-handling.md
         tags: [errors, exceptions, validation, retry]
         status: stable
+        verified: compiled
       - id: csharp-async-await
         title: "Async/await: Task.WhenAll, CancellationToken"
         path: csharp/snippets/async-await.md
         tags: [async, await, task, cancellation, concurrency]
         status: stable
+        verified: compiled
       - id: csharp-collections
         title: "Collections: List, Dictionary, Span, LINQ"
         path: csharp/snippets/collections.md
         tags: [collections, linq, span, immutable]
         status: stable
+        verified: compiled
       - id: csharp-json
         title: "JSON: System.Text.Json + source generation"
         path: csharp/snippets/json.md
         tags: [json, serialization, system.text.json, source-gen]
         status: stable
+        verified: compiled
       - id: csharp-logging
         title: "Logging: Microsoft.Extensions.Logging, scopes"
         path: csharp/snippets/logging.md
         tags: [logging, structured, scopes, mext]
         status: stable
+        verified: compiled
       - id: csharp-testing
         title: "Testing: xUnit, Theory/InlineData"
         path: csharp/snippets/testing.md
         tags: [testing, xunit, unit-tests, theory]
         status: stable
+        verified: compiled
       - id: csharp-http-server
         title: "HTTP server: ASP.NET Core Minimal API (.NET 10)"
         path: csharp/snippets/http-server.md
         tags: [http, aspnet-core, minimal-api, server, validation, openapi]
         status: stable
+        verified: reviewed
       - id: csharp-http-client
         title: "HTTP client: IHttpClientFactory + resilience pipeline"
         path: csharp/snippets/http-client.md
         tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
         status: stable
+        verified: reviewed
     patterns:
       - id: csharp-functional-options
         title: "C#: Functional Options (builder)"
         path: csharp/patterns/functional-options.md
         tags: [pattern, options, builder, configuration]
         status: stable
+        verified: compiled
       - id: csharp-repository
         title: "C#: Repository"
         path: csharp/patterns/repository.md
         tags: [pattern, repository, persistence, ef-core]
         status: stable
+        verified: compiled
       - id: csharp-state-machine
         title: "C#: State Machine (явные переходы)"
         path: csharp/patterns/state-machine.md
         tags: [pattern, state-machine, domain, invariants]
         status: stable
+        verified: compiled
   unity:
     version: "6.3 LTS"
     rule_set:
@@ -400,91 +469,108 @@ languages:
         path: unity/rules.md
         tags: [rules, guardrails, performance, lifecycle, android]
         status: stable
+        verified: none
     idioms:
       - id: unity-idioms
         title: "Unity Idioms"
         path: unity/idioms.md
         tags: [idioms, lifecycle, composition, scriptableobject]
         status: stable
+        verified: reviewed
     decisions:
       - id: unity-decisions
         title: "Unity Decisions"
         path: unity/decisions.md
         tags: [decisions, urp, input, addressables, android, choices]
         status: stable
+        verified: none
     snippets:
       - id: unity-object-pooling
         title: "Object Pooling: пул часто создаваемых объектов"
         path: unity/snippets/object-pooling.md
         tags: [performance, pooling, instantiate, gc]
         status: stable
+        verified: reviewed
       - id: unity-state-machine
         title: "State Machine: FSM для игровой логики"
         path: unity/snippets/state-machine.md
         tags: [state-machine, fsm, gameplay, npc]
         status: stable
+        verified: reviewed
       - id: unity-save-system
         title: "Save System: JSON-сохранения"
         path: unity/snippets/save-system.md
         tags: [save, persistence, json, settings]
         status: stable
+        verified: reviewed
       - id: unity-input
         title: "Input: New Input System"
         path: unity/snippets/input.md
         tags: [input, input-system, gamepad, cross-platform]
         status: stable
+        verified: reviewed
       - id: unity-scene-management
         title: "Scene Management: асинхронная загрузка"
         path: unity/snippets/scene-management.md
         tags: [scenes, loading, async, addressables]
         status: stable
+        verified: reviewed
       - id: unity-android-build
         title: "Android Build: IL2CPP, AAB, ProGuard"
         path: unity/snippets/android-build.md
         tags: [android, il2cpp, aab, proguard, build]
         status: stable
+        verified: reviewed
       - id: unity-async
         title: "Async: корутины vs async/await в Unity"
         path: unity/snippets/async.md
         tags: [async, coroutines, await, task, unittask]
         status: stable
+        verified: reviewed
       - id: unity-physics
         title: "Physics: Rigidbody, коллизии, raycast, слои"
         path: unity/snippets/physics.md
         tags: [physics, rigidbody, collision, raycast, layers]
         status: stable
+        verified: reviewed
     patterns:
       - id: unity-composition
         title: "Unity: Composition (композиция компонентов)"
         path: unity/patterns/composition.md
         tags: [pattern, composition, gameobject, design]
         status: stable
+        verified: reviewed
       - id: unity-scriptable-data
         title: "Unity: Scriptable Data (данные через ScriptableObject)"
         path: unity/patterns/scriptable-data.md
         tags: [pattern, scriptableobject, data-driven, configuration]
         status: stable
+        verified: reviewed
       - id: unity-event-bus
         title: "Unity: Event Bus (типизированные события)"
         path: unity/patterns/event-bus.md
         tags: [pattern, events, decoupling, messaging]
         status: stable
+        verified: reviewed
     shaders:
       - id: unity-shader-unlit
         title: "HLSL: Unlit textured (базовый URP-шейдер)"
         path: unity/shaders/snippets/unlit-textured.md
         tags: [hlsl, shader, urp, unlit, texture]
         status: stable
+        verified: reviewed
       - id: unity-shader-dissolve
         title: "HLSL: Dissolve (эффект растворения)"
         path: unity/shaders/snippets/dissolve.md
         tags: [hlsl, shader, urp, dissolve, vfx]
         status: stable
+        verified: reviewed
       - id: unity-shader-vertex-animation
         title: "HLSL: Vertex animation (волна)"
         path: unity/shaders/snippets/vertex-animation.md
         tags: [hlsl, shader, urp, vertex, animation, grass]
         status: stable
+        verified: reviewed
   kotlin:
     version: "2.3"
     rule_set:
@@ -493,39 +579,46 @@ languages:
         path: kotlin/rules.md
         tags: [rules, guardrails, null-safety, coroutines, immutability]
         status: stable
+        verified: none
     idioms:
       - id: kotlin-idioms
         title: "Kotlin Idioms"
         path: kotlin/idioms.md
         tags: [idioms, style, data-class, sealed, extensions, when]
         status: stable
+        verified: reviewed
     decisions:
       - id: kotlin-decisions
         title: "Kotlin Decisions (Compose, DI, HTTP, БД)"
         path: kotlin/decisions.md
         tags: [decisions, compose, hilt, ktor, retrofit, room, choices]
         status: stable
+        verified: none
     snippets:
       - id: kotlin-coroutines
         title: "Kotlin: корутины, Flow, отмена"
         path: kotlin/snippets/coroutines.md
         tags: [coroutines, flow, suspend, cancellation, scope]
         status: stable
+        verified: executed
       - id: kotlin-compose
         title: "Kotlin: Jetpack Compose (базовые паттерны)"
         path: kotlin/snippets/compose.md
         tags: [compose, ui, state, viewmodel, android]
         status: stable
+        verified: reviewed
       - id: kotlin-http
         title: "Kotlin: Ktor Client (таймауты, отмена, ретраи)"
         path: kotlin/snippets/http.md
         tags: [http, ktor, client, timeout, retry]
         status: stable
+        verified: compiled
       - id: kotlin-room
         title: "Kotlin: Room (Entity, DAO, Flow, миграции)"
         path: kotlin/snippets/room.md
         tags: [room, database, android, flow, migrations, persistence]
         status: stable
+        verified: reviewed
   shared:
     version: null
     concepts:
@@ -534,51 +627,61 @@ languages:
         path: shared/error-handling.md
         tags: [errors, error-handling, principles, cross-language]
         status: stable
+        verified: none
       - id: shared-concurrency
         title: "Shared: Concurrency (кросс-языковые принципы)"
         path: shared/concurrency.md
         tags: [concurrency, parallelism, cancellation, principles]
         status: stable
+        verified: none
       - id: shared-security
         title: "Shared: Security (кросс-языковые принципы)"
         path: shared/security.md
         tags: [security, owasp, secrets, injection, tls]
         status: stable
+        verified: none
       - id: shared-testing
         title: "Shared: Testing (кросс-языковые принципы)"
         path: shared/testing.md
         tags: [testing, unit, integration, e2e, strategy]
         status: stable
+        verified: none
       - id: shared-api-design
         title: "Shared: API design (REST/gRPC/GraphQL контракты)"
         path: shared/api-design.md
         tags: [api, rest, grpc, graphql, contracts, http]
         status: stable
+        verified: none
       - id: shared-observability
         title: "Shared: Observability (логи, метрики, трейсинг)"
         path: shared/observability.md
         tags: [observability, logging, metrics, tracing, opentelemetry]
         status: stable
+        verified: none
       - id: shared-time-dates
         title: "Shared: Time and dates (кросс-языковые принципы)"
         path: shared/time-and-dates.md
         tags: [time, dates, timezone, utc, duration]
         status: stable
+        verified: none
       - id: shared-configuration
         title: "Shared: Configuration (кросс-языковые принципы)"
         path: shared/configuration.md
         tags: [configuration, env, 12-factor, secrets, validation]
         status: stable
+        verified: none
       - id: shared-documentation
         title: "Shared: Documentation (документирование проекта, ADR, agent-first)"
         path: shared/documentation.md
         tags: [documentation, readme, adr, agent-first, docs, structure]
         status: stable
+        verified: none
       - id: shared-mermaid
         title: "Shared: Mermaid (диаграммы и схемы в Markdown)"
         path: shared/mermaid.md
         tags: [mermaid, diagrams, flowchart, sequence, c4, documentation]
         status: stable
+        verified: none
 
 architecture:
   version: null
@@ -588,6 +691,7 @@ architecture:
       path: architecture/decisions.md
       tags: [architecture, decisions, ddd, choices, over-engineering]
       status: stable
+      verified: none
   ddd:
     overview:
       - id: ddd-overview
@@ -595,89 +699,106 @@ architecture:
         path: architecture/ddd/README.md
         tags: [ddd, domain, architecture, over-engineering]
         status: stable
+        verified: none
     tactical:
       - id: ddd-entity
         title: "DDD: Entity"
         path: architecture/ddd/tactical/entity.md
         tags: [ddd, entity, identity, domain, go]
         status: stable
+        verified: reviewed
       - id: ddd-value-object
         title: "DDD: Value Object"
         path: architecture/ddd/tactical/value-object.md
         tags: [ddd, value-object, immutability, domain, go]
         status: stable
+        verified: reviewed
       - id: ddd-aggregate
         title: "DDD: Aggregate"
         path: architecture/ddd/tactical/aggregate.md
         tags: [ddd, aggregate, invariants, consistency, go]
         status: stable
+        verified: reviewed
       - id: ddd-domain-service
         title: "DDD: Domain Service"
         path: architecture/ddd/tactical/domain-service.md
         tags: [ddd, domain-service, service, go]
         status: stable
+        verified: reviewed
       - id: ddd-domain-event
         title: "DDD: Domain Event"
         path: architecture/ddd/tactical/domain-event.md
         tags: [ddd, domain-event, events, go]
         status: stable
+        verified: reviewed
       - id: ddd-repository
         title: "DDD: Repository"
         path: architecture/ddd/tactical/repository.md
         tags: [ddd, repository, persistence, go]
         status: stable
+        verified: reviewed
     strategic:
       - id: ddd-bounded-context
         title: "DDD: Bounded Context"
         path: architecture/ddd/strategic/bounded-context.md
         tags: [ddd, bounded-context, strategic, boundaries, modules]
         status: stable
+        verified: reviewed
       - id: ddd-ubiquitous-language
         title: "DDD: Ubiquitous Language"
         path: architecture/ddd/strategic/ubiquitous-language.md
         tags: [ddd, ubiquitous-language, naming, domain, communication]
         status: stable
+        verified: none
       - id: ddd-context-mapping
         title: "DDD: Context Mapping"
         path: architecture/ddd/strategic/context-mapping.md
         tags: [ddd, context-mapping, integration, acl, boundaries]
         status: stable
+        verified: reviewed
   patterns:
     - id: arch-layered
       title: "Архитектура: Layered (слоистая)"
       path: architecture/patterns/layered.md
       tags: [architecture, layered, handlers, services, go]
       status: stable
+      verified: reviewed
     - id: arch-hexagonal
       title: "Архитектура: Hexagonal (Ports & Adapters)"
       path: architecture/patterns/hexagonal.md
       tags: [architecture, hexagonal, ports-adapters, clean, go]
       status: stable
+      verified: reviewed
     - id: arch-modular-monolith
       title: "Архитектура: Modular Monolith"
       path: architecture/patterns/modular-monolith.md
       tags: [architecture, modular-monolith, modules, boundaries, go]
       status: stable
+      verified: reviewed
     - id: arch-microservices
       title: "Архитектура: Microservices"
       path: architecture/patterns/microservices.md
       tags: [architecture, microservices, distributed, saga, go]
       status: stable
+      verified: reviewed
     - id: arch-cqrs
       title: "Архитектура: CQRS"
       path: architecture/patterns/cqrs.md
       tags: [architecture, cqrs, read-write, projections, advanced, go]
       status: experimental
+      verified: reviewed
     - id: arch-event-sourcing
       title: "Архитектура: Event Sourcing"
       path: architecture/patterns/event-sourcing.md
       tags: [architecture, event-sourcing, audit, projections, advanced, go]
       status: experimental
+      verified: reviewed
     - id: arch-event-driven
       title: "Архитектура: Event-Driven"
       path: architecture/patterns/event-driven.md
       tags: [architecture, event-driven, outbox, messaging, advanced, go]
       status: experimental
+      verified: reviewed
 
 database:
   version: "18 (PostgreSQL) / 8 (Redis)"
@@ -687,38 +808,45 @@ database:
       path: database/rules.md
       tags: [rules, sql, postgres, indexes, transactions, migrations]
       status: stable
+      verified: none
   decisions:
     - id: database-decisions
       title: "Database Decisions (SQL/NoSQL, ORM, кэширование)"
       path: database/decisions.md
       tags: [decisions, postgres, nosql, orm, redis, caching]
       status: stable
+      verified: none
   snippets:
     - id: database-postgres-core
       title: "PostgreSQL: индексы, EXPLAIN, пулы соединений"
       path: database/snippets/postgres-core.md
       tags: [postgres, indexes, explain, pooling, performance]
       status: stable
+      verified: executed
     - id: database-transactions
       title: "PostgreSQL: транзакции, изоляция, advisory locks"
       path: database/snippets/transactions.md
       tags: [postgres, transactions, isolation, savepoint, locks]
       status: stable
+      verified: executed
     - id: database-migrations
       title: "Миграции: expand-contract, zero-downtime"
       path: database/snippets/migrations.md
       tags: [migrations, schema, expand-contract, goose, zero-downtime]
       status: stable
+      verified: executed
     - id: database-n-plus-one
       title: "N+1: детект и лечение"
       path: database/snippets/n-plus-one.md
       tags: [n-plus-one, performance, queries, batching]
       status: stable
+      verified: executed
     - id: database-redis
       title: "Redis: кэширование, структуры данных, TTL"
       path: database/snippets/redis.md
       tags: [redis, caching, ttl, data-structures, streams]
       status: stable
+      verified: executed
 
 messaging:
   version: "4.3 (Kafka) / 4.3 (RabbitMQ)"
@@ -728,17 +856,20 @@ messaging:
       path: messaging/decisions.md
       tags: [decisions, kafka, rabbitmq, redis-streams, broker, choices]
       status: stable
+      verified: none
   snippets:
     - id: messaging-kafka
       title: "Kafka: producer, consumer, consumer groups"
       path: messaging/snippets/kafka.md
       tags: [kafka, producer, consumer, consumer-group, exactly-once]
       status: stable
+      verified: compiled
     - id: messaging-rabbitmq
       title: "RabbitMQ: queues, exchanges, ack/nack, DLQ"
       path: messaging/snippets/rabbitmq.md
       tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
       status: stable
+      verified: compiled
 
 cicd:
   version: null
@@ -748,18 +879,22 @@ cicd:
       path: cicd/github-actions.md
       tags: [cicd, github-actions, workflows, matrix, caching, secrets]
       status: stable
+      verified: none
     - id: cicd-gitlab-ci
       title: "GitLab CI: паттерны"
       path: cicd/gitlab-ci.md
       tags: [cicd, gitlab-ci, stages, caching, artifacts]
       status: stable
+      verified: none
     - id: cicd-docker
       title: "Docker: Dockerfile и compose (best practices)"
       path: cicd/docker.md
       tags: [docker, dockerfile, compose, multi-stage, layers]
       status: stable
+      verified: none
     - id: cicd-k8s
       title: "Kubernetes: манифесты и паттерны"
       path: cicd/k8s.md
       tags: [kubernetes, k8s, deployment, probes, hpa, secrets]
       status: stable
+      verified: none

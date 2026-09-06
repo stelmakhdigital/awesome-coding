@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Validate (frontmatter + manifest + links)
+        run: make validate
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install mermaid validator deps
+        working-directory: tools
+        run: npm install --no-audit --no-fund
+
+      - name: Validate mermaid blocks
+        run: make validate-mermaid
