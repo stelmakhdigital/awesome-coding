@@ -1,6 +1,6 @@
 ---
 id: csharp-collections
-title: Collections: List, Dictionary, Span, LINQ
+title: "Collections: List, Dictionary, Span, LINQ"
 lang: csharp
 min_version: "10"
 category: snippet

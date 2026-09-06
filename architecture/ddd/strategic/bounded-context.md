@@ -1,6 +1,6 @@
 ---
 id: ddd-bounded-context
-title: DDD: Bounded Context
+title: "DDD: Bounded Context"
 lang: shared
 min_version: "n/a"
 category: concept

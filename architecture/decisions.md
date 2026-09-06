@@ -1,6 +1,6 @@
 ---
 id: arch-decisions
-title: Архитектура: таблицы решений
+title: "Архитектура: таблицы решений"
 lang: shared
 min_version: "n/a"
 category: decisions

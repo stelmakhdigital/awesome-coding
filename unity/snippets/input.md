@@ -1,6 +1,6 @@
 ---
 id: unity-input
-title: Input: New Input System
+title: "Input: New Input System"
 lang: unity
 min_version: "6.3"
 category: snippet

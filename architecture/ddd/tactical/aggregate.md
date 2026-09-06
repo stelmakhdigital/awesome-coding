@@ -1,6 +1,6 @@
 ---
 id: ddd-aggregate
-title: DDD: Aggregate
+title: "DDD: Aggregate"
 lang: shared
 min_version: "1.21"
 category: pattern

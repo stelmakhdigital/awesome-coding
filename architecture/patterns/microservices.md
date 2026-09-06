@@ -1,6 +1,6 @@
 ---
 id: arch-microservices
-title: Архитектура: Microservices
+title: "Архитектура: Microservices"
 lang: shared
 min_version: "1.21"
 category: pattern

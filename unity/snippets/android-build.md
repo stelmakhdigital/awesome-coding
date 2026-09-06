@@ -1,6 +1,6 @@
 ---
 id: unity-android-build
-title: Android Build: IL2CPP, AAB, ProGuard
+title: "Android Build: IL2CPP, AAB, ProGuard"
 lang: unity
 min_version: "6.3"
 category: snippet

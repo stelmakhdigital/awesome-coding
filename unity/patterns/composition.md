@@ -1,6 +1,6 @@
 ---
 id: unity-composition
-title: Unity: Composition (композиция компонентов)
+title: "Unity: Composition (композиция компонентов)"
 lang: unity
 min_version: "6.3"
 category: pattern

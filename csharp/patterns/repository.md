@@ -1,6 +1,6 @@
 ---
 id: csharp-repository
-title: C#: Repository
+title: "C#: Repository"
 lang: csharp
 min_version: "10"
 category: pattern

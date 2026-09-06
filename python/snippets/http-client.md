@@ -72,4 +72,4 @@ async def fetch_items() -> list[dict[str, object]]:
 
 ## Related
 
-- [decisions.md](../decisions.md) (когда появится: httpx vs requests)
+- [shared/api-design.md](../../shared/api-design.md) — контракты API (REST/gRPC/GraphQL)

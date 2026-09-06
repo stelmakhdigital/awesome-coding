@@ -1,6 +1,6 @@
 ---
 id: go-file-io
-title: File I/O: ReadFile, streaming, temp files
+title: "File I/O: ReadFile, streaming, temp files"
 lang: go
 min_version: "1.21"
 category: snippet

@@ -1,6 +1,6 @@
 ---
 id: arch-modular-monolith
-title: Архитектура: Modular Monolith
+title: "Архитектура: Modular Monolith"
 lang: shared
 min_version: "1.21"
 category: pattern

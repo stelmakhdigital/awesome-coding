@@ -1,6 +1,6 @@
 ---
 id: go-graceful-shutdown
-title: Graceful shutdown: signal.NotifyContext
+title: "Graceful shutdown: signal.NotifyContext"
 lang: go
 min_version: "1.21"
 category: snippet

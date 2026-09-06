@@ -1,6 +1,6 @@
 ---
 id: c-error-handling
-title: Error handling: коды возврата, errno, cleanup через goto
+title: "Error handling: коды возврата, errno, cleanup через goto"
 lang: c
 min_version: "C23"
 category: snippet
@@ -105,4 +105,4 @@ int main(void)
 
 ## Related
 
-- [../shared/error-handling.md](../shared/error-handling.md) (когда появится)
+- [shared/error-handling.md](../../shared/error-handling.md) — кросс-языковые принципы

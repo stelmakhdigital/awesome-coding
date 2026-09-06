@@ -1,6 +1,6 @@
 ---
 id: csharp-testing
-title: Testing: xUnit, Theory/InlineData
+title: "Testing: xUnit, Theory/InlineData"
 lang: csharp
 min_version: "10"
 category: snippet

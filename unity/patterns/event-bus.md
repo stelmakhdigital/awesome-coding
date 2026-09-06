@@ -1,6 +1,6 @@
 ---
 id: unity-event-bus
-title: Unity: Event Bus (типизированные события)
+title: "Unity: Event Bus (типизированные события)"
 lang: unity
 min_version: "6.3"
 category: pattern

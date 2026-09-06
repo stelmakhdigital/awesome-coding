@@ -1,6 +1,6 @@
 ---
 id: unity-scriptable-data
-title: Unity: Scriptable Data (данные через ScriptableObject)
+title: "Unity: Scriptable Data (данные через ScriptableObject)"
 lang: unity
 min_version: "6.3"
 category: pattern

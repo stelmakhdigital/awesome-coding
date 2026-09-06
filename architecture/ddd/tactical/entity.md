@@ -1,6 +1,6 @@
 ---
 id: ddd-entity
-title: DDD: Entity
+title: "DDD: Entity"
 lang: shared
 min_version: "1.21"
 category: pattern

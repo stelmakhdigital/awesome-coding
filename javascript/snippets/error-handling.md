@@ -1,6 +1,6 @@
 ---
 id: js-error-handling
-title: Error handling: custom errors, timeout, global handlers
+title: "Error handling: custom errors, timeout, global handlers"
 lang: javascript
 min_version: "ES2024"
 category: snippet
@@ -93,4 +93,4 @@ try {
 
 ## Related
 
-- [../typescript/snippets/http-client.md](../typescript/snippets/http-client.md)
+- [typescript/snippets/http-client.md](../../typescript/snippets/http-client.md)

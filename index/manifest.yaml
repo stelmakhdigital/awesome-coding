@@ -269,9 +269,101 @@ languages:
         path: unity/patterns/event-bus.md
         tags: [pattern, events, decoupling, messaging]
         status: stable
+    shaders:
+      - id: unity-shader-unlit
+        title: "HLSL: Unlit textured (базовый URP-шейдер)"
+        path: unity/shaders/snippets/unlit-textured.md
+        tags: [hlsl, shader, urp, unlit, texture]
+        status: stable
+      - id: unity-shader-dissolve
+        title: "HLSL: Dissolve (эффект растворения)"
+        path: unity/shaders/snippets/dissolve.md
+        tags: [hlsl, shader, urp, dissolve, vfx]
+        status: stable
+      - id: unity-shader-vertex-animation
+        title: "HLSL: Vertex animation (волна)"
+        path: unity/shaders/snippets/vertex-animation.md
+        tags: [hlsl, shader, urp, vertex, animation, grass]
+        status: stable
+  kotlin:
+    version: "2.3"
+    rule_set:
+      - id: kotlin-rules
+        title: "Kotlin Rules"
+        path: kotlin/rules.md
+        tags: [rules, guardrails, null-safety, coroutines, immutability]
+        status: stable
+    idioms:
+      - id: kotlin-idioms
+        title: "Kotlin Idioms"
+        path: kotlin/idioms.md
+        tags: [idioms, style, data-class, sealed, extensions, when]
+        status: stable
+    decisions:
+      - id: kotlin-decisions
+        title: "Kotlin Decisions (Compose, DI, HTTP, БД)"
+        path: kotlin/decisions.md
+        tags: [decisions, compose, hilt, ktor, retrofit, room, choices]
+        status: stable
+    snippets:
+      - id: kotlin-coroutines
+        title: "Kotlin: корутины, Flow, отмена"
+        path: kotlin/snippets/coroutines.md
+        tags: [coroutines, flow, suspend, cancellation, scope]
+        status: stable
+      - id: kotlin-compose
+        title: "Kotlin: Jetpack Compose (базовые паттерны)"
+        path: kotlin/snippets/compose.md
+        tags: [compose, ui, state, viewmodel, android]
+        status: stable
+      - id: kotlin-http
+        title: "Kotlin: Ktor Client (таймауты, отмена, ретраи)"
+        path: kotlin/snippets/http.md
+        tags: [http, ktor, client, timeout, retry]
+        status: stable
   shared:
     version: null
-    concepts: [] # запланировано: см. shared/README.md
+    concepts:
+      - id: shared-error-handling
+        title: "Shared: Error handling (кросс-языковые принципы)"
+        path: shared/error-handling.md
+        tags: [errors, error-handling, principles, cross-language]
+        status: stable
+      - id: shared-concurrency
+        title: "Shared: Concurrency (кросс-языковые принципы)"
+        path: shared/concurrency.md
+        tags: [concurrency, parallelism, cancellation, principles]
+        status: stable
+      - id: shared-security
+        title: "Shared: Security (кросс-языковые принципы)"
+        path: shared/security.md
+        tags: [security, owasp, secrets, injection, tls]
+        status: stable
+      - id: shared-testing
+        title: "Shared: Testing (кросс-языковые принципы)"
+        path: shared/testing.md
+        tags: [testing, unit, integration, e2e, strategy]
+        status: stable
+      - id: shared-api-design
+        title: "Shared: API design (REST/gRPC/GraphQL контракты)"
+        path: shared/api-design.md
+        tags: [api, rest, grpc, graphql, contracts, http]
+        status: stable
+      - id: shared-observability
+        title: "Shared: Observability (логи, метрики, трейсинг)"
+        path: shared/observability.md
+        tags: [observability, logging, metrics, tracing, opentelemetry]
+        status: stable
+      - id: shared-time-dates
+        title: "Shared: Time and dates (кросс-языковые принципы)"
+        path: shared/time-and-dates.md
+        tags: [time, dates, timezone, utc, duration]
+        status: stable
+      - id: shared-configuration
+        title: "Shared: Configuration (кросс-языковые принципы)"
+        path: shared/configuration.md
+        tags: [configuration, env, 12-factor, secrets, validation]
+        status: stable
 
 architecture:
   version: null
@@ -371,3 +463,88 @@ architecture:
       path: architecture/patterns/event-driven.md
       tags: [architecture, event-driven, outbox, messaging, advanced, go]
       status: experimental
+
+database:
+  version: "18 (PostgreSQL) / 8 (Redis)"
+  rule_set:
+    - id: database-rules
+      title: "Database Rules (SQL/PostgreSQL)"
+      path: database/rules.md
+      tags: [rules, sql, postgres, indexes, transactions, migrations]
+      status: stable
+  decisions:
+    - id: database-decisions
+      title: "Database Decisions (SQL/NoSQL, ORM, кэширование)"
+      path: database/decisions.md
+      tags: [decisions, postgres, nosql, orm, redis, caching]
+      status: stable
+  snippets:
+    - id: database-postgres-core
+      title: "PostgreSQL: индексы, EXPLAIN, пулы соединений"
+      path: database/snippets/postgres-core.md
+      tags: [postgres, indexes, explain, pooling, performance]
+      status: stable
+    - id: database-transactions
+      title: "PostgreSQL: транзакции, изоляция, advisory locks"
+      path: database/snippets/transactions.md
+      tags: [postgres, transactions, isolation, savepoint, locks]
+      status: stable
+    - id: database-migrations
+      title: "Миграции: expand-contract, zero-downtime"
+      path: database/snippets/migrations.md
+      tags: [migrations, schema, expand-contract, goose, zero-downtime]
+      status: stable
+    - id: database-n-plus-one
+      title: "N+1: детект и лечение"
+      path: database/snippets/n-plus-one.md
+      tags: [n-plus-one, performance, queries, batching]
+      status: stable
+    - id: database-redis
+      title: "Redis: кэширование, структуры данных, TTL"
+      path: database/snippets/redis.md
+      tags: [redis, caching, ttl, data-structures, streams]
+      status: stable
+
+messaging:
+  version: "4.3 (Kafka) / 4.3 (RabbitMQ)"
+  decisions:
+    - id: messaging-decisions
+      title: "Messaging Decisions (Kafka vs RabbitMQ vs Redis Streams)"
+      path: messaging/decisions.md
+      tags: [decisions, kafka, rabbitmq, redis-streams, broker, choices]
+      status: stable
+  snippets:
+    - id: messaging-kafka
+      title: "Kafka: producer, consumer, consumer groups"
+      path: messaging/snippets/kafka.md
+      tags: [kafka, producer, consumer, consumer-group, exactly-once]
+      status: stable
+    - id: messaging-rabbitmq
+      title: "RabbitMQ: queues, exchanges, ack/nack, DLQ"
+      path: messaging/snippets/rabbitmq.md
+      tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
+      status: stable
+
+cicd:
+  version: null
+  snippets:
+    - id: cicd-github-actions
+      title: "GitHub Actions: паттерны"
+      path: cicd/github-actions.md
+      tags: [cicd, github-actions, workflows, matrix, caching, secrets]
+      status: stable
+    - id: cicd-gitlab-ci
+      title: "GitLab CI: паттерны"
+      path: cicd/gitlab-ci.md
+      tags: [cicd, gitlab-ci, stages, caching, artifacts]
+      status: stable
+    - id: cicd-docker
+      title: "Docker: Dockerfile и compose (best practices)"
+      path: cicd/docker.md
+      tags: [docker, dockerfile, compose, multi-stage, layers]
+      status: stable
+    - id: cicd-k8s
+      title: "Kubernetes: манифесты и паттерны"
+      path: cicd/k8s.md
+      tags: [kubernetes, k8s, deployment, probes, hpa, secrets]
+      status: stable

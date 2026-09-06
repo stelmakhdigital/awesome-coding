@@ -1,6 +1,6 @@
 ---
 id: go-goroutines
-title: Goroutines: WaitGroup, errgroup, worker pool
+title: "Goroutines: WaitGroup, errgroup, worker pool"
 lang: go
 min_version: "1.20"
 category: snippet

@@ -1,6 +1,6 @@
 ---
 id: csharp-state-machine
-title: C#: State Machine (явные переходы)
+title: "C#: State Machine (явные переходы)"
 lang: csharp
 min_version: "10"
 category: pattern

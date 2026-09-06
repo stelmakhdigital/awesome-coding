@@ -1,6 +1,6 @@
 ---
 id: go-error-handling
-title: Error handling: wrap, sentinel, errors.Is/As
+title: "Error handling: wrap, sentinel, errors.Is/As"
 lang: go
 min_version: "1.20"
 category: snippet

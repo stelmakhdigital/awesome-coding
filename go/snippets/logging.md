@@ -1,6 +1,6 @@
 ---
 id: go-logging
-title: Structured logging: log/slog
+title: "Structured logging: log/slog"
 lang: go
 min_version: "1.21"
 category: snippet

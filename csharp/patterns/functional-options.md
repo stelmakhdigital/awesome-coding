@@ -1,6 +1,6 @@
 ---
 id: csharp-functional-options
-title: C#: Functional Options (builder)
+title: "C#: Functional Options (builder)"
 lang: csharp
 min_version: "10"
 category: pattern

@@ -1,6 +1,6 @@
 ---
 id: ddd-value-object
-title: DDD: Value Object
+title: "DDD: Value Object"
 lang: shared
 min_version: "1.21"
 category: pattern

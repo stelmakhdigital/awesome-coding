@@ -1,6 +1,6 @@
 ---
 id: ddd-ubiquitous-language
-title: DDD: Ubiquitous Language
+title: "DDD: Ubiquitous Language"
 lang: shared
 min_version: "n/a"
 category: concept

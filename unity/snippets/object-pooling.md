@@ -1,6 +1,6 @@
 ---
 id: unity-object-pooling
-title: Object Pooling: пул часто создаваемых объектов
+title: "Object Pooling: пул часто создаваемых объектов"
 lang: unity
 min_version: "6.3"
 category: snippet

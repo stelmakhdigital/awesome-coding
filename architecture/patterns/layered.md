@@ -1,6 +1,6 @@
 ---
 id: arch-layered
-title: Архитектура: Layered (слоистая)
+title: "Архитектура: Layered (слоистая)"
 lang: shared
 min_version: "1.21"
 category: pattern

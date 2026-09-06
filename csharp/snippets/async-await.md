@@ -1,6 +1,6 @@
 ---
 id: csharp-async-await
-title: Async/await: Task.WhenAll, CancellationToken
+title: "Async/await: Task.WhenAll, CancellationToken"
 lang: csharp
 min_version: "10"
 category: snippet

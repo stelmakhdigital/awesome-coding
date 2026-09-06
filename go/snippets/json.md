@@ -1,6 +1,6 @@
 ---
 id: go-json
-title: JSON: encoding/json/v2 (1.27+) и v1
+title: "JSON: encoding/json/v2 (1.27+) и v1"
 lang: go
 min_version: "1.21"
 category: snippet

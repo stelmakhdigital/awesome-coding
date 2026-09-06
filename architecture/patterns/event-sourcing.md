@@ -1,6 +1,6 @@
 ---
 id: arch-event-sourcing
-title: Архитектура: Event Sourcing
+title: "Архитектура: Event Sourcing"
 lang: shared
 min_version: "1.21"
 category: pattern

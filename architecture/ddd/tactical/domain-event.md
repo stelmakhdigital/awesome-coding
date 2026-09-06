@@ -1,6 +1,6 @@
 ---
 id: ddd-domain-event
-title: DDD: Domain Event
+title: "DDD: Domain Event"
 lang: shared
 min_version: "1.21"
 category: pattern

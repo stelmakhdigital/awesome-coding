@@ -95,4 +95,4 @@ async function main(): Promise<void> {
 
 ## Related
 
-- [../javascript/snippets/error-handling.md](../javascript/snippets/error-handling.md) — общие async-идиомы JS
+- [javascript/snippets/error-handling.md](../../javascript/snippets/error-handling.md) — общие async-идиомы JS

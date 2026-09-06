@@ -1,6 +1,6 @@
 ---
 id: go-context
-title: Context: timeout, cancellation, values
+title: "Context: timeout, cancellation, values"
 lang: go
 min_version: "1.21"
 category: snippet

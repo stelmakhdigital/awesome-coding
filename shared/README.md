@@ -1,17 +1,25 @@
 # Shared — кросс-языковые концепции
 
-Языконезависимые концепции, которые применяются ко всем языкам.
-Каждая запись — `category: concept`, `lang: shared`.
+Языконезависимые принципы: одинаковые правила для Go, TS/JS, Python, C, Bash, C#, Kotlin, Unity.
+Каждая запись: принципы (без языка) → ✅/❌ → идиомы по языкам → пример (Go — референсный язык).
 
-## Запланировано
+## Записи
 
-| ID | Запись | О чём |
-|---|---|---|
-| `shared-error-handling` | `error-handling.md` | Философия обработки ошибок: fail-fast, wrap vs swallow, кастомные типы |
-| `shared-concurrency` | `concurrency.md` | Модели конкурентности: threads, async/await, actor'ы, message passing |
-| `shared-security` | `security.md` | OWASP-базовые правила: injection, secrets, TLS, зависимости |
-| `shared-testing` | `testing.md` | Стратегии тестирования: unit/integration/e2e, property-based, TDD |
-| `shared-observability` | `observability.md` | Логирование, метрики, трейсинг: что и где собирать |
-| `shared-api-design` | `api-design.md` | REST/HTTP-конвенции: версионирование, ошибки, пагинация |
+| Концепция | Файл |
+|---|---|
+| Error handling | [error-handling.md](error-handling.md) |
+| Concurrency | [concurrency.md](concurrency.md) |
+| Security | [security.md](security.md) |
+| Testing | [testing.md](testing.md) |
+| API design (REST/gRPC/GraphQL) | [api-design.md](api-design.md) |
+| Observability | [observability.md](observability.md) |
+| Time and dates | [time-and-dates.md](time-and-dates.md) |
+| Configuration | [configuration.md](configuration.md) |
+
+## Как использовать
+
+1. Принцип есть в `shared/` — применяйте его в любом языке.
+2. Языковые детали — в `<lang>/rules.md` и `<lang>/idioms.md`.
+3. Конфликт: язык-специфика (`<lang>/`) важнее `shared/`, если это явно указано в записи.
 
 Формат записей — [../docs/FORMAT.md](../docs/FORMAT.md).

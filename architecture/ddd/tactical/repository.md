@@ -1,6 +1,6 @@
 ---
 id: ddd-repository
-title: DDD: Repository
+title: "DDD: Repository"
 lang: shared
 min_version: "1.21"
 category: pattern

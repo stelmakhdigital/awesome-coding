@@ -1,6 +1,6 @@
 ---
 id: csharp-logging
-title: Logging: Microsoft.Extensions.Logging, scopes
+title: "Logging: Microsoft.Extensions.Logging, scopes"
 lang: csharp
 min_version: "10"
 category: snippet

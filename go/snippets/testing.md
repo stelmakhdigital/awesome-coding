@@ -1,6 +1,6 @@
 ---
 id: go-testing
-title: Testing: table-driven, subtests, benchmarks
+title: "Testing: table-driven, subtests, benchmarks"
 lang: go
 min_version: "1.21"
 category: snippet

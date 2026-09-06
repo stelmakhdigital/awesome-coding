@@ -1,6 +1,6 @@
 ---
 id: arch-event-driven
-title: Архитектура: Event-Driven
+title: "Архитектура: Event-Driven"
 lang: shared
 min_version: "1.21"
 category: pattern

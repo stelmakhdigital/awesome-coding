@@ -1,6 +1,6 @@
 ---
 id: bash-error-handling
-title: Error handling: strict mode, ERR/EXIT traps
+title: "Error handling: strict mode, ERR/EXIT traps"
 lang: bash
 min_version: "5.2"
 category: snippet
@@ -76,4 +76,4 @@ main "$@"
 
 ## Related
 
-- [../shared/error-handling.md](../shared/error-handling.md) (когда появится)
+- [shared/error-handling.md](../../shared/error-handling.md) — кросс-языковые принципы

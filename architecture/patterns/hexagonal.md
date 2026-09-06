@@ -1,6 +1,6 @@
 ---
 id: arch-hexagonal
-title: Архитектура: Hexagonal (Ports & Adapters)
+title: "Архитектура: Hexagonal (Ports & Adapters)"
 lang: shared
 min_version: "1.21"
 category: pattern

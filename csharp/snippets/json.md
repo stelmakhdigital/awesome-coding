@@ -1,6 +1,6 @@
 ---
 id: csharp-json
-title: JSON: System.Text.Json + source generation
+title: "JSON: System.Text.Json + source generation"
 lang: csharp
 min_version: "10"
 category: snippet

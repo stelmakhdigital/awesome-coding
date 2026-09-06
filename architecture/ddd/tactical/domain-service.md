@@ -1,6 +1,6 @@
 ---
 id: ddd-domain-service
-title: DDD: Domain Service
+title: "DDD: Domain Service"
 lang: shared
 min_version: "1.21"
 category: pattern

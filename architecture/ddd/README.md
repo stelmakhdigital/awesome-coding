@@ -1,6 +1,6 @@
 ---
 id: ddd-overview
-title: DDD: когда уместен
+title: "DDD: когда уместен"
 lang: shared
 min_version: "n/a"
 category: concept

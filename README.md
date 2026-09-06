@@ -1,7 +1,9 @@
 # awesome-coding
 
 Библиотека сниппетов, паттернов и правил для **кодинг-агентов** (и людей).
-Структурирована по языкам: **Go, TypeScript, JavaScript, Python, C, Bash, C#** + раздел **Unity** (кроссплатформенные и Android-игры).
+Структурирована по языкам: **Go, TypeScript, JavaScript, Python, C, Bash, C#, Kotlin** +
+разделы **Unity** (кроссплатформенные и Android-игры, HLSL), **shared** (кросс-языковые принципы),
+**database** (PostgreSQL, Redis), **messaging** (Kafka, RabbitMQ), **cicd** (GitHub/GitLab, Docker, k8s).
 
 ## Почему agent-first
 
@@ -18,6 +20,9 @@
 ```
 awesome-coding/
 ├── AGENTS.md                  # точка входа для агента (роутер)
+├── Makefile                   # make validate — валидация репо
+├── tools/
+│   └── validate.py            # валидатор: frontmatter, manifest, ссылки
 ├── docs/
 │   ├── FORMAT.md              # спецификация формата записей
 │   └── CONTRIBUTING.md
@@ -40,13 +45,18 @@ awesome-coding/
 ├── c/
 ├── bash/
 ├── csharp/                    # .NET 10 / C# 14
+├── kotlin/                    # Kotlin 2.3 (JVM/Android)
 ├── unity/                     # Unity 6.3 LTS: кроссплатформа + Android
-└── shared/                    # кросс-языковые концепции
+│   └── shaders/               # HLSL (URP)
+├── shared/                    # кросс-языковые концепции (8 тем)
+├── database/                  # PostgreSQL 18 + Redis 8
+├── messaging/                 # Kafka 4.3, RabbitMQ 4.3
+└── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes
 ```
 
-## Версии языков (закреплено и проверено на 2026-09-06)
+## Версии (закреплено и проверено на 2026-09-06)
 
-| Язык | Версия | Fallback |
+| Технология | Версия | Fallback |
 |---|---|---|
 | Go | 1.27 | 1.26 |
 | TypeScript | 7.0 | 6.x |
@@ -55,7 +65,12 @@ awesome-coding/
 | C | C23 (ISO 9899:2024) | C17 |
 | Bash | 5.3 | 5.2 |
 | C# | .NET 10 (LTS) / C# 14 | .NET 9 / C# 13 |
+| Kotlin | 2.3 | 2.2 |
 | Unity | 6.3 LTS (6000.3.x) | 6.0 LTS |
+| PostgreSQL | 18 (18.6) | 17 |
+| Redis | 8 (8.10.1) | 8.0 |
+| Kafka | 4.3 (4.3.1) | 4.2 |
+| RabbitMQ | 4.3 (4.3.5) | 4.0 |
 
 ## Для агентов
 
@@ -65,6 +80,7 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+- Валидация: `make validate` (frontmatter, manifest, ссылки)
 
 ## Статус разделов
 
@@ -72,10 +88,14 @@ awesome-coding/
 |---|---|
 | `go/` | ядро: snippets, patterns, rules, idioms, decisions |
 | `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
-| `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14) |
-| `unity/` | полный: snippets, patterns, rules, idioms, decisions (6.3 LTS, Android) |
+| `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14, код компилируется) |
+| `unity/` | полный: snippets, patterns, rules, idioms, decisions + HLSL-шейдеры (6.3 LTS, Android) |
+| `kotlin/` | полный: rules, idioms, decisions, 3 сниппета (2.3, JVM/Android) |
+| `shared/` | полный: 8 кросс-языковых концепций |
+| `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов) |
+| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 2 сниппета) |
+| `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes |
 | `typescript/`, `javascript/`, `python/`, `c/`, `bash/` | каркас + эталонный сниппет |
-| `shared/` | запланировано |
 
 ## License
 

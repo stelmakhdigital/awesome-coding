@@ -1,6 +1,6 @@
 ---
 id: ddd-context-mapping
-title: DDD: Context Mapping
+title: "DDD: Context Mapping"
 lang: shared
 min_version: "n/a"
 category: concept

@@ -1,6 +1,6 @@
 ---
 id: arch-cqrs
-title: Архитектура: CQRS
+title: "Архитектура: CQRS"
 lang: shared
 min_version: "1.21"
 category: pattern

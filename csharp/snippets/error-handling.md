@@ -1,6 +1,6 @@
 ---
 id: csharp-error-handling
-title: Error handling: исключения, фильтры, валидация аргументов
+title: "Error handling: исключения, фильтры, валидация аргументов"
 lang: csharp
 min_version: "10"
 category: snippet

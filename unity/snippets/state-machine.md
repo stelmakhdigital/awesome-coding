@@ -1,6 +1,6 @@
 ---
 id: unity-state-machine
-title: State Machine: FSM для игровой логики
+title: "State Machine: FSM для игровой логики"
 lang: unity
 min_version: "6.3"
 category: snippet

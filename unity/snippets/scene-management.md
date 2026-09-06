@@ -1,6 +1,6 @@
 ---
 id: unity-scene-management
-title: Scene Management: асинхронная загрузка
+title: "Scene Management: асинхронная загрузка"
 lang: unity
 min_version: "6.3"
 category: snippet
