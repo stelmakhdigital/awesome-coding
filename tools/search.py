@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Поиск записей в index/manifest.yaml по тегу или подстроке в названии.
+"""Поиск записей в каталоге index/*.yaml по тегу или подстроке в названии.
 
 Использование:
   python3 tools/search.py async          # точное совпадение тега
@@ -17,24 +17,30 @@ from pathlib import Path
 import yaml
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = ROOT / "index" / "manifest.yaml"
+INDEX_DIR = ROOT / "index"
 
 
-def entries() -> list[dict]:
-    data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+def entries():
+    for mf in sorted(INDEX_DIR.glob("*.yaml")):
+        try:
+            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
+        except yaml.YAMLError:
+            continue
+        if not isinstance(data, dict):
+            continue
 
-    def walk(node):
-        if isinstance(node, dict):
-            if "id" in node and "path" in node:
-                yield node
-            for value in node.values():
-                if isinstance(value, (dict, list)):
-                    yield from walk(value)
-        elif isinstance(node, list):
-            for item in node:
-                yield from walk(item)
+        def walk(node):
+            if isinstance(node, dict):
+                if "id" in node and "path" in node:
+                    yield node
+                for value in node.values():
+                    if isinstance(value, (dict, list)):
+                        yield from walk(value)
+            elif isinstance(node, list):
+                for item in node:
+                    yield from walk(item)
 
-    yield from walk(data)
+        yield from walk(data)
 
 
 def main() -> int:

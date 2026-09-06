@@ -1,0 +1,77 @@
+# Записи раздела shared. Шапка и версии языков: index/manifest.yaml.
+
+version: null
+concepts:
+  - id: shared-error-handling
+    title: "Shared: Error handling (кросс-языковые принципы)"
+    path: shared/error-handling.md
+    tags: [errors, error-handling, principles, cross-language]
+    status: stable
+    verified: none
+  - id: shared-concurrency
+    title: "Shared: Concurrency (кросс-языковые принципы)"
+    path: shared/concurrency.md
+    tags: [concurrency, parallelism, cancellation, principles]
+    status: stable
+    verified: none
+  - id: shared-security
+    title: "Shared: Security (кросс-языковые принципы)"
+    path: shared/security.md
+    tags: [security, owasp, secrets, injection, tls]
+    status: stable
+    verified: none
+  - id: shared-testing
+    title: "Shared: Testing (кросс-языковые принципы)"
+    path: shared/testing.md
+    tags: [testing, unit, integration, e2e, strategy]
+    status: stable
+    verified: none
+  - id: shared-api-design
+    title: "Shared: API design (REST/gRPC/GraphQL контракты)"
+    path: shared/api-design.md
+    tags: [api, rest, grpc, graphql, contracts, http]
+    status: stable
+    verified: none
+  - id: shared-observability
+    title: "Shared: Observability (логи, метрики, трейсинг)"
+    path: shared/observability.md
+    tags: [observability, logging, metrics, tracing, opentelemetry]
+    status: stable
+    verified: none
+  - id: shared-time-dates
+    title: "Shared: Time and dates (кросс-языковые принципы)"
+    path: shared/time-and-dates.md
+    tags: [time, dates, timezone, utc, duration]
+    status: stable
+    verified: none
+  - id: shared-configuration
+    title: "Shared: Configuration (кросс-языковые принципы)"
+    path: shared/configuration.md
+    tags: [configuration, env, 12-factor, secrets, validation]
+    status: stable
+    verified: none
+  - id: shared-documentation
+    title: "Shared: Documentation (документирование проекта, ADR, agent-first)"
+    path: shared/documentation.md
+    tags: [documentation, readme, adr, agent-first, docs, structure]
+    status: stable
+    verified: none
+  - id: shared-mermaid
+    title: "Shared: Mermaid (диаграммы и схемы в Markdown)"
+    path: shared/mermaid.md
+    tags: [mermaid, diagrams, flowchart, sequence, c4, documentation]
+    status: stable
+    verified: none
+  - id: shared-code-review
+    title: "Shared: Code Review (правила для агентов)"
+    path: shared/code-review.md
+    tags: [code-review, review, quality, security, checklist, agent]
+    status: stable
+    verified: none
+  - id: shared-commits
+    title: "Shared: Commits (правила коммитинга для агентов)"
+    path: shared/commits.md
+    tags: [commits, git, version-control, conventions, agent]
+    status: stable
+    verified: none
+

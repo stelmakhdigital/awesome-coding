@@ -26,7 +26,7 @@
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
    (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database;
    нет в: shared, messaging, cicd, architecture).
-3. Конкретная запись — по тегам в `index/manifest.yaml` (поиск: `grep -i "тег" index/manifest.yaml`;
+3. Конкретная запись — по тегам в `index/<section>.yaml` (поиск: `grep -i "тег" index/<section>.yaml`;
    без клона — GitHub code search по этому файлу или `make search Q=тег` после клона).
 4. Выбор библиотеки/подхода — `<section>/decisions.md` (таблицы решений), если есть.
 
@@ -88,7 +88,8 @@
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
-- `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус, verified).
+- `index/` — машиночитаемый каталог: `manifest.yaml` (шапка, версии) +
+  `<section>.yaml` (записи раздела: теги, пути, статус, verified).
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).
 - `docs/adr/` — архитектурные решения репозитория (ADR).
 - `tools/validate.py` + `Makefile` — валидация (frontmatter, manifest, ссылки).

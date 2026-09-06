@@ -25,9 +25,13 @@
 | `status` | string | `stable` \| `experimental` \| `deprecated` |
 | `updated` | date | Дата последнего содержательного обновления, `YYYY-MM-DD` |
 
-## Manifest (`index/manifest.yaml`)
+## Каталог записей (`index/`)
 
-Каждая запись каталога:
+- `index/manifest.yaml` — **шапка**: `version`, `updated`, версии языков (`languages.*.version`).
+- `index/<section>.yaml` — **записи одного раздела** (go, typescript, …, shared,
+  architecture, database, messaging, cicd). Агент читает только нужный файл.
+
+Каждая запись:
 
 | Поле | Тип | Описание |
 |---|---|---|
@@ -42,7 +46,10 @@
 
 - `id`, `title`, `status` обязаны совпадать с frontmatter — проверяется валидатором.
 - `verified` отражает **факт проверки**, а не обещание: «код должен компилироваться» ≠ `compiled`.
-- При повышении уровня проверки (например, `reviewed` → `compiled`) обновляйте manifest и дату `updated`.
+- При повышении уровня проверки (например, `reviewed` → `compiled`) обновляйте
+  `index/<section>.yaml` и дату `updated`.
+- Имя секционного файла = название раздела; новые разделы — только после
+  расширения `ALLOWED_SECTIONS` в `tools/validate.py`.
 
 ## Структура сниппета (category: snippet)
 

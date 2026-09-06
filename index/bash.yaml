@@ -1,0 +1,49 @@
+# Записи раздела bash. Шапка и версии языков: index/manifest.yaml.
+
+version: "5.3"
+rule_set:
+  - id: bash-rules
+    title: Bash Rules
+    path: bash/rules.md
+    tags: [rules, guardrails, strict-mode, safety, scripting]
+    status: stable
+    verified: none
+idioms:
+  - id: bash-idioms
+    title: Bash Idioms (5.x)
+    path: bash/idioms.md
+    tags: [idioms, style, arrays, mapfile, functions]
+    status: stable
+    verified: executed
+decisions:
+  - id: bash-decisions
+    title: Bash Decisions (bash vs python, инструменты)
+    path: bash/decisions.md
+    tags: [decisions, scripting, python, tooling, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: bash-error-handling
+    title: "Error handling: strict mode, ERR/EXIT traps"
+    path: bash/snippets/error-handling.md
+    tags: [errors, traps, strict-mode, cleanup]
+    status: stable
+    verified: executed
+  - id: bash-functions
+    title: "Bash: функции (ошибки, таймауты, параллелизм)"
+    path: bash/snippets/functions.md
+    tags: [functions, errors, timeout, parallel, xargs]
+    status: stable
+    verified: executed
+  - id: bash-files
+    title: "Bash: файлы (безопасность, блокировки, temp)"
+    path: bash/snippets/files.md
+    tags: [files, temp, flock, safety, paths]
+    status: stable
+    verified: executed
+  - id: bash-curl
+    title: "Bash: curl в скриптах (ошибки, JSON, ретраи, загрузка)"
+    path: bash/snippets/curl.md
+    tags: [curl, http, networking, json, retry, download]
+    status: stable
+    verified: executed

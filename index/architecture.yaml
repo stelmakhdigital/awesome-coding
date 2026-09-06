@@ -1,0 +1,118 @@
+# Записи раздела architecture. Шапка и версии языков: index/manifest.yaml.
+
+version: null
+decisions:
+  - id: arch-decisions
+    title: "Архитектура: таблицы решений"
+    path: architecture/decisions.md
+    tags: [architecture, decisions, ddd, choices, over-engineering]
+    status: stable
+    verified: none
+ddd:
+  overview:
+    - id: ddd-overview
+      title: "DDD: когда уместен"
+      path: architecture/ddd/README.md
+      tags: [ddd, domain, architecture, over-engineering]
+      status: stable
+      verified: none
+  tactical:
+    - id: ddd-entity
+      title: "DDD: Entity"
+      path: architecture/ddd/tactical/entity.md
+      tags: [ddd, entity, identity, domain, go]
+      status: stable
+      verified: reviewed
+    - id: ddd-value-object
+      title: "DDD: Value Object"
+      path: architecture/ddd/tactical/value-object.md
+      tags: [ddd, value-object, immutability, domain, go]
+      status: stable
+      verified: reviewed
+    - id: ddd-aggregate
+      title: "DDD: Aggregate"
+      path: architecture/ddd/tactical/aggregate.md
+      tags: [ddd, aggregate, invariants, consistency, go]
+      status: stable
+      verified: reviewed
+    - id: ddd-domain-service
+      title: "DDD: Domain Service"
+      path: architecture/ddd/tactical/domain-service.md
+      tags: [ddd, domain-service, service, go]
+      status: stable
+      verified: reviewed
+    - id: ddd-domain-event
+      title: "DDD: Domain Event"
+      path: architecture/ddd/tactical/domain-event.md
+      tags: [ddd, domain-event, events, go]
+      status: stable
+      verified: reviewed
+    - id: ddd-repository
+      title: "DDD: Repository"
+      path: architecture/ddd/tactical/repository.md
+      tags: [ddd, repository, persistence, go]
+      status: stable
+      verified: reviewed
+  strategic:
+    - id: ddd-bounded-context
+      title: "DDD: Bounded Context"
+      path: architecture/ddd/strategic/bounded-context.md
+      tags: [ddd, bounded-context, strategic, boundaries, modules]
+      status: stable
+      verified: reviewed
+    - id: ddd-ubiquitous-language
+      title: "DDD: Ubiquitous Language"
+      path: architecture/ddd/strategic/ubiquitous-language.md
+      tags: [ddd, ubiquitous-language, naming, domain, communication]
+      status: stable
+      verified: none
+    - id: ddd-context-mapping
+      title: "DDD: Context Mapping"
+      path: architecture/ddd/strategic/context-mapping.md
+      tags: [ddd, context-mapping, integration, acl, boundaries]
+      status: stable
+      verified: reviewed
+patterns:
+  - id: arch-layered
+    title: "Архитектура: Layered (слоистая)"
+    path: architecture/patterns/layered.md
+    tags: [architecture, layered, handlers, services, go]
+    status: stable
+    verified: reviewed
+  - id: arch-hexagonal
+    title: "Архитектура: Hexagonal (Ports & Adapters)"
+    path: architecture/patterns/hexagonal.md
+    tags: [architecture, hexagonal, ports-adapters, clean, go]
+    status: stable
+    verified: reviewed
+  - id: arch-modular-monolith
+    title: "Архитектура: Modular Monolith"
+    path: architecture/patterns/modular-monolith.md
+    tags: [architecture, modular-monolith, modules, boundaries, go]
+    status: stable
+    verified: reviewed
+  - id: arch-microservices
+    title: "Архитектура: Microservices"
+    path: architecture/patterns/microservices.md
+    tags: [architecture, microservices, distributed, saga, go]
+    status: stable
+    verified: reviewed
+  - id: arch-cqrs
+    title: "Архитектура: CQRS"
+    path: architecture/patterns/cqrs.md
+    tags: [architecture, cqrs, read-write, projections, advanced, go]
+    status: experimental
+    verified: reviewed
+  - id: arch-event-sourcing
+    title: "Архитектура: Event Sourcing"
+    path: architecture/patterns/event-sourcing.md
+    tags: [architecture, event-sourcing, audit, projections, advanced, go]
+    status: experimental
+    verified: reviewed
+  - id: arch-event-driven
+    title: "Архитектура: Event-Driven"
+    path: architecture/patterns/event-driven.md
+    tags: [architecture, event-driven, outbox, messaging, advanced, go]
+    status: experimental
+    verified: reviewed
+

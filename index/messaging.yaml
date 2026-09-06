@@ -1,0 +1,24 @@
+# Записи раздела messaging. Шапка и версии языков: index/manifest.yaml.
+
+version: "4.3 (Kafka) / 4.3 (RabbitMQ)"
+decisions:
+  - id: messaging-decisions
+    title: "Messaging Decisions (Kafka vs RabbitMQ vs Redis Streams)"
+    path: messaging/decisions.md
+    tags: [decisions, kafka, rabbitmq, redis-streams, broker, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: messaging-kafka
+    title: "Kafka: producer, consumer, consumer groups"
+    path: messaging/snippets/kafka.md
+    tags: [kafka, producer, consumer, consumer-group, exactly-once]
+    status: stable
+    verified: compiled
+  - id: messaging-rabbitmq
+    title: "RabbitMQ: queues, exchanges, ack/nack, DLQ"
+    path: messaging/snippets/rabbitmq.md
+    tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
+    status: stable
+    verified: compiled
+

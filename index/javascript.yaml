@@ -1,0 +1,49 @@
+# Записи раздела javascript. Шапка и версии языков: index/manifest.yaml.
+
+version: "ES2025"
+rule_set:
+  - id: js-rules
+    title: JavaScript Rules
+    path: javascript/rules.md
+    tags: [rules, guardrails, esm, async, style]
+    status: stable
+    verified: none
+idioms:
+  - id: js-idioms
+    title: JavaScript Idioms
+    path: javascript/idioms.md
+    tags: [idioms, style, destructuring, iterators, es2025]
+    status: stable
+    verified: executed
+decisions:
+  - id: js-decisions
+    title: JavaScript Decisions (рантайм, тесты, инструменты)
+    path: javascript/decisions.md
+    tags: [decisions, runtime, node, testing, tooling, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: js-error-handling
+    title: "Error handling: custom errors, timeout, global handlers"
+    path: javascript/snippets/error-handling.md
+    tags: [errors, async, node, timeout]
+    status: stable
+    verified: executed
+  - id: js-testing
+    title: "JavaScript: Testing (node:test, stdlib)"
+    path: javascript/snippets/testing.md
+    tags: [testing, node-test, unit-tests, mocking, stdlib]
+    status: stable
+    verified: executed
+  - id: js-json
+    title: "JavaScript: JSON (валидация, structuredClone, Date)"
+    path: javascript/snippets/json.md
+    tags: [json, validation, structured-clone, api]
+    status: stable
+    verified: executed
+  - id: js-async
+    title: "JavaScript: async (таймауты, ретраи, лимит параллелизма)"
+    path: javascript/snippets/async.md
+    tags: [async, timeout, retry, abort, concurrency, promise]
+    status: stable
+    verified: executed

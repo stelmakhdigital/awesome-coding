@@ -1,0 +1,28 @@
+# Записи раздела cicd. Шапка и версии языков: index/manifest.yaml.
+
+version: null
+snippets:
+  - id: cicd-github-actions
+    title: "GitHub Actions: паттерны"
+    path: cicd/github-actions.md
+    tags: [cicd, github-actions, workflows, matrix, caching, secrets]
+    status: stable
+    verified: none
+  - id: cicd-gitlab-ci
+    title: "GitLab CI: паттерны"
+    path: cicd/gitlab-ci.md
+    tags: [cicd, gitlab-ci, stages, caching, artifacts]
+    status: stable
+    verified: none
+  - id: cicd-docker
+    title: "Docker: Dockerfile и compose (best practices)"
+    path: cicd/docker.md
+    tags: [docker, dockerfile, compose, multi-stage, layers]
+    status: stable
+    verified: none
+  - id: cicd-k8s
+    title: "Kubernetes: манифесты и паттерны"
+    path: cicd/k8s.md
+    tags: [kubernetes, k8s, deployment, probes, hpa, secrets]
+    status: stable
+    verified: none

@@ -1,0 +1,128 @@
+# Записи раздела go. Шапка и версии языков: index/manifest.yaml.
+
+version: "1.27"
+rule_set:
+  - id: go-rules
+    title: "Go Rules"
+    path: go/rules.md
+    tags: [rules, guardrails, style, errors, concurrency]
+    status: stable
+    verified: none
+idioms:
+  - id: go-idioms
+    title: "Go Idioms"
+    path: go/idioms.md
+    tags: [idioms, style, patterns, stdlib]
+    status: stable
+    verified: reviewed
+decisions:
+  - id: go-decisions
+    title: "Go Decisions"
+    path: go/decisions.md
+    tags: [decisions, libraries, choices, ecosystem]
+    status: stable
+    verified: none
+snippets:
+  - id: go-error-handling
+    title: "Error handling: wrap, sentinel, errors.Is/As"
+    path: go/snippets/error-handling.md
+    tags: [errors, error-handling, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-http-server
+    title: "HTTP server (stdlib, Go 1.22+)"
+    path: go/snippets/http-server.md
+    tags: [http, net, server, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-context
+    title: "Context: timeout, cancellation, values"
+    path: go/snippets/context.md
+    tags: [context, cancellation, timeout, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-goroutines
+    title: "Goroutines: WaitGroup, errgroup, worker pool"
+    path: go/snippets/goroutines.md
+    tags: [concurrency, goroutines, workers, errgroup]
+    status: stable
+    verified: reviewed
+  - id: go-testing
+    title: "Testing: table-driven, subtests, benchmarks"
+    path: go/snippets/testing.md
+    tags: [testing, benchmarks, subtests, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-json
+    title: "JSON: encoding/json/v2 (1.27+) и v1"
+    path: go/snippets/json.md
+    tags: [json, encoding, stdlib, v2]
+    status: stable
+    verified: reviewed
+  - id: go-slices-maps
+    title: "Slices и Maps (stdlib, Go 1.21+)"
+    path: go/snippets/slices-maps.md
+    tags: [slices, maps, stdlib, collections]
+    status: stable
+    verified: reviewed
+  - id: go-logging
+    title: "Structured logging: log/slog"
+    path: go/snippets/logging.md
+    tags: [slog, logging, observability, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-graceful-shutdown
+    title: "Graceful shutdown: signal.NotifyContext"
+    path: go/snippets/graceful-shutdown.md
+    tags: [signals, lifecycle, shutdown, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-file-io
+    title: "File I/O: ReadFile, streaming, temp files"
+    path: go/snippets/file-io.md
+    tags: [files, io, stdlib]
+    status: stable
+    verified: reviewed
+  - id: go-http-client
+    title: "HTTP client: context, таймауты, JSON, ретраи"
+    path: go/snippets/http-client.md
+    tags: [http, client, context, timeout, retry, json]
+    status: stable
+    verified: compiled
+  - id: go-sql
+    title: "SQL: database/sql + pgx (пул, ctx, транзакции, батчи)"
+    path: go/snippets/sql.md
+    tags: [sql, postgres, pgx, database, transactions, pool]
+    status: stable
+    verified: reviewed
+  - id: go-grpc
+    title: "gRPC: сервер, клиент, статусы, ctx-таймауты"
+    path: go/snippets/grpc.md
+    tags: [grpc, rpc, protobuf, server, client, status]
+    status: stable
+    verified: reviewed
+patterns:
+  - id: go-functional-options
+    title: "Functional Options"
+    path: go/patterns/functional-options.md
+    tags: [design, configuration, api, options]
+    status: stable
+    verified: reviewed
+  - id: go-worker-pool
+    title: "Worker Pool (ограниченный параллелизм)"
+    path: go/patterns/worker-pool.md
+    tags: [concurrency, workers, pool, errgroup]
+    status: stable
+    verified: reviewed
+  - id: go-repository
+    title: "Repository (изоляция доступа к данным)"
+    path: go/patterns/repository.md
+    tags: [architecture, data, sql, interface, di]
+    status: stable
+    verified: reviewed
+  - id: go-http-middleware
+    title: "HTTP Middleware"
+    path: go/patterns/http-middleware.md
+    tags: [http, middleware, server, stdlib]
+    status: stable
+    verified: reviewed

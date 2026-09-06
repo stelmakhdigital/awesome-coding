@@ -1,0 +1,49 @@
+# Записи раздела c. Шапка и версии языков: index/manifest.yaml.
+
+version: "C23"
+rule_set:
+  - id: c-rules
+    title: C Rules
+    path: c/rules.md
+    tags: [rules, guardrails, memory, safety, c23]
+    status: stable
+    verified: none
+idioms:
+  - id: c-idioms
+    title: C Idioms (C23)
+    path: c/idioms.md
+    tags: [idioms, style, c23, structs, static-assert]
+    status: stable
+    verified: executed
+decisions:
+  - id: c-decisions
+    title: C Decisions (язык, аллокатор, строки, тесты)
+    path: c/decisions.md
+    tags: [decisions, allocator, strings, testing, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: c-error-handling
+    title: "Error handling: коды возврата, errno, cleanup через goto"
+    path: c/snippets/error-handling.md
+    tags: [errors, errno, cleanup, memory]
+    status: stable
+    verified: executed
+  - id: c-memory
+    title: "C: память (ownership, cleanup, arena)"
+    path: c/snippets/memory.md
+    tags: [memory, malloc, cleanup, arena, ownership]
+    status: stable
+    verified: executed
+  - id: c-strings
+    title: "C: строки (C23 stdstring.h, builder)"
+    path: c/snippets/strings.md
+    tags: [strings, stdstring, cstr, buffer, builder]
+    status: stable
+    verified: executed
+  - id: c-testing
+    title: "C: Testing (harness + assert, санитайзеры)"
+    path: c/snippets/testing.md
+    tags: [testing, assert, harness, sanitizers, unit-tests]
+    status: stable
+    verified: executed

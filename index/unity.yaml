@@ -1,0 +1,117 @@
+# Записи раздела unity. Шапка и версии языков: index/manifest.yaml.
+
+version: "6.3 LTS"
+rule_set:
+  - id: unity-rules
+    title: "Unity Rules"
+    path: unity/rules.md
+    tags: [rules, guardrails, performance, lifecycle, android]
+    status: stable
+    verified: none
+idioms:
+  - id: unity-idioms
+    title: "Unity Idioms"
+    path: unity/idioms.md
+    tags: [idioms, lifecycle, composition, scriptableobject]
+    status: stable
+    verified: reviewed
+decisions:
+  - id: unity-decisions
+    title: "Unity Decisions"
+    path: unity/decisions.md
+    tags: [decisions, urp, input, addressables, android, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: unity-object-pooling
+    title: "Object Pooling: пул часто создаваемых объектов"
+    path: unity/snippets/object-pooling.md
+    tags: [performance, pooling, instantiate, gc]
+    status: stable
+    verified: reviewed
+  - id: unity-state-machine
+    title: "State Machine: FSM для игровой логики"
+    path: unity/snippets/state-machine.md
+    tags: [state-machine, fsm, gameplay, npc]
+    status: stable
+    verified: reviewed
+  - id: unity-save-system
+    title: "Save System: JSON-сохранения"
+    path: unity/snippets/save-system.md
+    tags: [save, persistence, json, settings]
+    status: stable
+    verified: reviewed
+  - id: unity-input
+    title: "Input: New Input System"
+    path: unity/snippets/input.md
+    tags: [input, input-system, gamepad, cross-platform]
+    status: stable
+    verified: reviewed
+  - id: unity-scene-management
+    title: "Scene Management: асинхронная загрузка"
+    path: unity/snippets/scene-management.md
+    tags: [scenes, loading, async, addressables]
+    status: stable
+    verified: reviewed
+  - id: unity-android-build
+    title: "Android Build: IL2CPP, AAB, ProGuard"
+    path: unity/snippets/android-build.md
+    tags: [android, il2cpp, aab, proguard, build]
+    status: stable
+    verified: reviewed
+  - id: unity-async
+    title: "Async: корутины vs async/await в Unity"
+    path: unity/snippets/async.md
+    tags: [async, coroutines, await, task, unittask]
+    status: stable
+    verified: reviewed
+  - id: unity-physics
+    title: "Physics: Rigidbody, коллизии, raycast, слои"
+    path: unity/snippets/physics.md
+    tags: [physics, rigidbody, collision, raycast, layers]
+    status: stable
+    verified: reviewed
+  - id: unity-addressables
+    title: "Addressables: загрузка динамического контента"
+    path: unity/snippets/addressables.md
+    tags: [addressables, assets, loading, async, content-update]
+    status: stable
+    verified: reviewed
+patterns:
+  - id: unity-composition
+    title: "Unity: Composition (композиция компонентов)"
+    path: unity/patterns/composition.md
+    tags: [pattern, composition, gameobject, design]
+    status: stable
+    verified: reviewed
+  - id: unity-scriptable-data
+    title: "Unity: Scriptable Data (данные через ScriptableObject)"
+    path: unity/patterns/scriptable-data.md
+    tags: [pattern, scriptableobject, data-driven, configuration]
+    status: stable
+    verified: reviewed
+  - id: unity-event-bus
+    title: "Unity: Event Bus (типизированные события)"
+    path: unity/patterns/event-bus.md
+    tags: [pattern, events, decoupling, messaging]
+    status: stable
+    verified: reviewed
+shaders:
+  - id: unity-shader-unlit
+    title: "HLSL: Unlit textured (базовый URP-шейдер)"
+    path: unity/shaders/snippets/unlit-textured.md
+    tags: [hlsl, shader, urp, unlit, texture]
+    status: stable
+    verified: reviewed
+  - id: unity-shader-dissolve
+    title: "HLSL: Dissolve (эффект растворения)"
+    path: unity/shaders/snippets/dissolve.md
+    tags: [hlsl, shader, urp, dissolve, vfx]
+    status: stable
+    verified: reviewed
+  - id: unity-shader-vertex-animation
+    title: "HLSL: Vertex animation (волна)"
+    path: unity/shaders/snippets/vertex-animation.md
+    tags: [hlsl, shader, urp, vertex, animation, grass]
+    status: stable
+    verified: reviewed

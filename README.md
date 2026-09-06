@@ -2,7 +2,7 @@
 
 > **Для ИИ-агентов:** начните с [AGENTS.md](AGENTS.md) — роутер «задача → куда смотреть».
 > Путь: `AGENTS.md` → раздел (`go/`, `shared/`, `database/`, …) → конкретная запись.
-> Без клона файлы доступны по ссылкам GitHub/raw; поиск по каталогу — в `index/manifest.yaml`.
+> Без клона файлы доступны по ссылкам GitHub/raw; поиск по каталогу — в `index/<section>.yaml`.
 
 Библиотека сниппетов, паттернов и правил для **кодинг-агентов** (и людей).
 Структурирована по языкам: **Go, TypeScript, JavaScript, Python, C, Bash, C#, Kotlin** +
@@ -49,7 +49,8 @@ awesome-coding/
 │   ├── CONTRIBUTING.md
 │   └── adr/                   # ADR — архитектурные решения репозитория
 ├── index/
-│   └── manifest.yaml          # машиночитаемый каталог всех записей
+│   ├── manifest.yaml          # шапка каталога: версии языков
+│   └── <section>.yaml         # записи раздела (go, bash, shared, …)
 ├── go/                        # языковой раздел (эталонный)
 │   ├── README.md              # версия, конвенции, quick-reference
 │   ├── rules.md               # guardrails: do/don't (✅/❌)

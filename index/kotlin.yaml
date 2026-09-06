@@ -1,0 +1,49 @@
+# Записи раздела kotlin. Шапка и версии языков: index/manifest.yaml.
+
+version: "2.3"
+rule_set:
+  - id: kotlin-rules
+    title: "Kotlin Rules"
+    path: kotlin/rules.md
+    tags: [rules, guardrails, null-safety, coroutines, immutability]
+    status: stable
+    verified: none
+idioms:
+  - id: kotlin-idioms
+    title: "Kotlin Idioms"
+    path: kotlin/idioms.md
+    tags: [idioms, style, data-class, sealed, extensions, when]
+    status: stable
+    verified: reviewed
+decisions:
+  - id: kotlin-decisions
+    title: "Kotlin Decisions (Compose, DI, HTTP, БД)"
+    path: kotlin/decisions.md
+    tags: [decisions, compose, hilt, ktor, retrofit, room, choices]
+    status: stable
+    verified: none
+snippets:
+  - id: kotlin-coroutines
+    title: "Kotlin: корутины, Flow, отмена"
+    path: kotlin/snippets/coroutines.md
+    tags: [coroutines, flow, suspend, cancellation, scope]
+    status: stable
+    verified: executed
+  - id: kotlin-compose
+    title: "Kotlin: Jetpack Compose (базовые паттерны)"
+    path: kotlin/snippets/compose.md
+    tags: [compose, ui, state, viewmodel, android]
+    status: stable
+    verified: reviewed
+  - id: kotlin-http
+    title: "Kotlin: Ktor Client (таймауты, отмена, ретраи)"
+    path: kotlin/snippets/http.md
+    tags: [http, ktor, client, timeout, retry]
+    status: stable
+    verified: compiled
+  - id: kotlin-room
+    title: "Kotlin: Room (Entity, DAO, Flow, миграции)"
+    path: kotlin/snippets/room.md
+    tags: [room, database, android, flow, migrations, persistence]
+    status: stable
+    verified: reviewed

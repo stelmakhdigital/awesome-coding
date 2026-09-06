@@ -4,8 +4,9 @@
 Проверки:
   frontmatter — YAML frontmatter всех .md: обязательные поля, допустимые
                 значения, уникальные id, формат полей.
-  manifest    — index/manifest.yaml: пути существуют, все контент-файлы
-                есть в manifest, id/title/status совпадают с frontmatter.
+  manifest    — index/*.yaml (шапка + секции): пути существуют, все
+                контент-файлы есть в каталоге, id/title/status совпадают
+                с frontmatter.
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
 Использование:
@@ -30,7 +31,15 @@ except ImportError:
     sys.exit(2)
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = ROOT / "index" / "manifest.yaml"
+INDEX_DIR = ROOT / "index"
+MANIFEST = INDEX_DIR / "manifest.yaml"
+
+# Допустимые имена секционных файлов index/<section>.yaml.
+ALLOWED_SECTIONS = {
+    "go", "typescript", "javascript", "python", "c", "bash",
+    "csharp", "kotlin", "unity", "shared", "architecture",
+    "database", "messaging", "cicd",
+}
 
 # Файлы, которым frontmatter НЕ требуется.
 NO_FRONTMATTER = {
@@ -135,12 +144,16 @@ def check_frontmatter() -> list[str]:
     return issues
 
 
-def manifest_entries() -> list[tuple[Path, dict]]:
-    """Все записи manifest: (path к секции, entry dict).
+def manifest_files() -> list[Path]:
+    """Каталог: index/manifest.yaml (шапка) + index/<section>.yaml (записи)."""
+    return sorted(INDEX_DIR.glob("*.yaml"))
 
-    Ходит по всему дереву (languages, architecture, database, messaging, cicd, ...).
+
+def manifest_entries() -> list[tuple[Path, dict]]:
+    """Все записи каталога: (section, entry dict).
+
+    Ходит по всем файлам index/*.yaml; секция = имя файла без расширения.
     """
-    data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
     entries: list[tuple[Path, dict]] = []
 
     def walk(node, section: Path):
@@ -154,23 +167,48 @@ def manifest_entries() -> list[tuple[Path, dict]]:
             for item in node:
                 walk(item, section)
 
-    for key, value in data.items():
-        if key in ("version", "updated"):
+    for mf in manifest_files():
+        try:
+            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
+        except yaml.YAMLError:
+            continue  # невалидный YAML уже отмечен в check_manifest
+        if not isinstance(data, dict):
             continue
-        walk(value, Path(str(key)))
+        for key, value in data.items():
+            if key in ("version", "updated", "languages"):
+                continue
+            walk(value, Path(mf.stem) / str(key))
     return entries
 
 
 def check_manifest() -> list[str]:
     issues: list[str] = []
+    files = manifest_files()
+    if not files:
+        return ["index/: файлы каталога не найдены"]
     if not MANIFEST.exists():
-        return ["index/manifest.yaml: файл не найден"]
-    try:
-        data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
-    except yaml.YAMLError as e:
-        return [f"index/manifest.yaml: невалидный YAML: {e}"]
-    if not isinstance(data, dict):
-        return ["index/manifest.yaml: корневой объект должен быть mapping"]
+        issues.append("index/manifest.yaml: шапка каталога не найдена")
+    for mf in files:
+        rel = f"index/{mf.name}"
+        try:
+            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
+        except yaml.YAMLError as e:
+            issues.append(f"{rel}: невалидный YAML: {str(e).splitlines()[0]}")
+            continue
+        if not isinstance(data, dict):
+            issues.append(f"{rel}: корневой объект должен быть mapping")
+        elif mf.name != "manifest.yaml" and mf.stem not in ALLOWED_SECTIONS:
+            issues.append(
+                f"{rel}: имя файла должно быть названием раздела "
+                f"{sorted(ALLOWED_SECTIONS)}"
+            )
+    if MANIFEST.exists():
+        try:
+            head = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+            if isinstance(head, dict) and "updated" not in head:
+                issues.append("index/manifest.yaml: нет поля 'updated'")
+        except yaml.YAMLError:
+            pass  # уже отмечено выше
 
     entries = manifest_entries()
     manifest_paths: set[str] = set()
