@@ -135,6 +135,140 @@ languages:
         path: bash/snippets/error-handling.md
         tags: [errors, traps, strict-mode, cleanup]
         status: stable
+  csharp:
+    version: "14 (.NET 10)"
+    rule_set:
+      - id: csharp-rules
+        title: "C# Rules"
+        path: csharp/rules.md
+        tags: [rules, guardrails, async, exceptions, nullable, di]
+        status: stable
+    idioms:
+      - id: csharp-idioms
+        title: "C# Idioms"
+        path: csharp/idioms.md
+        tags: [idioms, style, modern-csharp, primary-ctor, records]
+        status: stable
+    decisions:
+      - id: csharp-decisions
+        title: "C# Decisions"
+        path: csharp/decisions.md
+        tags: [decisions, libraries, choices, ecosystem]
+        status: stable
+    snippets:
+      - id: csharp-error-handling
+        title: "Error handling: исключения, фильтры, валидация аргументов"
+        path: csharp/snippets/error-handling.md
+        tags: [errors, exceptions, validation, retry]
+        status: stable
+      - id: csharp-async-await
+        title: "Async/await: Task.WhenAll, CancellationToken"
+        path: csharp/snippets/async-await.md
+        tags: [async, await, task, cancellation, concurrency]
+        status: stable
+      - id: csharp-collections
+        title: "Collections: List, Dictionary, Span, LINQ"
+        path: csharp/snippets/collections.md
+        tags: [collections, linq, span, immutable]
+        status: stable
+      - id: csharp-json
+        title: "JSON: System.Text.Json + source generation"
+        path: csharp/snippets/json.md
+        tags: [json, serialization, system.text.json, source-gen]
+        status: stable
+      - id: csharp-logging
+        title: "Logging: Microsoft.Extensions.Logging, scopes"
+        path: csharp/snippets/logging.md
+        tags: [logging, structured, scopes, mext]
+        status: stable
+      - id: csharp-testing
+        title: "Testing: xUnit, Theory/InlineData"
+        path: csharp/snippets/testing.md
+        tags: [testing, xunit, unit-tests, theory]
+        status: stable
+    patterns:
+      - id: csharp-functional-options
+        title: "C#: Functional Options (builder)"
+        path: csharp/patterns/functional-options.md
+        tags: [pattern, options, builder, configuration]
+        status: stable
+      - id: csharp-repository
+        title: "C#: Repository"
+        path: csharp/patterns/repository.md
+        tags: [pattern, repository, persistence, ef-core]
+        status: stable
+      - id: csharp-state-machine
+        title: "C#: State Machine (явные переходы)"
+        path: csharp/patterns/state-machine.md
+        tags: [pattern, state-machine, domain, invariants]
+        status: stable
+  unity:
+    version: "6.3 LTS"
+    rule_set:
+      - id: unity-rules
+        title: "Unity Rules"
+        path: unity/rules.md
+        tags: [rules, guardrails, performance, lifecycle, android]
+        status: stable
+    idioms:
+      - id: unity-idioms
+        title: "Unity Idioms"
+        path: unity/idioms.md
+        tags: [idioms, lifecycle, composition, scriptableobject]
+        status: stable
+    decisions:
+      - id: unity-decisions
+        title: "Unity Decisions"
+        path: unity/decisions.md
+        tags: [decisions, urp, input, addressables, android, choices]
+        status: stable
+    snippets:
+      - id: unity-object-pooling
+        title: "Object Pooling: пул часто создаваемых объектов"
+        path: unity/snippets/object-pooling.md
+        tags: [performance, pooling, instantiate, gc]
+        status: stable
+      - id: unity-state-machine
+        title: "State Machine: FSM для игровой логики"
+        path: unity/snippets/state-machine.md
+        tags: [state-machine, fsm, gameplay, npc]
+        status: stable
+      - id: unity-save-system
+        title: "Save System: JSON-сохранения"
+        path: unity/snippets/save-system.md
+        tags: [save, persistence, json, settings]
+        status: stable
+      - id: unity-input
+        title: "Input: New Input System"
+        path: unity/snippets/input.md
+        tags: [input, input-system, gamepad, cross-platform]
+        status: stable
+      - id: unity-scene-management
+        title: "Scene Management: асинхронная загрузка"
+        path: unity/snippets/scene-management.md
+        tags: [scenes, loading, async, addressables]
+        status: stable
+      - id: unity-android-build
+        title: "Android Build: IL2CPP, AAB, ProGuard"
+        path: unity/snippets/android-build.md
+        tags: [android, il2cpp, aab, proguard, build]
+        status: stable
+    patterns:
+      - id: unity-composition
+        title: "Unity: Composition (композиция компонентов)"
+        path: unity/patterns/composition.md
+        tags: [pattern, composition, gameobject, design]
+        status: stable
+      - id: unity-scriptable-data
+        title: "Unity: Scriptable Data (данные через ScriptableObject)"
+        path: unity/patterns/scriptable-data.md
+        tags: [pattern, scriptableobject, data-driven, configuration]
+        status: stable
+      - id: unity-event-bus
+        title: "Unity: Event Bus (типизированные события)"
+        path: unity/patterns/event-bus.md
+        tags: [pattern, events, decoupling, messaging]
+        status: stable
   shared:
     version: null
     concepts: [] # запланировано: см. shared/README.md

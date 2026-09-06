@@ -1,7 +1,7 @@
 # awesome-coding
 
 Библиотека сниппетов, паттернов и правил для **кодинг-агентов** (и людей).
-Структурирована по языкам: **Go, TypeScript, JavaScript, Python, C, Bash**.
+Структурирована по языкам: **Go, TypeScript, JavaScript, Python, C, Bash, C#** + раздел **Unity** (кроссплатформенные и Android-игры).
 
 ## Почему agent-first
 
@@ -39,6 +39,8 @@ awesome-coding/
 ├── python/
 ├── c/
 ├── bash/
+├── csharp/                    # .NET 10 / C# 14
+├── unity/                     # Unity 6.3 LTS: кроссплатформа + Android
 └── shared/                    # кросс-языковые концепции
 ```
 
@@ -52,6 +54,8 @@ awesome-coding/
 | Python | 3.14 | 3.13 |
 | C | C23 (ISO 9899:2024) | C17 |
 | Bash | 5.3 | 5.2 |
+| C# | .NET 10 (LTS) / C# 14 | .NET 9 / C# 13 |
+| Unity | 6.3 LTS (6000.3.x) | 6.0 LTS |
 
 ## Для агентов
 
@@ -68,6 +72,8 @@ awesome-coding/
 |---|---|
 | `go/` | ядро: snippets, patterns, rules, idioms, decisions |
 | `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
+| `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14) |
+| `unity/` | полный: snippets, patterns, rules, idioms, decisions (6.3 LTS, Android) |
 | `typescript/`, `javascript/`, `python/`, `c/`, `bash/` | каркас + эталонный сниппет |
 | `shared/` | запланировано |
 

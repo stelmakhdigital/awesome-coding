@@ -5,13 +5,15 @@
 
 ## Как пользоваться
 
-1. Определите целевой язык → откройте каталог: `go/`, `typescript/`, `javascript/`, `python/`, `c/`, `bash/`.
+1. Определите целевой язык → откройте каталог: `go/`, `typescript/`, `javascript/`, `python/`, `c/`, `bash/`, `csharp/`.
 2. Сначала прочитайте `<lang>/README.md` (версия, конвенции) и `<lang>/rules.md` (обязательные guardrails).
 3. Для конкретной задачи — найдите запись по тегам в `index/manifest.yaml` и откройте файл.
 4. Языконезависимые концепции (ошибки, конкурентность, безопасность, тесты) — `shared/`.
 5. Выбор библиотеки или подхода — `<lang>/decisions.md` (таблицы решений).
 6. Архитектура и DDD (уровень DDD, bounded contexts, CQRS, event-driven) — `architecture/`;
    сначала `architecture/decisions.md` (какой уровень для проекта), затем конкретная запись.
+7. Игры на Unity (кроссплатформа + Android) — `unity/`: сначала `unity/README.md` и `unity/rules.md`,
+   затем `unity/decisions.md` (рендер, ввод, данные, Android).
 
 ## Жёсткие правила
 
@@ -31,12 +33,15 @@
 | Python | 3.14 | 3.13 |
 | C | C23 (ISO 9899:2024) | C17 |
 | Bash | 5.3 | 5.2 |
+| C# | .NET 10 (LTS) / C# 14 | .NET 9 / C# 13 |
+| Unity | 6.3 LTS (6000.3.x) | 6.0 LTS |
 
 Перед добавлением новой записи проверьте, не вышла ли более новая стабильная версия языка.
 
 ## Структура
 
 - `<lang>/` — языковой раздел: `README.md`, `rules.md`, `idioms.md`, `decisions.md`, `snippets/`, `patterns/`.
+- `unity/` — игровые проекты (кроссплатформа + Android): та же структура, код не компилируется без Editor.
 - `architecture/` — языконезависимая архитектура и DDD: `decisions.md`, `ddd/` (tactical + strategic), `patterns/`.
 - `shared/` — кросс-языковые концепции.
 - `index/manifest.yaml` — машиночитаемый каталог всех записей (теги, пути, статус).
