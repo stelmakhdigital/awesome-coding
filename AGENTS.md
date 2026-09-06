@@ -17,6 +17,7 @@
 | CI/CD, Docker, Kubernetes | `cicd/` |
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
 | Нативный Android (Kotlin) | `kotlin/` |
+| Документирование проекта, ADR, диаграммы (mermaid) | `shared/documentation.md`, `shared/mermaid.md` |
 
 **Шаг 2 — внутри раздела:**
 

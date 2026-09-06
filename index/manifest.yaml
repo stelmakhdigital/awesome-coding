@@ -569,6 +569,16 @@ languages:
         path: shared/configuration.md
         tags: [configuration, env, 12-factor, secrets, validation]
         status: stable
+      - id: shared-documentation
+        title: "Shared: Documentation (документирование проекта, ADR, agent-first)"
+        path: shared/documentation.md
+        tags: [documentation, readme, adr, agent-first, docs, structure]
+        status: stable
+      - id: shared-mermaid
+        title: "Shared: Mermaid (диаграммы и схемы в Markdown)"
+        path: shared/mermaid.md
+        tags: [mermaid, diagrams, flowchart, sequence, c4, documentation]
+        status: stable
 
 architecture:
   version: null

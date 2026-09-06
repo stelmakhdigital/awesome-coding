@@ -15,6 +15,8 @@
 | Observability | [observability.md](observability.md) |
 | Time and dates | [time-and-dates.md](time-and-dates.md) |
 | Configuration | [configuration.md](configuration.md) |
+| Documentation (ADR, agent-first) | [documentation.md](documentation.md) |
+| Mermaid (диаграммы и схемы) | [mermaid.md](mermaid.md) |
 
 ## Как использовать
 
