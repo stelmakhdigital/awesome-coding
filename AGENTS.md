@@ -97,19 +97,22 @@
 ## Туллинг
 
 ```bash
-make validate              # все проверки (frontmatter + manifest + ссылки)
+make validate              # все проверки (frontmatter + manifest + индексы + ссылки)
 make validate-frontmatter  # только frontmatter
 make validate-manifest     # только manifest
+make validate-indexes      # только индексы (README ↔ файлы, счётчики)
 make validate-links        # только ссылки
 make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
 make search Q=async        # поиск записей в manifest по тегу/названию
 make check-versions        # сверка закреплённых версий с актуальными (сеть)
+make check-stale           # записи с устаревшим frontmatter `updated` (квартальный аудит)
 ```
 
 Перед коммитом новых записей запустите `make validate`.
 
-**Свежесть версий:** раз в квартал — `make check-versions`; при ⚠️ обновите таблицу «Версии»
-(проверив фолбэк), заголовок `updated` в `index/manifest.yaml` и перепроверьте затронутые сниппеты.
+**Свежесть версий:** раз в квартал — `make check-versions` и `make check-stale`; при ⚠️ обновите
+таблицу «Версии» (проверив фолбэк), заголовок `updated` в `index/manifest.yaml`
+и перепроверьте затронутые сниппеты.
 
 ## Статусы записей
 

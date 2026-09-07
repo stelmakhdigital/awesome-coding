@@ -1,39 +1,46 @@
 # awesome-coding — туллинг
 #
 # Цели:
-#   make validate              — все проверки (frontmatter + manifest + ссылки)
+#   make validate              — все проверки (frontmatter + manifest + индексы + ссылки)
 #   make validate-frontmatter  — только frontmatter
 #   make validate-manifest     — только manifest
+#   make validate-indexes      — только индексы (README ↔ файлы, счётчики)
 #   make validate-links        — только ссылки
 #   make validate-mermaid      — синтаксис всех mermaid-блоков (нужен node + npm i)
 #   make search Q=async        — поиск записей в manifest по тегу/названию
 #   make check-versions        — сверка закреплённых версий с актуальными (сеть)
+#   make check-stale           — записи с устаревшим `updated` (квартальный аудит)
 
 PYTHON ?= python3
 NODE ?= node
 
-.PHONY: help validate validate-frontmatter validate-manifest validate-links \
-        validate-mermaid search check-versions
+.PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
+        validate-links validate-mermaid search check-versions check-stale
 
 help:
 	@echo "Цели:"
-	@echo "  validate              — все проверки (frontmatter + manifest + ссылки)"
+	@echo "  validate              — все проверки (frontmatter + manifest + индексы + ссылки)"
 	@echo "  validate-frontmatter  — YAML frontmatter (обязательные поля, id, статусы)"
-	@echo "  validate-manifest     — index/manifest.yaml (пути, соответствие frontmatter)"
+	@echo "  validate-manifest     — index/*.yaml (пути, соответствие frontmatter)"
+	@echo "  validate-indexes      — README каталогов ↔ файлы, счётчики в основном README"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
 	@echo "  search Q=<запрос>     — поиск записей в manifest по тегу/названию"
 	@echo "  check-versions        — сверка версий из AGENTS.md с актуальными (нужна сеть)"
+	@echo "  check-stale           — записи с устаревшим frontmatter `updated` (по умолчанию > 180 дней)"
 	@echo ""
 	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); для validate-mermaid — node 20+"
 
-validate: validate-frontmatter validate-manifest validate-links
+validate: validate-frontmatter validate-manifest validate-indexes validate-links
 
 validate-frontmatter:
 	$(PYTHON) tools/validate.py --check frontmatter
 
 validate-manifest:
 	$(PYTHON) tools/validate.py --check manifest
+
+validate-indexes:
+	$(PYTHON) tools/validate.py --check indexes
 
 validate-links:
 	$(PYTHON) tools/validate.py --check links
@@ -49,3 +56,6 @@ search:
 
 check-versions:
 	$(PYTHON) tools/check_versions.py
+
+check-stale:
+	$(PYTHON) tools/check_stale.py
