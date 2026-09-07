@@ -19,6 +19,9 @@
 | Mermaid (диаграммы и схемы) | [mermaid.md](mermaid.md) |
 | Code Review (правила для агентов) | [code-review.md](code-review.md) |
 | Commits (правила коммитинга) | [commits.md](commits.md) |
+| Refactoring (безопасный рефакторинг) | [refactoring.md](refactoring.md) |
+| Debugging (методология отладки) | [debugging.md](debugging.md) |
+| CLI (правила командных интерфейсов) | [cli.md](cli.md) |
 
 ## Как использовать
 

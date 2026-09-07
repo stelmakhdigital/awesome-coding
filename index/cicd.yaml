@@ -26,3 +26,15 @@ snippets:
     tags: [kubernetes, k8s, deployment, probes, hpa, secrets]
     status: stable
     verified: none
+  - id: cicd-secrets
+    title: "CI: секреты (GitHub Actions, OIDC, маскирование)"
+    path: cicd/secrets.md
+    tags: [secrets, security, github-actions, oidc, masking, ci]
+    status: stable
+    verified: reviewed
+  - id: cicd-matrix
+    title: "CI: матричные сборки (версии, ОС, кэш, fail-fast)"
+    path: cicd/matrix.md
+    tags: [matrix, versions, parallel, fail-fast, caching, ci]
+    status: stable
+    verified: reviewed

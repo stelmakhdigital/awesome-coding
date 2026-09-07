@@ -17,3 +17,5 @@
 - [gitlab-ci.md](gitlab-ci.md) — паттерны GitLab CI
 - [docker.md](docker.md) — Dockerfile и docker compose
 - [k8s.md](k8s.md) — Kubernetes: манифесты и паттерны
+- [secrets.md](secrets.md) — секреты в CI (OIDC, маскирование)
+- [matrix.md](matrix.md) — матричные сборки (версии, кэш, fail-fast)

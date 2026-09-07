@@ -47,3 +47,15 @@ snippets:
     tags: [room, database, android, flow, migrations, persistence]
     status: stable
     verified: reviewed
+  - id: kotlin-viewmodel
+    title: "Kotlin: ViewModel + StateFlow + SavedStateHandle (состояние UI)"
+    path: kotlin/snippets/viewmodel.md
+    tags: [android, viewmodel, stateflow, savedstatehandle, lifecycle, ui-state]
+    status: stable
+    verified: reviewed
+  - id: kotlin-testing
+    title: "Kotlin: тестирование корутин (runTest, виртуальное время, Flow)"
+    path: kotlin/snippets/testing.md
+    tags: [testing, coroutines, runtest, virtual-time, flow, junit]
+    status: stable
+    verified: reviewed

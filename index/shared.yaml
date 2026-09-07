@@ -74,4 +74,22 @@ concepts:
     tags: [commits, git, version-control, conventions, agent]
     status: stable
     verified: none
+  - id: shared-refactoring
+    title: "Shared: Refactoring (безопасный рефакторинг)"
+    path: shared/refactoring.md
+    tags: [refactoring, code-quality, tests, safety, agent]
+    status: stable
+    verified: none
+  - id: shared-debugging
+    title: "Shared: Debugging (методология отладки)"
+    path: shared/debugging.md
+    tags: [debugging, troubleshooting, logs, bisect, root-cause]
+    status: stable
+    verified: none
+  - id: shared-cli
+    title: "Shared: CLI (правила командных интерфейсов)"
+    path: shared/cli.md
+    tags: [cli, terminal, flags, exit-codes, unix]
+    status: stable
+    verified: none
 

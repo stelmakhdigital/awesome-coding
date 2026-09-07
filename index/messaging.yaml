@@ -21,4 +21,16 @@ snippets:
     tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
     status: stable
     verified: compiled
+  - id: messaging-outbox
+    title: "Outbox: события из транзакции без потери и дублей"
+    path: messaging/snippets/outbox.md
+    tags: [outbox, events, transaction, reliability, cdc, kafka]
+    status: stable
+    verified: reviewed
+  - id: messaging-consumer-groups
+    title: "Kafka consumer groups: партицирование, rebalance, идемпотентность, DLQ"
+    path: messaging/snippets/consumer-groups.md
+    tags: [kafka, consumer-group, rebalance, idempotency, dlq, lag]
+    status: stable
+    verified: reviewed
 

@@ -36,6 +36,16 @@ flowchart LR
     L --> R["rules.md → manifest → запись"]
 ```
 
+Примеры:
+
+| Задача | Путь |
+|---|---|
+| HTTP-сервер на Go с ретраями | `go/snippets/http-server.md` + `go/rules.md` |
+| Выбрать веб-фреймворк для Python | `python/decisions.md` → `python/snippets/web-server.md` |
+| Задокументировать проект со схемами | `shared/documentation.md` + `shared/mermaid.md` |
+| Провести ревью PR | `shared/code-review.md` |
+| Надёжно публиковать события из транзакции | `messaging/snippets/outbox.md` |
+
 ## Структура
 
 ```
@@ -71,10 +81,10 @@ awesome-coding/
 ├── kotlin/                    # Kotlin 2.3 (JVM/Android)
 ├── unity/                     # Unity 6.3 LTS: кроссплатформа + Android
 │   └── shaders/               # HLSL (URP)
-├── shared/                    # кросс-языковые концепции (12 тем)
+├── shared/                    # кросс-языковые концепции (15 тем)
 ├── database/                  # PostgreSQL 18 + Redis 8
 ├── messaging/                 # Kafka 4.3, RabbitMQ 4.3
-└── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes
+└── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes, secrets, matrix
 ```
 
 ## Версии (закреплено и проверено на 2026-09-06)
@@ -109,11 +119,11 @@ awesome-coding/
 | `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
 | `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14, код компилируется) |
 | `unity/` | полный: snippets, patterns, rules, idioms, decisions + HLSL-шейдеры (6.3 LTS, Android) |
-| `kotlin/` | полный: rules, idioms, decisions, 4 сниппета (2.3; корутины — скомпилированы и выполнены, Ktor — скомпилирован) |
-| `shared/` | полный: 12 кросс-языковых концепций |
+| `kotlin/` | полный: rules, idioms, decisions, 6 сниппетов (2.3; корутины — скомпилированы и выполнены, Ktor — скомпилирован) |
+| `shared/` | полный: 15 кросс-языковых концепций |
 | `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов; SQL прогнан на живом PG 18.6) |
-| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 2 сниппета; Go-код скомпилирован) |
-| `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes |
+| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 4 сниппета; Go-код скомпилирован, outbox/consumer-groups — gofmt + ревью) |
+| `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes, секреты, матричные сборки |
 | `typescript/` | полный: rules, idioms, decisions, 5 сниппетов (tsc 7.0.2 strict — код проверен) |
 | `javascript/` | полный: rules, idioms, decisions, 4 сниппета (node 22 — код выполнен, node:test 5/5) |
 | `python/` | полный: rules, idioms, decisions, 6 сниппетов (Python 3.14.7 — код выполнен, pytest) |
