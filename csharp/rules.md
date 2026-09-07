@@ -69,6 +69,14 @@ updated: 2026-09-07
 - ❌ `Thread.Sleep` в async-коде — `await Task.Delay`.
 - ❌ Строки через `+` в циклах — `StringBuilder`.
 
+## Безопасность
+
+- ✅ SQL: параметризованные запросы (`SqlParameter`), не конкатенация строк.
+- ✅ Секреты: `UserSecrets`/secret manager; `DataProtection` для локального шифрования.
+- ✅ Крипто: `RandomNumberGenerator` для секретов (не `Random`); `SHA256` (не MD5).
+- ✅ XML: запрет DTD/внешних сущностей (XXE) — `DtdProcessing.Prohibit`.
+- ❌ Отключение проверки TLS-сертификатов в проде (`ServerCertificateValidationCallback = ... => true`).
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы с примерами

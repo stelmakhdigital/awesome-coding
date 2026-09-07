@@ -68,3 +68,12 @@ updated: 2026-09-07
 - ✅ Предварительное выделение: `make([]T, 0, n)`, когда размер известен.
 - ✅ `strings.Builder` для конкатенации в цикле.
 - ❌ Не оптимизируйте без `go test -bench` (и без профилировщика для hot path'ов).
+
+## Безопасность
+
+- ✅ `crypto/rand` для секретов/токенов (не `math/rand`); `crypto/sha256` (не `md5`/`sha1`).
+- ✅ TLS: `MinVersion: tls.VersionTLS12`, проверка сертификатов — по умолчанию.
+- ❌ `InsecureSkipVerify: true` — только локальная отладка, с комментарием.
+- ✅ `os/exec` — аргументы массивом, не `sh -c` со строкой (shell injection с внешним вводом).
+- ✅ `html/template` для HTML (экранирование XSS); `text/template` — только не-HTML.
+- ❌ Секреты в бинарнике/конфигах в репо — env/secret manager.

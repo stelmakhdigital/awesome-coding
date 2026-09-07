@@ -50,6 +50,16 @@ updated: 2026-09-07
 - ✅ `#pragma once` или include guards.
 - ✅ Компиляция: `-std=c23 -Wall -Wextra -Werror` (+ санитайзеры в CI).
 
+## Безопасность
+
+- ✅ C23: bounded-функции (`strcpy_s`, `sprintf_s` — Annex K в стандарте); без `gets`.
+- ✅ Границы: `strnlen`/`snprintf`/`memcpy` с проверкой размера; проверка переполнения
+  до аллокации (`size > SIZE_MAX - offset`).
+- ✅ Форматные строки — только константы (`printf("%s", s)`); `printf(user_input)` —
+  format string attack.
+- ✅ Сборка: `-fstack-protector-strong -D_FORTIFY_SOURCE=2 -fPIE -pie`; ASan/UBSan в CI.
+- ❌ `system()`/`popen()` с внешним вводом (shell injection).
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

@@ -59,6 +59,14 @@ updated: 2026-09-07
 - ❌ Корутина без `StopCoroutine` при `OnDisable` — «зомби»-корутины.
 - ✅ `SceneManager.LoadSceneAsync` + `allowSceneActivation` — контроль загрузки.
 
+## Безопасность
+
+- ✅ Секреты не в `ScriptableObject`/prefab'ах — уходят в билд и извлекаются (decompile).
+- ✅ Сеть: TLS (`https` в UnityWebRequest), проверка сертификатов; API-ключи — на бэкенде.
+- ✅ `Application.OpenURL` — только с проверенным URI (intent-инъекция на Android).
+- ✅ Платежи/лицензии — проверяются на сервере, не в клиенте (клиент реверсится).
+- ❌ `Debug.Log` секретов в release (логи собираются на устройствах).
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

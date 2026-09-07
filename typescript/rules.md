@@ -53,6 +53,15 @@ updated: 2026-09-07
 - ❌ Пустой `catch {}`.
 - ✅ Глобальные хендлеры: `process.on("unhandledRejection")` — лог + осознанный exit.
 
+## Безопасность
+
+- ❌ `eval`/`new Function`/`vm` с внешним вводом (code injection).
+- ✅ DOM: `textContent`/`createElement` (не `innerHTML` с внешними данными) — XSS.
+- ✅ Node: `execFile`/`spawn` с массивом аргументов (не `exec` со строкой, не `shell: true`).
+- ✅ Крипто — `node:crypto` (не `Math.random` для токенов/солей).
+- ✅ Внешние JSON — с ограничением размера и валидацией схемы (zod).
+- ❌ Секреты в клиентском коде — бандл публичный; только через API-слой.
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

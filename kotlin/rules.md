@@ -56,6 +56,16 @@ updated: 2026-09-07
 - ✅ Тестировать на слабых устройствах (не только флагманы).
 - ❌ Работа с UI из background-тредов.
 
+## Безопасность
+
+- ✅ SQL (Exposed/JDBC): параметризованные запросы, не конкатенация.
+- ✅ Крипто: `SecureRandom`/`java.security` (не `Random`); хеши — SHA-256+.
+- ✅ Android: `network_security_config` (TLS 1.2+, запрет cleartext); `WebView` —
+  без `addJavascriptInterface` у публичных активностей.
+- ✅ Секреты: не в коде/ресурсах (R8 «обфусцирует», но не шифрует — бинарник реверсится);
+  EncryptedSharedPreferences/Keystore.
+- ✅ `exported=true`-компоненты — только осознанно, с проверкой `intent`-входа.
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

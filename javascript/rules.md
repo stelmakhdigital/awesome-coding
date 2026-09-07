@@ -51,6 +51,14 @@ updated: 2026-09-07
 - ✅ Путь — `path.join`/`path.resolve`, не конкатенация строк.
 - ✅ Секреты — из env (`process.env`), не в коде.
 
+## Безопасность
+
+- ❌ `eval`/`new Function`/`vm` с внешним вводом (code injection).
+- ✅ DOM: `textContent`/`createElement` (не `innerHTML` с внешними данными) — XSS.
+- ✅ Node: `execFile`/`spawn` с массивом аргументов (не `exec` со строкой, не `shell: true`).
+- ✅ Крипто — `node:crypto` (не `Math.random` для токенов/солей).
+- ❌ Секреты в клиентском коде — бандл публичный; только через API-слой.
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

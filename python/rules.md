@@ -58,6 +58,15 @@ updated: 2026-09-07
 - ✅ `monkeypatch`/инъекция зависимостей — не глобальные моки.
 - ❌ `time.sleep` в тестах.
 
+## Безопасность
+
+- ❌ `pickle`/`shelve`/`marshal` с недоверенными данными (RCE при десериализации).
+- ✅ `yaml.safe_load` (не `yaml.load`); JSON — модуль `json`.
+- ❌ `eval`/`exec`/`compile` с внешним вводом.
+- ✅ `subprocess` — список аргументов, `shell=False` (не `os.system`, не shell-строка).
+- ✅ Путь из ввода — `Path.resolve()` + проверка, что не вышел из базового каталога (path traversal).
+- ✅ `requests` — `verify=True` (не отключать TLS-проверку); секреты — из env.
+
 ## Related
 
 - [idioms.md](idioms.md) — идиомы

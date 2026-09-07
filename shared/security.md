@@ -6,7 +6,7 @@ min_version: null
 category: concept
 tags: [security, owasp, secrets, injection, tls]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Security — принципы
@@ -35,6 +35,11 @@ updated: 2026-09-06
 - ❌ Печать PII/секретов в логах
 - ✅ Ограничение размера тела/количества запросов (rate limit)
 - ❌ Доверие заголовкам `X-Forwarded-*` без проверки источника
+- ❌ Десериализация недоверенных данных: `pickle`/`yaml.load`/Java-десериализация/XXE — вектор RCE
+- ❌ `curl | bash` — скачать, проверить хэш/подпись, потом выполнять
+- ❌ Секреты в клиентском коде (web-бандл, APK/IPA) — клиент публичный, реверсится
+- ✅ Supply chain: lock-файлы в репо, минимальный набор зависимостей, CVE-аудит
+  (`npm audit`/`pip-audit`/Dependabot), checksums при загрузке артефактов
 
 ## По языкам
 
