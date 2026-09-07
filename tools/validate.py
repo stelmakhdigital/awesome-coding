@@ -5,8 +5,8 @@
   frontmatter — YAML frontmatter всех .md: обязательные поля, допустимые
                 значения, уникальные id, формат полей.
   manifest    — index/*.yaml (шапка + секции): пути существуют, все
-                контент-файлы есть в каталоге, id/title/status совпадают
-                с frontmatter.
+                контент-файлы есть в каталоге, id/title/status/updated
+                совпадает с frontmatter, sections ↔ файлы index/*.yaml.
   indexes     — README каталога упоминает все .md каталога; счётчики
                 «Статус разделов» в основном README совпадают с фактом.
   links       — относительные markdown-ссылки указывают на существующие файлы.
@@ -63,6 +63,13 @@ ID_PREFIXES = (
 )
 REQUIRED_FIELDS = ("id", "title", "lang", "min_version", "category", "tags", "status", "updated")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def norm_date(v) -> str | None:
+    """Дата из YAML (datetime.date) или строка → ISO-строка."""
+    if v is None:
+        return None
+    return v.isoformat() if hasattr(v, "isoformat") else str(v)
 ID_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
 
@@ -207,8 +214,24 @@ def check_manifest() -> list[str]:
     if MANIFEST.exists():
         try:
             head = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
-            if isinstance(head, dict) and "updated" not in head:
-                issues.append("index/manifest.yaml: нет поля 'updated'")
+            if isinstance(head, dict):
+                if "updated" not in head:
+                    issues.append("index/manifest.yaml: нет поля 'updated'")
+                if "sections" not in head:
+                    issues.append("index/manifest.yaml: нет поля 'sections' (список разделов)")
+                else:
+                    listed = {str(s) for s in head.get("sections") or []}
+                    on_disk = {mf.stem for mf in files if mf.name != "manifest.yaml"}
+                    for s in sorted(listed - on_disk):
+                        issues.append(
+                            f"index/manifest.yaml: раздел '{s}' в sections, "
+                            f"но index/{s}.yaml не существует"
+                        )
+                    for s in sorted(on_disk - listed):
+                        issues.append(
+                            f"index/manifest.yaml: index/{s}.yaml существует, "
+                            f"но '{s}' отсутствует в sections"
+                        )
         except yaml.YAMLError:
             pass  # уже отмечено выше
 
@@ -241,6 +264,14 @@ def check_manifest() -> list[str]:
                     f"manifest ({section}): '{rel}': {field}={entry.get(field)!r} "
                     f"!= frontmatter {fm.get(field)!r}"
                 )
+        idx_upd = entry.get("updated")
+        if idx_upd is None:
+            issues.append(f"manifest ({section}): '{rel}': нет поля 'updated'")
+        elif norm_date(idx_upd) != norm_date(fm.get("updated")):
+            issues.append(
+                f"manifest ({section}): '{rel}': updated={idx_upd!r} "
+                f"!= frontmatter {fm.get('updated')!r}"
+            )
 
     # Обратное направление: все контент-файлы с frontmatter — в manifest.
     for path in all_md_files():

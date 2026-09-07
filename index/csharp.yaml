@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, async, exceptions, nullable, di]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: csharp-idioms
     title: "C# Idioms"
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, modern-csharp, primary-ctor, records]
     status: stable
     verified: compiled
+    updated: 2026-09-06
 decisions:
   - id: csharp-decisions
     title: "C# Decisions"
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, libraries, choices, ecosystem]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: csharp-error-handling
     title: "Error handling: исключения, фильтры, валидация аргументов"
@@ -29,54 +32,63 @@ snippets:
     tags: [errors, exceptions, validation, retry]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-async-await
     title: "Async/await: Task.WhenAll, CancellationToken"
     path: csharp/snippets/async-await.md
     tags: [async, await, task, cancellation, concurrency]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-collections
     title: "Collections: List, Dictionary, Span, LINQ"
     path: csharp/snippets/collections.md
     tags: [collections, linq, span, immutable]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-json
     title: "JSON: System.Text.Json + source generation"
     path: csharp/snippets/json.md
     tags: [json, serialization, system.text.json, source-gen]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-logging
     title: "Logging: Microsoft.Extensions.Logging, scopes"
     path: csharp/snippets/logging.md
     tags: [logging, structured, scopes, mext]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-testing
     title: "Testing: xUnit, Theory/InlineData"
     path: csharp/snippets/testing.md
     tags: [testing, xunit, unit-tests, theory]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-http-server
     title: "HTTP server: ASP.NET Core Minimal API (.NET 10)"
     path: csharp/snippets/http-server.md
     tags: [http, aspnet-core, minimal-api, server, validation, openapi]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: csharp-http-client
     title: "HTTP client: IHttpClientFactory + resilience pipeline"
     path: csharp/snippets/http-client.md
     tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: csharp-configuration
     title: "Configuration: Options pattern (IOptions, валидация, hot-reload)"
     path: csharp/snippets/configuration.md
     tags: [configuration, options, ioptions, validation, env, 12-factor]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
 patterns:
   - id: csharp-functional-options
     title: "C#: Functional Options (builder)"
@@ -84,15 +96,18 @@ patterns:
     tags: [pattern, options, builder, configuration]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-repository
     title: "C#: Repository"
     path: csharp/patterns/repository.md
     tags: [pattern, repository, persistence, ef-core]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: csharp-state-machine
     title: "C#: State Machine (явные переходы)"
     path: csharp/patterns/state-machine.md
     tags: [pattern, state-machine, domain, invariants]
     status: stable
     verified: compiled
+    updated: 2026-09-06

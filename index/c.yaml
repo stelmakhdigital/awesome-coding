@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, memory, safety, c23]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: c-idioms
     title: C Idioms (C23)
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, c23, structs, static-assert]
     status: stable
     verified: executed
+    updated: 2026-09-06
 decisions:
   - id: c-decisions
     title: C Decisions (язык, аллокатор, строки, тесты)
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, allocator, strings, testing, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: c-error-handling
     title: "Error handling: коды возврата, errno, cleanup через goto"
@@ -29,21 +32,25 @@ snippets:
     tags: [errors, errno, cleanup, memory]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: c-memory
     title: "C: память (ownership, cleanup, arena)"
     path: c/snippets/memory.md
     tags: [memory, malloc, cleanup, arena, ownership]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: c-strings
     title: "C: строки (C23 stdstring.h, builder)"
     path: c/snippets/strings.md
     tags: [strings, stdstring, cstr, buffer, builder]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: c-testing
     title: "C: Testing (harness + assert, санитайзеры)"
     path: c/snippets/testing.md
     tags: [testing, assert, harness, sanitizers, unit-tests]
     status: stable
     verified: executed
+    updated: 2026-09-06

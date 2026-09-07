@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, strict, types, style]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: ts-idioms
     title: TypeScript Idioms
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, type-narrowing, generics, discriminated-unions]
     status: stable
     verified: compiled
+    updated: 2026-09-06
 decisions:
   - id: ts-decisions
     title: TypeScript Decisions (инструменты, фреймворки)
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, tooling, build, testing, validation, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: ts-http-client
     title: HTTP client (fetch + AbortController)
@@ -29,27 +32,32 @@ snippets:
     tags: [http, fetch, async, timeout]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: ts-testing
     title: "TypeScript: Testing (vitest, table-driven, async)"
     path: typescript/snippets/testing.md
     tags: [testing, vitest, unit-tests, async, mocking]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: ts-json
     title: "TypeScript: JSON (zod, unknown на границе)"
     path: typescript/snippets/json.md
     tags: [json, zod, validation, serialization, api]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: ts-async
     title: "TypeScript: async (таймауты, ретраи, лимит параллелизма)"
     path: typescript/snippets/async.md
     tags: [async, timeout, retry, abort, concurrency, promise]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: ts-file-io
     title: "TypeScript: файловый IO (fs/promises, атомарная запись, стримы)"
     path: typescript/snippets/file-io.md
     tags: [files, fs, promises, streams, atomic, node]
     status: stable
     verified: executed
+    updated: 2026-09-07

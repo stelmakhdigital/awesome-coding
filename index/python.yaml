@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, style, typing, errors]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: py-idioms
     title: Python Idioms
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, dataclass, match, walrus, contextlib]
     status: stable
     verified: executed
+    updated: 2026-09-06
 decisions:
   - id: py-decisions
     title: Python Decisions (библиотеки, фреймворки)
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, libraries, http, testing, web, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: py-http-client
     title: HTTP client (httpx, sync + async)
@@ -29,33 +32,39 @@ snippets:
     tags: [http, httpx, async, client]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: py-error-handling
     title: "Python: Error handling (исключения, contextlib, ретраи)"
     path: python/snippets/error-handling.md
     tags: [errors, exceptions, contextlib, retry, cleanup]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: py-testing
     title: "Python: Testing (pytest, параметризация, фикстуры)"
     path: python/snippets/testing.md
     tags: [testing, pytest, fixtures, parametrize, unit-tests]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: py-json
     title: "Python: JSON (pydantic, dataclasses, валидация)"
     path: python/snippets/json.md
     tags: [json, pydantic, dataclass, validation, api]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: py-asyncio
     title: "Python: asyncio (TaskGroup, timeout, semaphore, отмена)"
     path: python/snippets/asyncio.md
     tags: [asyncio, async, concurrency, timeout, taskgroup, cancellation]
     status: stable
     verified: executed
+    updated: 2026-09-07
   - id: py-web-server
     title: "Python: web-сервер (FastAPI, Pydantic v2, DI, lifespan)"
     path: python/snippets/web-server.md
     tags: [fastapi, web, http, server, pydantic, api]
     status: stable
     verified: executed
+    updated: 2026-09-07

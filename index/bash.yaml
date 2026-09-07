@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, strict-mode, safety, scripting]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: bash-idioms
     title: Bash Idioms (5.x)
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, arrays, mapfile, functions]
     status: stable
     verified: executed
+    updated: 2026-09-06
 decisions:
   - id: bash-decisions
     title: Bash Decisions (bash vs python, инструменты)
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, scripting, python, tooling, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: bash-error-handling
     title: "Error handling: strict mode, ERR/EXIT traps"
@@ -29,21 +32,25 @@ snippets:
     tags: [errors, traps, strict-mode, cleanup]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: bash-functions
     title: "Bash: функции (ошибки, таймауты, параллелизм)"
     path: bash/snippets/functions.md
     tags: [functions, errors, timeout, parallel, xargs]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: bash-files
     title: "Bash: файлы (безопасность, блокировки, temp)"
     path: bash/snippets/files.md
     tags: [files, temp, flock, safety, paths]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: bash-curl
     title: "Bash: curl в скриптах (ошибки, JSON, ретраи, загрузка)"
     path: bash/snippets/curl.md
     tags: [curl, http, networking, json, retry, download]
     status: stable
     verified: executed
+    updated: 2026-09-07

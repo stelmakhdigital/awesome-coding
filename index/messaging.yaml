@@ -8,6 +8,7 @@ decisions:
     tags: [decisions, kafka, rabbitmq, redis-streams, broker, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: messaging-kafka
     title: "Kafka: producer, consumer, consumer groups"
@@ -15,22 +16,26 @@ snippets:
     tags: [kafka, producer, consumer, consumer-group, exactly-once]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: messaging-rabbitmq
     title: "RabbitMQ: queues, exchanges, ack/nack, DLQ"
     path: messaging/snippets/rabbitmq.md
     tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: messaging-outbox
     title: "Outbox: события из транзакции без потери и дублей"
     path: messaging/snippets/outbox.md
     tags: [outbox, events, transaction, reliability, cdc, kafka]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: messaging-consumer-groups
     title: "Kafka consumer groups: партицирование, rebalance, идемпотентность, DLQ"
     path: messaging/snippets/consumer-groups.md
     tags: [kafka, consumer-group, rebalance, idempotency, dlq, lag]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
 

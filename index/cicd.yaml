@@ -8,33 +8,39 @@ snippets:
     tags: [cicd, github-actions, workflows, matrix, caching, secrets]
     status: stable
     verified: none
+    updated: 2026-09-06
   - id: cicd-gitlab-ci
     title: "GitLab CI: паттерны"
     path: cicd/gitlab-ci.md
     tags: [cicd, gitlab-ci, stages, caching, artifacts]
     status: stable
     verified: none
+    updated: 2026-09-06
   - id: cicd-docker
     title: "Docker: Dockerfile и compose (best practices)"
     path: cicd/docker.md
     tags: [docker, dockerfile, compose, multi-stage, layers]
     status: stable
     verified: none
+    updated: 2026-09-06
   - id: cicd-k8s
     title: "Kubernetes: манифесты и паттерны"
     path: cicd/k8s.md
     tags: [kubernetes, k8s, deployment, probes, hpa, secrets]
     status: stable
     verified: none
+    updated: 2026-09-06
   - id: cicd-secrets
     title: "CI: секреты (GitHub Actions, OIDC, маскирование)"
     path: cicd/secrets.md
     tags: [secrets, security, github-actions, oidc, masking, ci]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: cicd-matrix
     title: "CI: матричные сборки (версии, ОС, кэш, fail-fast)"
     path: cicd/matrix.md
     tags: [matrix, versions, parallel, fail-fast, caching, ci]
     status: stable
     verified: reviewed
+    updated: 2026-09-07

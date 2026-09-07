@@ -4,6 +4,7 @@
 # Формат: docs/FORMAT.md. Обновлять при каждом добавлении/изменении записи.
 version: 1
 updated: 2026-09-07
+sections: [go, typescript, javascript, python, c, bash, csharp, kotlin, unity, shared, architecture, database, messaging, cicd]
 languages:
   go:
     version: "1.27"

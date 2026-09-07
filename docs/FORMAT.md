@@ -27,7 +27,9 @@
 
 ## Каталог записей (`index/`)
 
-- `index/manifest.yaml` — **шапка**: `version`, `updated`, версии языков (`languages.*.version`).
+- `index/manifest.yaml` — **шапка**: `version`, `updated`, `sections`
+  (список разделов — для агентов и туллинга), версии языков
+  (`languages.*.version`).
 - `index/<section>.yaml` — **записи одного раздела** (go, typescript, …, shared,
   architecture, database, messaging, cicd). Агент читает только нужный файл.
 
@@ -41,6 +43,7 @@
 | `tags` | [string] | Теги для поиска (совпадают с frontmatter) |
 | `status` | string | Совпадает со `status` в frontmatter |
 | `verified` | string | Уровень проверки кода: `compiled` (скомпилирован/прогнан через type-check), `executed` (выполнен), `reviewed` (рецензирован, не компилировался), `none` (в записи нет кода) |
+| `updated` | date | Дата последнего содержательного обновления; обязан совпадать с `updated` в frontmatter файла. Позволяет агенту/кешу проверять свежесть записи, не читая файл |
 
 Правила:
 
@@ -48,6 +51,8 @@
 - `verified` отражает **факт проверки**, а не обещание: «код должен компилироваться» ≠ `compiled`.
 - При повышении уровня проверки (например, `reviewed` → `compiled`) обновляйте
   `index/<section>.yaml` и дату `updated`.
+- `updated` в записи каталога обязан совпадать с `updated` в frontmatter —
+  проверяется валидатором. При содержательном изменении записи обновите обе.
 - Имя секционного файла = название раздела; новые разделы — только после
   расширения `ALLOWED_SECTIONS` в `tools/validate.py`.
 

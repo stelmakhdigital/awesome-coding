@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, guardrails, null-safety, coroutines, immutability]
     status: stable
     verified: none
+    updated: 2026-09-07
 idioms:
   - id: kotlin-idioms
     title: "Kotlin Idioms"
@@ -15,6 +16,7 @@ idioms:
     tags: [idioms, style, data-class, sealed, extensions, when]
     status: stable
     verified: reviewed
+    updated: 2026-09-06
 decisions:
   - id: kotlin-decisions
     title: "Kotlin Decisions (Compose, DI, HTTP, БД)"
@@ -22,6 +24,7 @@ decisions:
     tags: [decisions, compose, hilt, ktor, retrofit, room, choices]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: kotlin-coroutines
     title: "Kotlin: корутины, Flow, отмена"
@@ -29,33 +32,39 @@ snippets:
     tags: [coroutines, flow, suspend, cancellation, scope]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: kotlin-compose
     title: "Kotlin: Jetpack Compose (базовые паттерны)"
     path: kotlin/snippets/compose.md
     tags: [compose, ui, state, viewmodel, android]
     status: stable
     verified: reviewed
+    updated: 2026-09-06
   - id: kotlin-http
     title: "Kotlin: Ktor Client (таймауты, отмена, ретраи)"
     path: kotlin/snippets/http.md
     tags: [http, ktor, client, timeout, retry]
     status: stable
     verified: compiled
+    updated: 2026-09-06
   - id: kotlin-room
     title: "Kotlin: Room (Entity, DAO, Flow, миграции)"
     path: kotlin/snippets/room.md
     tags: [room, database, android, flow, migrations, persistence]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: kotlin-viewmodel
     title: "Kotlin: ViewModel + StateFlow + SavedStateHandle (состояние UI)"
     path: kotlin/snippets/viewmodel.md
     tags: [android, viewmodel, stateflow, savedstatehandle, lifecycle, ui-state]
     status: stable
     verified: reviewed
+    updated: 2026-09-07
   - id: kotlin-testing
     title: "Kotlin: тестирование корутин (runTest, виртуальное время, Flow)"
     path: kotlin/snippets/testing.md
     tags: [testing, coroutines, runtest, virtual-time, flow, junit]
     status: stable
     verified: reviewed
+    updated: 2026-09-07

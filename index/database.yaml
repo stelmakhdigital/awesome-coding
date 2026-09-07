@@ -8,6 +8,7 @@ rule_set:
     tags: [rules, sql, postgres, indexes, transactions, migrations]
     status: stable
     verified: none
+    updated: 2026-09-06
 decisions:
   - id: database-decisions
     title: "Database Decisions (SQL/NoSQL, ORM, кэширование)"
@@ -15,6 +16,7 @@ decisions:
     tags: [decisions, postgres, nosql, orm, redis, caching]
     status: stable
     verified: none
+    updated: 2026-09-06
 snippets:
   - id: database-postgres-core
     title: "PostgreSQL: индексы, EXPLAIN, пулы соединений"
@@ -22,28 +24,33 @@ snippets:
     tags: [postgres, indexes, explain, pooling, performance]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: database-transactions
     title: "PostgreSQL: транзакции, изоляция, advisory locks"
     path: database/snippets/transactions.md
     tags: [postgres, transactions, isolation, savepoint, locks]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: database-migrations
     title: "Миграции: expand-contract, zero-downtime"
     path: database/snippets/migrations.md
     tags: [migrations, schema, expand-contract, goose, zero-downtime]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: database-n-plus-one
     title: "N+1: детект и лечение"
     path: database/snippets/n-plus-one.md
     tags: [n-plus-one, performance, queries, batching]
     status: stable
     verified: executed
+    updated: 2026-09-06
   - id: database-redis
     title: "Redis: кэширование, структуры данных, TTL"
     path: database/snippets/redis.md
     tags: [redis, caching, ttl, data-structures, streams]
     status: stable
     verified: executed
+    updated: 2026-09-06
 
