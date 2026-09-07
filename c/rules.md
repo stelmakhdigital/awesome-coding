@@ -6,7 +6,7 @@ min_version: "C23"
 category: rule-set
 tags: [rules, guardrails, memory, safety, c23]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # C Rules — обязательные правила
@@ -45,6 +45,7 @@ updated: 2026-09-06
 ## Стиль
 
 - ✅ Имена: `snake_case`; типы — `snake_case_t` (или `PascalCase` — единообразно).
+- ✅ Макросы: `UPPER_SNAKE_CASE` (`MAX_ITEMS`); глобальные переменные — с префиксом модуля (`storage_init`).
 - ✅ Одна функция — одна задача; < ~50 строк.
 - ✅ `#pragma once` или include guards.
 - ✅ Компиляция: `-std=c23 -Wall -Wextra -Werror` (+ санитайзеры в CI).

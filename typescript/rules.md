@@ -6,7 +6,7 @@ min_version: "7.0"
 category: rule-set
 tags: [rules, guardrails, strict, types, style]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # TypeScript Rules — обязательные правила
@@ -28,6 +28,16 @@ updated: 2026-09-06
 - ✅ `void`/`Promise<void>` для функций без результата (не `undefined`).
 - ✅ `import type` для импорта только типов.
 - ❌ Мутация аргументов-коллекций (передавайте копии или `readonly`).
+
+## Именование
+
+- ✅ Переменные, функции, методы: `camelCase` (`userName`, `fetchItems`).
+- ✅ Типы, интерфейсы, классы, enum'ы: `PascalCase` (`UserService`, `HttpError`).
+- ✅ Константы модуля: `UPPER_SNAKE_CASE` (`MAX_RETRIES`); члены enum — `PascalCase`.
+- ✅ Файлы: `kebab-case` (`http-client.ts`); один модуль — один файл.
+- ✅ Булевы: префикс `is`/`has`/`should`/`can` (`isValid`, `hasPermission`).
+- ❌ Нет ведущего подчёркивания для «приватного» — `#field`/модификатор `private`.
+- ❌ Нет венгерской нотации (`strName`, `iCount`) и аббревиатур, требующих словаря.
 
 ## Асинхронность
 

@@ -6,7 +6,7 @@ min_version: "5.3"
 category: rule-set
 tags: [rules, guardrails, strict-mode, safety, scripting]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Bash Rules — обязательные правила
@@ -26,6 +26,7 @@ updated: 2026-09-06
 - ✅ `"$@"` — аргументы скрипта (не `$*` — теряет границы).
 - ✅ `${var:-default}` — дефолт; `${var:?required}` — ошибка при отсутствии.
 - ✅ Имена: `UPPER_SNAKE` (глобальные), `lower_snake` (локальные, `local`).
+- ✅ Функции: `lower_snake_case` (`get_item`), синтаксис `name() { ... }` (без ключевого слова `function`).
 - ❌ `eval` с внешним вводом.
 
 ## Команды

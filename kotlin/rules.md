@@ -6,7 +6,7 @@ min_version: "2.3"
 category: rule-set
 tags: [rules, guardrails, null-safety, coroutines, immutability]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Kotlin Rules — обязательные правила
@@ -24,6 +24,15 @@ updated: 2026-09-06
 - ✅ `List`/`Map`/`Set` в сигнатурах (не `MutableList`) — не обещаем мутацию.
 - ✅ `data class` для DTO/значений (value semantics, `copy`).
 - ❌ Мутабельные `var`-поля в публичных классах.
+
+## Именование (Kotlin conventions)
+
+- ✅ Классы, интерфейсы, объекты: `PascalCase` (`UserService`).
+- ✅ Функции, свойства, переменные: `camelCase` (`getItem`, `maxRetries`).
+- ✅ Константы (top-level, `object`, `companion`): `PascalCase` (`MaxRetries`) — не `UPPER_SNAKE`.
+- ✅ Пакеты: lowercase (`com.example.storage`); имя файла = имя основного класса.
+- ✅ «Приватное» — просто `private`, без ведущего подчёркивания.
+- ❌ Нет венгерской нотации и заумных аббревиатур.
 
 ## Корутины
 
@@ -44,7 +53,7 @@ updated: 2026-09-06
 
 - ✅ Compose для нового UI (см. [decisions.md](decisions.md)).
 - ✅ `@Volatile` для shared-состояния между тредями.
-- ✅ Тестировать на低端-устройствах (не только флагманы).
+- ✅ Тестировать на слабых устройствах (не только флагманы).
 - ❌ Работа с UI из background-тредов.
 
 ## Related

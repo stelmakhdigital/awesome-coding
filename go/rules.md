@@ -6,7 +6,7 @@ min_version: "1.21"
 category: rule-set
 tags: [rules, guardrails, style, errors, concurrency]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Go — Rules
@@ -28,6 +28,9 @@ updated: 2026-09-06
 - ✅ Пакеты: короткие lowercase слова (`user`, `storage`), без camelCase и подчёркиваний.
 - ✅ Receiver'ы: 1–2 буквы — аббревиатура типа (`s` для `Server`), одинаковые внутри одного типа.
 - ✅ Экспортируйте только то, что должно быть публичным; остальное — lowercase.
+- ✅ Переменные, функции, типы: `mixedCaps` (`maxRetries`, `GetItem`); константы — тоже `mixedCaps` (`MaxRetries`, не `MAX_RETRIES`).
+- ✅ Аббревиатуры — единообразно: `HTTPClient`, `ParseURL` (не `HttpClient`, `ParseUrl`).
+- ❌ Нет подчёркиваний в именах (в т.ч. для «приватного» — lowercase уже приватный).
 - ❌ Не дублируйте имя пакета в имени: `user.UserService` → `user.Service`.
 - ❌ Нет пакетов `util`, `common`, `helpers`, `misc` — выносите по смыслу.
 

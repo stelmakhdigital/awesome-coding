@@ -6,10 +6,18 @@ min_version: "6.3"
 category: rule-set
 tags: [rules, guardrails, performance, lifecycle, android]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Unity Rules — обязательные guardrails
+
+## Именование (конвенции Unity)
+
+- ✅ Классы (MonoBehaviour, скрипты): `PascalCase` (`PlayerController`).
+- ✅ Публичные поля, свойства, методы, константы: `PascalCase` (`MaxHealth`, `Move()`, `MaxRetries`).
+- ✅ Приватные поля: префикс `m_` (`m_health`) — конвенция Unity.
+- ✅ Prefab'ы, сцены, ассеты: `PascalCase` (`Player.prefab`, `Level1.unity`).
+- ❌ Нет венгерской нотации (`strName`, `bFlag`); поиск по имени — см. «Производительность».
 
 ## Производительность (кадр)
 
@@ -41,7 +49,7 @@ updated: 2026-09-06
 - ✅ **IL2CPP** для release; Mono — только debug-сборки.
 - ✅ **AAB** для Google Play; target API level — актуальный.
 - ✅ Проверять ProGuard/R8-правила при рефлексии/сериализации (System.Text.Json, Newtonsoft).
-- ✅ Тестировать на слабых устройствах (thermal throttling, 30 fps на低端).
+- ✅ Тестировать на слабых устройствах (thermal throttling, 30 fps на минимальной конфигурации).
 - ❌ Тяжёлые ассеты в main-сцене — грузить асинхронно / через Addressables.
 
 ## Async и корутины

@@ -6,7 +6,7 @@ min_version: "ES2025"
 category: rule-set
 tags: [rules, guardrails, esm, async, style]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # JavaScript Rules — обязательные правила
@@ -21,6 +21,14 @@ updated: 2026-09-06
 - ✅ `#private` поля для приватного состояния классов.
 - ❌ Мутация аргументов-коллекций.
 - ❌ Глобальные переменные «на уровне модуля» для состояния — явный объект/класс.
+
+## Именование
+
+- ✅ Переменные, функции: `camelCase`; классы: `PascalCase`.
+- ✅ Константы модуля: `UPPER_SNAKE_CASE` (`MAX_RETRIES`).
+- ✅ Файлы: `kebab-case` (`http-client.js`); один модуль — один файл.
+- ✅ Булевы: префикс `is`/`has`/`should`/`can`.
+- ❌ Нет венгерской нотации и заумных аббревиатур; «приватное» — `#field`, не `_field`.
 
 ## Асинхронность
 

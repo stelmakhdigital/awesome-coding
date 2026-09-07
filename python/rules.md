@@ -6,7 +6,7 @@ min_version: "3.14"
 category: rule-set
 tags: [rules, guardrails, style, typing, errors]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # Python Rules — обязательные правила
@@ -19,6 +19,16 @@ updated: 2026-09-06
 - ✅ `X | None` вместо `Optional[X]`; `list[str]` вместо `List[str]`.
 - ✅ `dataclass`/`@dataclass(frozen=True)` для DTO; `TypedDict` для dict-контрактов.
 - ❌ Мутабельные дефолтные аргументы (`def f(x=[])`).
+
+## Именование (PEP 8)
+
+- ✅ Функции, методы, переменные: `snake_case` (`get_item`, `max_retries`).
+- ✅ Классы: `PascalCase` (`ItemService`) — без подчёркиваний.
+- ✅ Константы модуля: `UPPER_SNAKE_CASE` (`MAX_RETRIES`).
+- ✅ Модули/пакеты: короткие lowercase (`storage`, не `storage_utils`).
+- ✅ «Приватное»: одно подчёркивание (`_internal`); `__name` (mangling) — только в классах.
+- ✅ Булевы: префикс `is_`/`has_` (`is_valid`, `has_permission`).
+- ❌ Нет `camelCase`/`PascalCase` для переменных и функций.
 
 ## Код
 

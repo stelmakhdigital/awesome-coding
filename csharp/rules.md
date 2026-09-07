@@ -6,10 +6,19 @@ min_version: "10"
 category: rule-set
 tags: [rules, guardrails, style, async, errors]
 status: stable
-updated: 2026-09-06
+updated: 2026-09-07
 ---
 
 # C# Rules — обязательные guardrails
+
+## Именование (руководство Microsoft)
+
+- ✅ Классы, интерфейсы, методы, свойства, события: `PascalCase` (`UserService`, `GetItem`).
+- ✅ Интерфейсы: префикс `I` (`IStorage`); async-методы — суффикс `Async` (`LoadAsync`).
+- ✅ Локальные переменные, параметры, аргументы лямбд: `camelCase` (`itemId`).
+- ✅ Приватные поля: `_camelCase` (`_timeout`); константы — `PascalCase` (`MaxRetries`, не `MAX_RETRIES`).
+- ✅ События: `PascalCase`, прошедшее время или существительное (`ItemSaved`, `StateChanged`).
+- ❌ Нет венгерской нотации и префикса `m_` (это конвенция Unity).
 
 ## Async
 
