@@ -32,6 +32,7 @@ flowchart LR
     Q -- "брокеры" --> MS[messaging/]
     Q -- "архитектура" --> AR[architecture/]
     Q -- "CI/CD" --> CI[cicd/]
+    Q -- "управление проектом" --> PM[pm/]
     Q -- "доки, ADR, схемы" --> DOC["shared/documentation.md"]
     L --> R["rules.md → manifest → запись"]
 ```
@@ -45,6 +46,7 @@ flowchart LR
 | Задокументировать проект со схемами | `shared/documentation.md` + `shared/mermaid.md` |
 | Провести ревью PR | `shared/code-review.md` |
 | Надёжно публиковать события из транзакции | `messaging/snippets/outbox.md` |
+| Начать проект с discovery, вести roadmap и память | `pm/sdlc.md` + `pm/roadmap.md` + `pm/project-memory.md` |
 
 ## Структура
 
@@ -84,7 +86,8 @@ awesome-coding/
 ├── shared/                    # кросс-языковые концепции (15 тем)
 ├── database/                  # PostgreSQL 18 + Redis 8
 ├── messaging/                 # Kafka 4.3, RabbitMQ 4.3
-└── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes, secrets, matrix
+├── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes, secrets, matrix
+└── pm/                        # SDLC, PMBOK, discovery, требования, риски, roadmap, PROJECT_MEMORY
 ```
 
 ## Версии (закреплено и проверено на 2026-09-06)
@@ -129,6 +132,7 @@ awesome-coding/
 | `python/` | полный: rules, idioms, decisions, 6 сниппетов (Python 3.14.7 — код выполнен, pytest) |
 | `c/` | полный: rules, idioms, decisions, 4 сниппета (clang -std=c23, ASan-чисто) |
 | `bash/` | полный: rules, idioms, decisions, 4 сниппета (bash 5.3 — код выполнен) |
+| `pm/` | полный: SDLC, PMBOK, discovery, требования, опрос, roadmap, PROJECT_MEMORY, риски (8 записей) |
 
 ## License
 

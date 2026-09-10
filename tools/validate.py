@@ -40,7 +40,7 @@ MANIFEST = INDEX_DIR / "manifest.yaml"
 ALLOWED_SECTIONS = {
     "go", "typescript", "javascript", "python", "c", "bash",
     "csharp", "kotlin", "unity", "shared", "architecture",
-    "database", "messaging", "cicd",
+    "database", "messaging", "cicd", "pm",
 }
 
 # Файлы, которым frontmatter НЕ требуется.
@@ -52,14 +52,14 @@ NO_FRONTMATTER_DIRS = {"docs"}
 
 ALLOWED_LANGS = {
     "go", "typescript", "javascript", "python", "c", "bash",
-    "csharp", "kotlin", "unity", "shared", "database", "messaging", "cicd",
+    "csharp", "kotlin", "unity", "shared", "database", "messaging", "cicd", "pm",
 }
 ALLOWED_CATEGORIES = {"concept", "rule-set", "idioms", "decisions", "snippet", "pattern"}
 ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
 ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
 ID_PREFIXES = (
     "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
-    "shared", "ddd", "arch", "database", "messaging", "cicd",
+    "shared", "ddd", "arch", "database", "messaging", "cicd", "pm",
 )
 REQUIRED_FIELDS = ("id", "title", "lang", "min_version", "category", "tags", "status", "updated")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")

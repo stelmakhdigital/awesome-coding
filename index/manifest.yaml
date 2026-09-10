@@ -1,10 +1,9 @@
 # Машиночитаемый каталог awesome-coding (шапка): версии и метаданные.
 # Записи разделов — в index/<section>.yaml. Формат: docs/FORMAT.md.
-# Машиночитаемый каталог всех записей awesome-coding.
-# Формат: docs/FORMAT.md. Обновлять при каждом добавлении/изменении записи.
+# Обновлять при каждом добавлении/изменении записи.
 version: 1
 updated: 2026-09-07
-sections: [go, typescript, javascript, python, c, bash, csharp, kotlin, unity, shared, architecture, database, messaging, cicd]
+sections: [go, typescript, javascript, python, c, bash, csharp, kotlin, unity, shared, architecture, database, messaging, cicd, pm]
 languages:
   go:
     version: "1.27"

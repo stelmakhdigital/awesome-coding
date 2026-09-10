@@ -1,0 +1,63 @@
+# Записи раздела pm. Шапка и версии языков: index/manifest.yaml.
+
+version: null
+concepts:
+  - id: pm-sdlc
+    title: "PM: SDLC — фазы, гейты, артефакты"
+    path: pm/sdlc.md
+    tags: [sdlc, phases, gates, discovery, planning, release]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+  - id: pm-pmbok
+    title: "PM: PMBOK — группы процессов и области знаний для агентского проекта"
+    path: pm/pmbok.md
+    tags: [pmbok, project-management, charter, rac, wbs, scope]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+patterns:
+  - id: pm-discovery
+    title: "PM: Discovery — валидация проблемы до разработки"
+    path: pm/discovery.md
+    tags: [discovery, problem-solution-fit, interviews, hypothesis, validation]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+  - id: pm-requirements
+    title: "PM: Требования — сбор, форматы, приоритизация"
+    path: pm/requirements.md
+    tags: [requirements, moscow, user-story, invest, nfr, interview]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+  - id: pm-risks
+    title: "PM: Риски — реестр, оценка, top-10"
+    path: pm/risks.md
+    tags: [risks, risk-register, mitigation, estimation, buffer]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+rule_set:
+  - id: pm-roadmap
+    title: "PM: Roadmap — правила ведения roadmap.md"
+    path: pm/roadmap.md
+    tags: [roadmap, planning, tasks, milestones, change-control, status]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+  - id: pm-project-memory
+    title: "PM: Проектная память — правила ведения PROJECT_MEMORY.md"
+    path: pm/project-memory.md
+    tags: [project-memory, context, decisions, adr, stakeholders, continuity]
+    status: stable
+    verified: none
+    updated: 2026-09-07
+snippets:
+  - id: pm-survey
+    title: "PM: Опрос — готовый шаблон сбора требований"
+    path: pm/survey.md
+    tags: [survey, questionnaire, requirements-gathering, research, template]
+    status: stable
+    verified: none
+    updated: 2026-09-07

@@ -18,6 +18,7 @@
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
 | Нативный Android (Kotlin) | `kotlin/` |
 | Документирование проекта, ADR, диаграммы (mermaid) | `shared/documentation.md`, `shared/mermaid.md` |
+| Управление проектом: SDLC, discovery, требования, roadmap, риски, PMBOK | `pm/` |
 | Добавление записи в этот репозиторий (контрибьюция) | `docs/CONTRIBUTING.md`, `docs/FORMAT.md` |
 
 **Шаг 2 — внутри раздела:**
@@ -25,7 +26,7 @@
 1. `<section>/README.md` — версии и конвенции.
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
    (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database;
-   нет в: shared, messaging, cicd, architecture).
+   нет в: shared, messaging, cicd, architecture, pm).
 3. Конкретная запись — по тегам в `index/<section>.yaml` (поиск: `grep -i "тег" index/<section>.yaml`;
    без клона — GitHub code search по этому файлу или `make search Q=тег` после клона).
 4. Выбор библиотеки/подхода — `<section>/decisions.md` (таблицы решений), если есть.
@@ -88,6 +89,8 @@
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
+- `pm/` — проектный/продуктовый менеджмент: SDLC, PMBOK, discovery, требования,
+  риски + правила ведения `roadmap.md` и `PROJECT_MEMORY.md` в целевых проектах.
 - `index/` — машиночитаемый каталог: `manifest.yaml` (шапка, версии) +
   `<section>.yaml` (записи раздела: теги, пути, статус, verified).
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).

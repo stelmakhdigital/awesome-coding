@@ -18,7 +18,7 @@
 |---|---|---|
 | `id` | string | Уникальный в репозитории: `<lang>-<name>`, напр. `go-http-server` |
 | `title` | string | Человекочитаемое название |
-| `lang` | string | `go` \| `typescript` \| `javascript` \| `python` \| `c` \| `bash` \| `shared` |
+| `lang` | string | Имя раздела: `go` \| `typescript` \| `javascript` \| `python` \| `c` \| `bash` \| `csharp` \| `kotlin` \| `unity` \| `shared` \| `architecture` \| `database` \| `messaging` \| `cicd` \| `pm` |
 | `min_version` | string | Минимальная версия языка, напр. `"1.22"`, `"3.11"`, `"C23"`, `"5.2"` |
 | `category` | string | `snippet` \| `pattern` \| `rule-set` \| `idioms` \| `decisions` \| `concept` |
 | `tags` | [string] | 3–8 тегов, lowercase, для поиска |
@@ -31,7 +31,7 @@
   (список разделов — для агентов и туллинга), версии языков
   (`languages.*.version`).
 - `index/<section>.yaml` — **записи одного раздела** (go, typescript, …, shared,
-  architecture, database, messaging, cicd). Агент читает только нужный файл.
+  architecture, database, messaging, cicd, pm). Агент читает только нужный файл.
 
 Каждая запись:
 
