@@ -48,7 +48,7 @@ NO_FRONTMATTER = {
     "README.md",  # любой README (индексы разделов)
     "AGENTS.md",
 }
-NO_FRONTMATTER_DIRS = {"docs"}
+NO_FRONTMATTER_DIRS = {"docs", "skills"}  # skills — SKILL.md со своим форматом frontmatter
 
 ALLOWED_LANGS = {
     "go", "typescript", "javascript", "python", "c", "bash",
@@ -116,6 +116,8 @@ def check_frontmatter() -> list[str]:
             if needs_frontmatter(path):
                 issues.append(f"{rel}: нет frontmatter (обязателен для контент-файлов)")
             continue
+        if not needs_frontmatter(path):
+            continue  # свой формат frontmatter (skills/)
         for field in REQUIRED_FIELDS:
             if field not in fm:
                 issues.append(f"{rel}: нет поля '{field}'")
@@ -276,7 +278,7 @@ def check_manifest() -> list[str]:
     # Обратное направление: все контент-файлы с frontmatter — в manifest.
     for path in all_md_files():
         rel = str(path.relative_to(ROOT))
-        if path.name == "README.md" or rel.startswith("docs/"):
+        if path.name in NO_FRONTMATTER or any(p in NO_FRONTMATTER_DIRS for p in path.parts):
             continue
         try:
             fm = parse_frontmatter(path)
