@@ -108,7 +108,7 @@
   роутинг разделов + лимит загрузок. Используется репо «через себя».
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).
 - `docs/adr/` — архитектурные решения репозитория (ADR).
-- `tools/validate.py` + `Makefile` — валидация (frontmatter, каталог, текст, ссылки);
+- `tools/validate.py` + `Makefile` — валидация (frontmatter, каталог, структура записей, текст, ссылки);
   `tools/verify_snippets.py` — прогон кода записей через тулчейны, `tools/readme.py` —
   генерация блока «Статус разделов», `tools/mcp_server.py` — поиск по каталогу
   для MCP-клиентов (`search`/`get`).
@@ -116,7 +116,7 @@
 ## Туллинг
 
 ```bash
-make validate              # все проверки (frontmatter, каталог, индексы, текст, README, ссылки)
+make validate              # все проверки (frontmatter, каталог, индексы, структура, текст, README, ссылки)
 make validate-frontmatter  # только frontmatter
 make validate-manifest     # только manifest
 make validate-indexes      # README каталогов упоминают все файлы раздела

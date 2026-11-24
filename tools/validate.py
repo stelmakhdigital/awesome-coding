@@ -10,6 +10,8 @@
                 кодом, sections ↔ файлы index/*.yaml.
   indexes     — README каталога упоминает все .md каталога (блок «Статус
                 разделов» основного README генерируется: tools/readme.py).
+  structure   — у snippet/pattern есть «Когда использовать», «Когда НЕ
+                использовать» и Related.
   text        — в тексте нет CJK-символов и смешения раскладок («batч», «Кrash»).
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
@@ -41,6 +43,7 @@ from ac import (  # noqa: E402  — разбор формата один на в
     ROOT,
     all_md_files,
     code_fences,
+    content_files,
     index_entries,
     index_files,
     needs_frontmatter,
@@ -308,6 +311,32 @@ def check_indexes() -> list[str]:
     return issues
 
 
+REQUIRE_BY_CATEGORY = {
+    "snippet": ("Когда использовать", "Когда НЕ использовать", "Related"),
+    "pattern": ("Когда использовать", "Related"),
+}
+
+
+def check_structure() -> list[str]:
+    """Содержание записи соответствует category.
+
+    «Когда использовать / Когда НЕ использовать» — то, по чему агент решает,
+    брать ли сниппет; Related — чтобы не выдумывал связи сам. Правило дешёвое,
+    а без него через десяток записей остаются только примеры кода.
+    """
+    issues: list[str] = []
+    for path in content_files():
+        text = path.read_text(encoding="utf-8")
+        m = re.search(r"^category: (\w[\w-]*)", text, re.M)
+        if not m or m.group(1) not in REQUIRE_BY_CATEGORY:
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        for heading in REQUIRE_BY_CATEGORY[m.group(1)]:
+            if heading not in text:
+                issues.append(f"{rel}: category={m.group(1)} — нет раздела «{heading}»")
+    return issues
+
+
 def check_text() -> list[str]:
     """Текст: без CJK и без прилипшей латиницы к кириллице.
 
@@ -341,6 +370,7 @@ CHECKS = {
     "frontmatter": check_frontmatter,
     "manifest": check_manifest,
     "indexes": check_indexes,
+    "structure": check_structure,
     "text": check_text,
     "links": check_links,
 }

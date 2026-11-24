@@ -137,7 +137,7 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Валидация: `make validate` (frontmatter, каталог, индексы, текст, README, ссылки)
+- Валидация: `make validate` (frontmatter, каталог, индексы, структура записей, текст, README, ссылки)
 - Проверка кода: `make verify` (go/tsc/python/node/shellcheck/gcc/PostgreSQL в Docker), `make verify-fix` —
   поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле

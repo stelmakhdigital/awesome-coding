@@ -96,11 +96,12 @@
 | frontmatter | обязательные поля, значения `status`/`verified`/`lang`, уникальность `id`, даты |
 | manifest | `index/*.yaml` ↔ файлы: пути, `id`/`title`/`tags`/`updated` как во frontmatter, `verified` честен для записей с кодом |
 | indexes | `README.md` каталога упоминает все .md этого каталога |
+| structure | у `category: snippet` есть «Когда использовать», «Когда НЕ использовать», `Related`; у `pattern` — «Когда использовать» и `Related` |
 | text | в прозе нет CJK-символов и слов, набранных в чужой раскладке (код и inline-код не проверяется) |
 | readme | блок «Статус разделов» в README совпадает с генерацией из каталога |
 | links | относительные ссылки ведут на существующие файлы |
 
-Отдельно: `make validate-text`, `python3 tools/validate.py --check text`.
+Отдельно: `make validate-structure`, `python3 tools/validate.py --check structure`.
 
 ## Структура сниппета (category: snippet)
 

@@ -27,6 +27,7 @@ help:
 	@echo "  validate-frontmatter  — YAML frontmatter (обязательные поля, id, статусы)"
 	@echo "  validate-manifest     — index/*.yaml (пути, соответствие frontmatter)"
 	@echo "  validate-indexes      — README каталогов упоминают все файлы раздела"
+	@echo "  validate-structure    — у сниппетов/паттернов есть разделы выбора и Related"
 	@echo "  validate-text         — CJK и смешение раскладок в прозе"
 	@echo "  readme                — перегенерировать «Статус разделов» из index/*.yaml"
 	@echo "  validate-links        — относительные markdown-ссылки"
@@ -39,7 +40,7 @@ help:
 	@echo ""
 	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); validate-mermaid — node 20+; verify — docker"
 
-validate: validate-frontmatter validate-manifest validate-indexes validate-text validate-readme validate-links
+validate: validate-frontmatter validate-manifest validate-indexes validate-structure validate-text validate-readme validate-links
 
 validate-frontmatter:
 	$(PYTHON) tools/validate.py --check frontmatter
@@ -49,6 +50,9 @@ validate-manifest:
 
 validate-indexes:
 	$(PYTHON) tools/validate.py --check indexes
+
+validate-structure:
+	$(PYTHON) tools/validate.py --check structure
 
 validate-text:
 	$(PYTHON) tools/validate.py --check text
