@@ -6,7 +6,7 @@ min_version: "10"
 category: snippet
 tags: [configuration, options, ioptions, validation, env, 12-factor]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # Configuration: Options pattern
@@ -19,7 +19,24 @@ updated: 2026-09-07
 ```csharp
 using Microsoft.Extensions.Options;
 
-// 1) POCO-настройки: одна секция — один класс.
+// 1) Регистрация (Program.cs): секция конфигурации + валидация на старте.
+//    Local function: top-level statements обязаны идти раньше объявлений типов,
+//    поэтому пример регистрации — первым, а не в середине файла.
+static void RegisterStorage(WebApplicationBuilder builder)
+{
+    builder.Services.Configure<StorageOptions>(
+        builder.Configuration.GetSection(StorageOptions.SectionName));
+
+    // Валидатор — регистрация в DI: OptionsFactory подхватывает все
+    // IValidateOptions<T>. Цепочка .Validate принимает экземпляр или делегат —
+    // формы .Validate<TValidator>() в API нет, и код с ней не собирается.
+    builder.Services.AddSingleton<IValidateOptions<StorageOptions>, StorageOptionsValidator>();
+
+    builder.Services.AddOptions<StorageOptions>()
+        .ValidateOnStart();     // OptionsValidationException при старте, а не на первом обращении
+}
+
+// 2) POCO-настройки: одна секция — один класс.
 sealed class StorageOptions
 {
     public const string SectionName = "Storage";
@@ -27,29 +44,22 @@ sealed class StorageOptions
     public int TimeoutSeconds { get; init; } = 30;
 }
 
-// 2) Валидация: fail fast на старте, а не на первом использовании.
+// 3) Валидация: fail fast на старте, а не на первом использовании.
 sealed class StorageOptionsValidator : IValidateOptions<StorageOptions>
 {
-    public OptionsValidationResult Validate(string name, StorageOptions options)
+    public ValidateOptionsResult Validate(string? name, StorageOptions options)
     {
         if (string.IsNullOrWhiteSpace(options.Bucket))
         {
-            return OptionsValidationResult.Fail("Storage:Bucket обязателен");
+            return ValidateOptionsResult.Fail("Storage:Bucket обязателен");
         }
         if (options.TimeoutSeconds is < 1 or > 300)
         {
-            return OptionsValidationResult.Fail("Storage:TimeoutSeconds: 1..300");
+            return ValidateOptionsResult.Fail("Storage:TimeoutSeconds: 1..300");
         }
-        return OptionsValidationResult.Success;
+        return ValidateOptionsResult.Success;
     }
 }
-
-// 3) Регистрация (Program.cs): секция конфигурации + валидация на старте.
-builder.Services.Configure<StorageOptions>(
-    builder.Configuration.GetSection(StorageOptions.SectionName));
-builder.Services.AddOptions<StorageOptions>()
-    .ValidateOnStart()          // бросает OptionsValidationException при старте
-    .Validate<StorageOptionsValidator>();
 
 // 4) Потребление: primary constructor (C# 12+).
 sealed class FileStorage(IOptions<StorageOptions> options)

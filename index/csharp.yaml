@@ -73,22 +73,22 @@ snippets:
     path: csharp/snippets/http-server.md
     tags: [http, aspnet-core, minimal-api, server, validation, openapi]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
   - id: csharp-http-client
     title: "HTTP client: IHttpClientFactory + resilience pipeline"
     path: csharp/snippets/http-client.md
     tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
   - id: csharp-configuration
     title: "Configuration: Options pattern (IOptions, валидация, hot-reload)"
     path: csharp/snippets/configuration.md
     tags: [configuration, options, ioptions, validation, env, 12-factor]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
 patterns:
   - id: csharp-functional-options
     title: "C#: Functional Options (builder)"

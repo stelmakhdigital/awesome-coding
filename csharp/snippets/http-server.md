@@ -6,7 +6,7 @@ min_version: "10"
 category: snippet
 tags: [http, aspnet-core, minimal-api, server, validation, openapi]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # HTTP server: ASP.NET Core Minimal API
@@ -18,6 +18,7 @@ updated: 2026-09-07
 
 ```csharp
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,7 +83,7 @@ sealed class ItemService(ILogger<ItemService> logger, TimeProvider time)
 
     public Task<ItemDto> CreateAsync(CreateItemRequest req, CancellationToken ct)
     {
-        logger.LogInformation("creating item {Name} at {Now}", req.Name, time.LocalNow);
+        logger.LogInformation("creating item {Name} at {Now}", req.Name, time.GetLocalNow());
         return Task.FromResult(new ItemDto(1, req.Name!, req.PriceCents));
     }
 }

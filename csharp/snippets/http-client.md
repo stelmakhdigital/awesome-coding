@@ -6,7 +6,7 @@ min_version: "10"
 category: snippet
 tags: [http, client, ihttpclientfactory, resilience, retry, timeout]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # HTTP client: IHttpClientFactory + resilience
@@ -18,6 +18,7 @@ updated: 2026-09-07
 
 ```csharp
 using Microsoft.Extensions.Http.Resilience;
+using System.Text.Json;
 
 // Program.cs: named client + resilience pipeline
 // (ретраи 5xx/408/429 и сетевых ошибок + circuit breaker — из коробки).
@@ -28,7 +29,7 @@ builder.Services.AddHttpClient("catalog", c =>
     c.BaseAddress = new Uri("https://catalog.example.com/api/v1/");
     c.Timeout = TimeSpan.FromSeconds(15); // дефолт на запрос (включая ретраи)
 })
-.AddTransientHttpResilience();
+.AddStandardResilienceHandler();   // retry + circuit breaker + timeout на транзитные ошибки HTTP
 
 builder.Services.AddSingleton<CatalogClient>();
 
@@ -36,6 +37,13 @@ var app = builder.Build();
 app.Run();
 
 // Типизированный клиент: DI + primary constructor (C# 14).
+// Общие опции JSON на приложение: один класс вместо разбросанных
+// new JsonSerializerOptions. Web-набор — camelCase, числами в строках не тащит.
+static class Json
+{
+    public static JsonSerializerOptions Options { get; } = new(JsonSerializerDefaults.Web);
+}
+
 sealed class CatalogClient(IHttpClientFactory factory, ILogger<CatalogClient> logger)
 {
     public async Task<ItemDto?> GetItemAsync(long id, CancellationToken ct = default)
@@ -55,7 +63,7 @@ sealed class CatalogClient(IHttpClientFactory factory, ILogger<CatalogClient> lo
                 return null;
             }
             resp.EnsureSuccessStatusCode();
-            return await resp.Content.ReadFromJsonAsync<ItemDto>(JsonDefaults.Web, cts.Token);
+            return await resp.Content.ReadFromJsonAsync<ItemDto>(Json.Options, cts.Token);
         }
         catch (OperationCanceledException) when (!ct.IsCancellationRequested)
         {
@@ -69,7 +77,7 @@ sealed class CatalogClient(IHttpClientFactory factory, ILogger<CatalogClient> lo
         using var http = factory.CreateClient("catalog");
         var resp = await http.PostAsJsonAsync("items", req, ct);
         resp.EnsureSuccessStatusCode();
-        return (await resp.Content.ReadFromJsonAsync<ItemDto>(JsonDefaults.Web, ct))!;
+        return (await resp.Content.ReadFromJsonAsync<ItemDto>(Json.Options, ct))!;
     }
 }
 
