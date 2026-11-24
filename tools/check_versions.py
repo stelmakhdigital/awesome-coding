@@ -6,7 +6,7 @@
   Python      — endoflife.date
   C# (.NET)   — builds.dotnet.microsoft.com (release-metadata)
   Kotlin      — maven-metadata (kotlin-stdlib)
-  TypeScript  — npm registry
+  TypeScript, React, Vite, Vitest — npm registry
   PostgreSQL  — endoflife.date
   Redis       — GitHub releases (redis/redis)
   Kafka       — GitHub releases (apache/kafka)
@@ -100,8 +100,10 @@ def current_version(tech: str, pinned: str) -> str | None:
             ]
             if stable:
                 return max(stable, key=version_tuple)
-        elif tech == "TypeScript":
-            data = get_json("https://registry.npmjs.org/typescript/latest")
+        elif tech in ("TypeScript", "React", "Vite", "Vitest"):
+            pkg = {"TypeScript": "typescript", "React": "react",
+                   "Vite": "vite", "Vitest": "vitest"}[tech]
+            data = get_json(f"https://registry.npmjs.org/{pkg}/latest")
             return data.get("version")
         elif tech in ("Redis", "RabbitMQ"):
             repo = {"Redis": "redis/redis", "RabbitMQ": "rabbitmq/rabbitmq-server"}[tech]

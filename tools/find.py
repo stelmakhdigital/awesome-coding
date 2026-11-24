@@ -42,17 +42,19 @@ def normalize(term: str) -> str:
 
 
 def forms(query: str) -> list[str]:
-    """Формы запроса: с пробелами (для названий) и с дефисами (для тегов).
+    """Формы запроса: раздельно, через дефис и слитно.
 
-    Одно и то же слово в заголовке пишется «HTTP client», а в тегах —
-    «http-client». Оставить какую-то одну форму — значит потерять половину
-    совпадений, поэтому пробираются обе и берётся лучшая оценка.
+    Одно и то же название в заголовке пишется «HTTP client», в тегах —
+    «http-client», а хуки React называются слитно — «useeffect». Оставить одну
+    форму — значит потерять треть совпадений, поэтому пробираются три и берётся
+    лучшая оценка.
     """
     spaced = " ".join(query.split()).lower()
     if not spaced:
         return []
     hyphen = spaced.replace("_", "-").replace(" ", "-")
-    return [spaced] if hyphen == spaced else [spaced, hyphen]
+    glued = hyphen.replace("-", "")
+    return list(dict.fromkeys([spaced, hyphen, glued]))
 
 
 def aliases() -> dict[str, list[str]]:

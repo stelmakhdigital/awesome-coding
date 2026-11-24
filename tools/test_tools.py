@@ -356,8 +356,11 @@ class FindTest(unittest.TestCase):
 
     def test_normalize_and_forms(self):
         self.assertEqual(find.normalize("Rate_Limit"), "rate-limit")
-        self.assertEqual(find.forms("HTTP  Client"), ["http client", "http-client"])
-        self.assertEqual(find.forms("rate-limit"), ["rate-limit"])
+        self.assertEqual(find.forms("HTTP  Client"), ["http client", "http-client", "httpclient"])
+        # React-хуки в тегах слитные: «use effect» должна находить тег useeffect
+        self.assertIn("useeffect", find.forms("use effect"))
+        # дефис из тегов не дублируется, но добавляется слитная форма (useeffect)
+        self.assertEqual(find.forms("rate-limit"), ["rate-limit", "ratelimit"])
         self.assertEqual(find.forms("  "), [])
 
     def test_exact_tag_outranks_title(self):

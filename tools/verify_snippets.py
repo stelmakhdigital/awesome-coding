@@ -59,15 +59,16 @@ GO_MOD_CACHE = "/go/pkg/mod"
 # Зависимости ts/tsx-раннера зафиксированы: без пинов том каждый раз нагревался бы
 # «свежим latest», и тулчейн уезжал бы вперёд без спроса (TypeScript 7 → 8 сломал бы
 # прогон не кода, а сборки). Обновлять вместе с таблицей «Версии» в AGENTS.md.
-TS_DEPS = ("typescript@7.0.2 @types/node@26.6.6 zod@4.6.7 vitest@5.1.1"
+TS_DEPS = ("typescript@7.0.2 @types/node@26.6.6 zod@4.6.7 vitest@5.1.1 vite@8.3.8"
            " react@19.3.1 @types/react@19.3.0 @types/react-dom@19.3.0"
-           " @testing-library/react@16.3.3 @testing-library/user-event@14.6.13")
+           " @testing-library/react@16.3.3 @testing-library/user-event@14.6.13"
+           " @vitejs/plugin-react@6.3.0")
 TS_VOLUME = "ac-tsdeps"
 TS_PREPARE = ("npm i --no-audit --no-fund --prefix /build " + TS_DEPS +
               " >/dev/null && cp -a /build/node_modules/. /deps/")
 # Проба смотрит на самый поздно добавленный пакет: том из старого набора
 # не пройдёт её, и зависимости переставятся.
-TS_PROBE = "test -d /deps/@testing-library/react"
+TS_PROBE = "test -d /deps/@vitejs/plugin-react"
 TS_TSC = ["node", "/w/node_modules/typescript/bin/tsc", "--noEmit", "--strict",
           "--target", "es2024", "--lib", "es2024", "--module", "preserve",
           "--moduleResolution", "bundler", "--typeRoots", "/w/node_modules/@types",
