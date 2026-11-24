@@ -62,9 +62,12 @@
 поэтому тег — единственная точка, по которой кэш агента понимает, что он читает.
 
 1. `make validate` и `make check-versions` — зелёные.
-2. `CHANGELOG.md` — новый блок `## vN.N — YYYY-MM-DD`: что добавлено/изменено с прошлого
-   тега (источник — `git log <prev-tag>..HEAD --oneline`).
-3. Пин `ac=vN.N` в `SKILL.md` и блок CHANGELOG — одним коммитом.
+2. Блок CHANGELOG и пин — инструментом, а не `str.replace`:
+   `python3 tools/release.py prepare --version vN.N --date YYYY-MM-DD --body entry.md`.
+   Тело блока — что добавлено/изменено с прошлого тега (источник —
+   `git log <prev-tag>..HEAD --oneline`). Правка руками опасна: несовпавший якорь
+   заголовка не вставляет блок молча, и три релиза так вышли с пином без записи.
+3. Пин и CHANGELOG — одним коммитом; перед тегом `make release-check VERSION=vN.N`.
 4. `git tag -a vN.N -m "…" && git push origin master vN.N`.
 5. MAJOR — только если сломан роутинг агента (структура разделов, формат frontmatter,
    смысл `verified`); тогда же — ADR в `docs/adr/`.

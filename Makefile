@@ -15,6 +15,7 @@
 #   make gofmt RECORD=go/snippets/x.md — отформатировать go-блоки записи на месте (нужен docker)
 #   make check-versions        — сверка закреплённых версий с актуальными (сеть)
 #   make check-stale           — записи с устаревшим `updated` (квартальный аудит)
+#   make release-check VERSION=vN.N — сверить блок CHANGELOG и пин SKILL.md перед тегом
 
 PYTHON ?= python3
 NODE ?= node
@@ -22,7 +23,7 @@ NODE ?= node
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
         validate-structure validate-text validate-aliases \
         validate-links validate-mermaid validate-readme readme test search verify verify-fix \
-        check-versions check-stale gofmt
+        check-versions check-stale gofmt release-check
 
 help:
 	@echo "Цели:"
@@ -41,6 +42,7 @@ help:
 	@echo "  verify                — код-блоки записей через реальные тулчейны (Docker)"
 	@echo "  verify-fix            — verify + поднять verified/updated в index/, где прогон доказал"
 	@echo "  gofmt RECORD=<путь>     — отформатировать go-блоки записи на месте (Docker)"
+	@echo "  release-check VERSION=vN.N — блок CHANGELOG и пин SKILL.md согласованы"
 	@echo "  check-versions        — сверка версий из AGENTS.md с актуальными (нужна сеть)"
 	@echo '  check-stale           — устаревший frontmatter `updated` (> 180 дней)'
 	@echo ""
@@ -98,6 +100,9 @@ check-versions:
 
 gofmt:
 	$(PYTHON) tools/gofmt_records.py $(RECORD)
+
+release-check:
+	$(PYTHON) tools/release.py check --version $(VERSION)
 
 check-stale:
 	$(PYTHON) tools/check_stale.py

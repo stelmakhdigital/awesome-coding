@@ -4,6 +4,8 @@
 Зачем: туллинг — то, чему доверяет репозиторий. `make validate` зелёный значит
 «записи в порядке» только пока сам валидатор не сломался. Гонка в SQL-раннере
 упала в CI через два релиза после появления, потому что проверить её было нечем.
+Релизный шаг тоже туллинг: правка CHANGELOG через `str.replace` с несовпавшим
+якорем не вставляет блок молча, и три релиза так вышли без записи.
 
 Что покрыто: вердикты раннеров, разбор формата (frontmatter, блоки каталога),
 текстовые и структурные проверки, каталог, алиасы, порядок поиска, русские
@@ -26,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ac
 import find
 import readme
+import release
 import validate
 import verify_snippets as vs
 
@@ -405,6 +408,54 @@ class CountFormTest(unittest.TestCase):
         self.assertEqual(readme.count_form(11, "snippet"), "11 сниппетов")
         self.assertEqual(readme.count_form(21, "pattern"), "21 паттерн")
         self.assertEqual(readme.count_form(0, "concept"), "0 концепций")
+
+
+class ReleaseTest(unittest.TestCase):
+    """Вставка блока CHANGELOG и пин SKILL.md: тихий пропуск недопустим."""
+
+    LOG = "# CHANGELOG\n\nОписание процесса.\n\n## v1.1 — 2026-01-02\n\nСтарый блок.\n"
+
+    def test_insert_before_first_version_block(self):
+        out = release.insert_entry(self.LOG, "v1.2", "2026-02-03", "Тело записи.")
+        self.assertIn("## v1.2 — 2026-02-03", out)
+        self.assertLess(out.index("## v1.2"), out.index("## v1.1"))
+        self.assertIn("Старый блок.", out)
+        self.assertIn("Описание процесса.", out[:out.index("## v1.2")])
+
+    def test_insert_rejects_duplicates_and_garbage(self):
+        with self.assertRaises(ValueError):
+            release.insert_entry(self.LOG, "v1.1", "2026-02-03", "есть такой")
+        with self.assertRaises(ValueError):
+            release.insert_entry(self.LOG, "1.2", "2026-02-03", "версия без v")
+        with self.assertRaises(ValueError):
+            release.insert_entry(self.LOG, "v1.2", "03.02.2026", "дата не та")
+        with self.assertRaises(ValueError):
+            release.insert_entry(self.LOG, "v1.2", "2026-02-03", "   ")
+        with self.assertRaises(ValueError):
+            release.insert_entry("# CHANGELOG\n\nзаголовков версий нет\n", "v1.2", "2026-02-03", "тело")
+
+    def test_patch_release_heading_is_found(self):
+        log = "# C\n\n## v1.3.1 — 2026-01-02\n\nx\n"
+        out = release.insert_entry(log, "v1.4", "2026-02-03", "новое")
+        self.assertLess(out.index("## v1.4"), out.index("## v1.3.1"))
+
+    def test_bump_pin_keeps_comment(self):
+        skill = "ac=v1.1                                   # пин версии библиотеки\n"
+        out = release.bump_pin(skill, "v1.2")
+        self.assertTrue(out.startswith("ac=v1.2"))
+        self.assertIn("# пин версии библиотеки", out)
+
+    def test_bump_pin_requires_pin_line(self):
+        with self.assertRaises(ValueError):
+            release.bump_pin("версии здесь нет\n", "v1.2")
+
+    def test_check_reports_mismatch(self):
+        skill = "ac=v1.2  # пин\n"
+        log = "# C\n\n## v1.2 — 2026-02-03\n\nтело\n"
+        self.assertEqual(release.check(log, skill, "v1.2"), [])
+        self.assertTrue(release.check(log, skill, "v1.3"))
+        self.assertTrue(release.check(log.replace("## v1.2", "## v1.0"), skill, "v1.2"))
+        self.assertTrue(release.check(log, "ac=v1.1\n", "v1.2"))
 
 
 if __name__ == "__main__":
