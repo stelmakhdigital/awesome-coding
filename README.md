@@ -72,7 +72,7 @@ awesome-coding/
 ├── AGENTS.md                  # точка входа для агента (роутер)
 ├── Makefile                   # make validate — проверки, make verify — прогон кода
 ├── tools/
-│   ├── validate.py            # валидатор: frontmatter, каталог, ссылки
+│   ├── validate.py            # валидатор: frontmatter, каталог, текст, ссылки
 │   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
 │   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
 │   └── readme.py              # генерация блока «Статус разделов»
@@ -132,7 +132,7 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Валидация: `make validate` (frontmatter, каталог, индексы, README, ссылки)
+- Валидация: `make validate` (frontmatter, каталог, индексы, текст, README, ссылки)
 - Проверка кода: `make verify` (код-блоки через тулчейны в Docker), `make verify-fix` —
   поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле

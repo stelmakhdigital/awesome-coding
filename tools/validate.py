@@ -317,12 +317,19 @@ def check_text() -> list[str]:
     """
     cjk = re.compile(r"[\u3000-\u9fff\uff00-\uffef]")
     sticky = re.compile(r"[а-яА-Я][A-Za-z]{3,}|[A-Za-z]{3,}[а-яА-Я]")
+    fence = re.compile(r"^```.*?^```", re.M | re.S)
+    inline = re.compile(r"`[^`\n]*`")
     issues: list[str] = []
     for path in sorted(ROOT.rglob("*.md")):
         if ".git" in path.parts or "node_modules" in path.parts:
             continue
         rel = path.relative_to(ROOT).as_posix()
-        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        # Код вырезается с сохранением нумерации строк: номера в отчёте
+        # должны совпадать с файлом.
+        text = fence.sub(lambda m: "\n" * m.group(0).count("\n"),
+                         path.read_text(encoding="utf-8"))
+        for i, line in enumerate(text.splitlines(), 1):
+            line = inline.sub("", line)  # inline-код — цитата кода, не проза
             if cjk.search(line):
                 issues.append(f"{rel}:{i}: CJK-символы — «{line.strip()[:60]}»")
             elif sticky.search(line):

@@ -23,10 +23,11 @@ NODE ?= node
 
 help:
 	@echo "Цели:"
-	@echo "  validate              — все проверки (frontmatter + manifest + индексы + README + ссылки)"
+	@echo "  validate              — все проверки (frontmatter + каталог + текст + README + ссылки)"
 	@echo "  validate-frontmatter  — YAML frontmatter (обязательные поля, id, статусы)"
 	@echo "  validate-manifest     — index/*.yaml (пути, соответствие frontmatter)"
 	@echo "  validate-indexes      — README каталогов упоминают все файлы раздела"
+	@echo "  validate-text         — CJK и смешение раскладок в прозе"
 	@echo "  readme                — перегенерировать «Статус разделов» из index/*.yaml"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
@@ -38,7 +39,7 @@ help:
 	@echo ""
 	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); validate-mermaid — node 20+; verify — docker"
 
-validate: validate-frontmatter validate-manifest validate-indexes validate-readme validate-links
+validate: validate-frontmatter validate-manifest validate-indexes validate-text validate-readme validate-links
 
 validate-frontmatter:
 	$(PYTHON) tools/validate.py --check frontmatter
@@ -48,6 +49,9 @@ validate-manifest:
 
 validate-indexes:
 	$(PYTHON) tools/validate.py --check indexes
+
+validate-text:
+	$(PYTHON) tools/validate.py --check text
 
 validate-readme:
 	$(PYTHON) tools/readme.py --check

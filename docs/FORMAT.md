@@ -85,6 +85,19 @@
 `executed` не понижается. `--record <id>` / `--section <раздел>` — проверить
 одну запись или раздел после правки.
 
+## Что проверяет `make validate`
+
+| Проверка | Что смотрит |
+|---|---|
+| frontmatter | обязательные поля, значения `status`/`verified`/`lang`, уникальность `id`, даты |
+| manifest | `index/*.yaml` ↔ файлы: пути, `id`/`title`/`tags`/`updated` как во frontmatter, `verified` честен для записей с кодом |
+| indexes | `README.md` каталога упоминает все .md этого каталога |
+| text | в прозе нет CJK-символов и слов, набранных в чужой раскладке (код и inline-код не проверяется) |
+| readme | блок «Статус разделов» в README совпадает с генерацией из каталога |
+| links | относительные ссылки ведут на существующие файлы |
+
+Отдельно: `make validate-text`, `python3 tools/validate.py --check text`.
+
 ## Структура сниппета (category: snippet)
 
 ```markdown
