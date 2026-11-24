@@ -118,13 +118,38 @@ def pg_server() -> None:
                     "-e", "POSTGRES_HOST_AUTH_METHOD=trust", PG_IMAGE,
                     "-c", "shared_preload_libraries=pg_stat_statements"], check=True,
                    capture_output=True)
+    _pg_wait_ready()
+
+
+def _pg_wait_ready() -> None:
+    """Ждать рабочий сервер, а не временный сервер entrypoint'а.
+
+    docker-entrypoint.sh поднимает postmaster на время initdb, гасит его и только
+    потом запускает настоящий. pg_isready проходит и в первой фазе, а psql,
+    попавший в её конец, ловит «database system is shutting down» — на CI это
+    роняло два SQL-прогона из семи. По логам судить нельзя: строки entrypoint'а
+    идут в stdout, строки postmaster'а — в stderr, и в `docker logs` они
+    перемешиваются. Поэтому признак простой: время запуска postmaster не
+    меняется три проверки подряд (переход временный -> настоящий его меняет).
+    """
+    prev = None
+    same = 0
     for _ in range(90):
-        ready = subprocess.run(["docker", "exec", PG_CONTAINER,
-                               "pg_isready", "-U", "postgres"], capture_output=True)
-        if ready.returncode == 0:
+        probe = subprocess.run(
+            ["docker", "exec", PG_CONTAINER, "psql", "-U", "postgres", "-X", "-Aqt", "-c",
+             "SELECT pg_postmaster_start_time()"], capture_output=True, text=True)
+        cur = probe.stdout.strip() if probe.returncode == 0 else ""
+        same = same + 1 if cur and cur == prev else 0
+        if same >= 2:  # три одинаковых отсчёта: t, t+2, t+4
             return
-        time.sleep(1)
-    raise RuntimeError("PostgreSQL не поднялся за 90s")
+        prev = cur
+        time.sleep(2)
+    raise RuntimeError("PostgreSQL не перешёл на рабочий сервер за ~180s")
+
+
+# Сообщения, которые означают «сервер в этот момент переезжал», а не «код битый».
+PG_INFRA = ("shutting down", "starting up", "57P01", "57P03", "Connection refused",
+            "is not running")
 
 
 _PG_LOCK = threading.Lock()  # схема одна на сервер: блоки прогоняются по очереди
@@ -132,7 +157,13 @@ _PG_LOCK = threading.Lock()  # схема одна на сервер: блоки
 
 def run_sql_job(blocks: list[tuple[int, str]]) -> tuple[str, str]:
     with _PG_LOCK:
-        return _run_sql(blocks)
+        for attempt in (0, 1):
+            verdict, note = _run_sql(blocks)
+            if verdict == "fail" and attempt == 0 and any(m in note for m in PG_INFRA):
+                _pg_wait_ready()  # сервер переезжал с временного на рабочий
+                continue
+            return verdict, note
+        return verdict, note
 
 
 def _run_sql(blocks: list[tuple[int, str]]) -> tuple[str, str]:
@@ -142,10 +173,14 @@ def _run_sql(blocks: list[tuple[int, str]]) -> tuple[str, str]:
     же блок, где что-то упало, определяет вердикт всей записи.
     """
     pg_server()
-    subprocess.run(["docker", "exec", PG_CONTAINER, "psql", "-U", "postgres", "-q", "-c",
-                    "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;\n"
-                    "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"],
-                   check=True, capture_output=True)
+    reset = subprocess.run(
+        ["docker", "exec", PG_CONTAINER, "psql", "-U", "postgres", "-q", "-c",
+         "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;\n"
+         "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"],
+        capture_output=True, text=True, timeout=120)
+    if reset.returncode != 0:  # это падение инструмента, а не записи: говорим прямо
+        note = (reset.stdout + reset.stderr).strip().splitlines()
+        return "fail", "сброс схемы: " + (note[-1][:140] if note else "psql вернул ошибку")
     for i, code in blocks:
         proc = subprocess.run(
             ["docker", "exec", "-i", PG_CONTAINER, "psql", "-U", "postgres", "-X", "-q",
