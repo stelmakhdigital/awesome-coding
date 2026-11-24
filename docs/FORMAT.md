@@ -18,7 +18,7 @@
 |---|---|---|
 | `id` | string | Уникальный в репозитории: `<lang>-<name>`, напр. `go-http-server` |
 | `title` | string | Человекочитаемое название |
-| `lang` | string | Имя раздела: `go` \| `typescript` \| `javascript` \| `python` \| `c` \| `bash` \| `csharp` \| `kotlin` \| `unity` \| `shared` \| `architecture` \| `database` \| `messaging` \| `cicd` \| `pm` |
+| `lang` | string | Имя раздела: `go` \| `typescript` \| `javascript` \| `react` \| `python` \| `c` \| `bash` \| `csharp` \| `kotlin` \| `unity` \| `shared` \| `architecture` \| `database` \| `messaging` \| `cicd` \| `pm` |
 | `min_version` | string | Минимальная версия языка, напр. `"1.22"`, `"3.11"`, `"C23"`, `"5.2"` |
 | `category` | string | `snippet` \| `pattern` \| `rule-set` \| `idioms` \| `decisions` \| `concept` |
 | `tags` | [string] | 3–8 тегов, lowercase, для поиска. Только строки: числовое значение (`429`) кавычится, иначе YAML прочитает его числом и валидатор завернёт |

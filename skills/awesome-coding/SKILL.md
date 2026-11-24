@@ -43,6 +43,7 @@ k=~/.cache/awesome-coding
 | `go.mod` | `go` |
 | `package.json` (+`tsconfig.json`) | `typescript` |
 | `package.json` (без tsconfig) | `javascript` |
+| `package.json` + `react` в зависимостях | `react` (+ `typescript`) |
 | `pyproject.toml`, `requirements.txt` | `python` |
 | `Makefile` + `*.c`/`*.h` | `c` |
 | `*.sh` / shell-скрипты | `bash` |

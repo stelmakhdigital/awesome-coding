@@ -2,8 +2,8 @@
 # Записи разделов — в index/<section>.yaml. Формат: docs/FORMAT.md.
 # Обновлять при каждом добавлении/изменении записи.
 version: 1
-updated: 2026-11-24
-sections: [go, typescript, javascript, python, c, bash, csharp, kotlin, unity, shared, architecture, database, messaging, cicd, pm, llm]
+updated: 2026-11-25
+sections: [go, typescript, javascript, react, python, c, bash, csharp, kotlin, unity, shared, architecture, database, messaging, cicd, pm, llm]
 languages:
   go:
     version: "1.27"
@@ -11,6 +11,8 @@ languages:
     version: "7.0"
   javascript:
     version: "ES2025"
+  react:
+    version: "19.3"
   python:
     version: "3.14"
   c:

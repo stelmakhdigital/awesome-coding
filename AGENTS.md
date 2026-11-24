@@ -10,6 +10,7 @@
 | Что делаете | Куда идти |
 |---|---|
 | Пишете код на конкретном языке | `<lang>/` (таблица ниже) |
+| Веб-интерфейс: компоненты, состояние, тесты, сборка | `react/` (фреймворк поверх `typescript/`) |
 | Принцип, общий для всех языков (ошибки, конкурентность, безопасность, тесты, API, observability, ревью, коммиты, рефакторинг, отладка, CLI) | `shared/` |
 | Работа с данными: SQL, индексы, транзакции, миграции, кэш | `database/` (PostgreSQL, Redis) |
 | Брокеры сообщений: Kafka, RabbitMQ | `messaging/` |
@@ -25,7 +26,7 @@
 
 1. `<section>/README.md` — версии и конвенции.
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
-   (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database,
+   (есть в: go, typescript, javascript, react, python, c, bash, csharp, kotlin, unity, database,
    messaging, cicd; нет в: shared, architecture, pm).
 3. Конкретная запись — по тегам в `index/<section>.yaml` (поиск: `grep -i "тег" index/<section>.yaml`;
    без клона — GitHub code search по этому файлу или `make search Q=тег` после клона;
@@ -41,6 +42,7 @@
 | Go (референсный) | `go/` | 1.27 |
 | TypeScript | `typescript/` | 7.0 |
 | JavaScript | `javascript/` | ES2025 |
+| React (веб-интерфейс) | `react/` | 19.3 |
 | Python | `python/` | 3.14 |
 | C | `c/` | C23 |
 | Bash | `bash/` | 5.3 |
@@ -71,6 +73,9 @@
 | Go | 1.27 | 1.26 |
 | TypeScript | 7.0 | 6.x |
 | JavaScript | ES2025 | ES2024 |
+| React | 19.3 (19.3.1) | 18.3 |
+| Vite | 8.3 (8.3.8) | 6.x |
+| Vitest | 5.1 (5.1.1) | 3.x |
 | Python | 3.14 | 3.13 |
 | C | C23 (ISO 9899:2024) | C17 |
 | Bash | 5.3 | 5.2 |
@@ -94,6 +99,7 @@
 ## Структура
 
 - `<lang>/` — языковой раздел: `README.md`, `rules.md`, `idioms.md`, `decisions.md`, `snippets/`, `patterns/`.
+- `react/` — веб-интерфейс поверх TypeScript: `README.md`, `rules.md`, `decisions.md`, `snippets/`, `patterns/`. Идиомы языка — в `typescript/`, здесь не дублируются.
 - `unity/` — игровые проекты (кроссплатформа + Android): та же структура + `shaders/` (HLSL); код не компилируется без Editor.
 - `architecture/` — языконезависимая архитектура и DDD: `decisions.md`, `ddd/` (tactical + strategic), `patterns/`.
 - `shared/` — кросс-языковые концепции (ошибки, конкурентность, безопасность,

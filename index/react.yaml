@@ -1,0 +1,84 @@
+# Записи раздела react. Шапка и версии языков: index/manifest.yaml.
+
+version: "19.3"
+rule_set:
+  - id: react-rules
+    title: "React Rules"
+    path: react/rules.md
+    tags: [rules, guardrails, hooks, jsx, a11y, testing]
+    status: stable
+    verified: none
+    updated: 2026-11-25
+decisions:
+  - id: react-decisions
+    title: "React: решения (состояние, данные, формы, тесты, миграция сборки)"
+    path: react/decisions.md
+    tags: [decisions, state, data-fetching, forms, testing, vite, migration]
+    status: stable
+    verified: none
+    updated: 2026-11-25
+snippets:
+  - id: react-components
+    title: "React: компонент — пропсы, слоты, ref, ключи"
+    path: react/snippets/components.md
+    tags: [components, props, jsx, ref, children, keys, a11y, use-id]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-state
+    title: "React: состояние — редьюсер, выводимое значение, внешний стор, сброс"
+    path: react/snippets/state.md
+    tags: [state, usereducer, usestate, derived-state, usesyncexternalstore, store, websocket, reset]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-effects
+    title: "React: границы useEffect — отмена, cleanup, effect event"
+    path: react/snippets/effects.md
+    tags: [hooks, useeffect, cleanup, abortcontroller, strictmode, effect-event, resize-observer]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-forms
+    title: "React: форма — контролируемые поля, useActionState, серверные ошибки"
+    path: react/snippets/forms.md
+    tags: [forms, useactionstate, useformstatus, validation, zod, a11y, submit, abort]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-testing
+    title: "React: тесты — Vitest 5 + Testing Library по поведению"
+    path: react/snippets/testing.md
+    tags: [testing, vitest, jsdom, testing-library, user-event, a11y, mocks, timers]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-vite
+    title: "React: Vite 8 — конфиг, окружение, прокси, чанки (Rolldown)"
+    path: react/snippets/vite.md
+    tags: [vite, rolldown, env, proxy, build, config, codesplitting, dev-server, toolchain]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: react-heavy-widget
+    title: "React: тяжёлый виджет — ленивая загрузка, императивный API, dispose, Activity"
+    path: react/snippets/heavy-widget.md
+    tags: [lazy, suspense, code-splitting, monaco, excalidraw, lifecycle, dispose, activity, performance]
+    status: stable
+    verified: reviewed
+    updated: 2026-11-25
+  - id: react-ui-check
+    title: "React: проверка вёрстки числами — без скриншотов и vision-модели"
+    path: react/snippets/ui-check.md
+    tags: [browser, layout, getComputedStyle, accessibility, contrast, tap-target, verification, agent]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+patterns:
+  - id: react-feature-structure
+    title: "React: структура проекта по фичам"
+    path: react/patterns/feature-structure.md
+    tags: [structure, feature-sliced, folders, boundaries, imports, scaling]
+    status: stable
+    verified: none
+    updated: 2026-11-25
