@@ -42,7 +42,7 @@
 | `path` | string | Путь к файлу относительно корня репозитория |
 | `tags` | [string] | Теги для поиска (совпадают с frontmatter; проверяется валидатором) |
 | `status` | string | Совпадает со `status` в frontmatter |
-| `verified` | string | Уровень проверки кода: `compiled` (скомпилирован/прогнан через type-check), `executed` (выполнен), `reviewed` (рецензирован, не компилировался), `none` (кода нет или не проверялся). Для `category: snippet/pattern` с кодом на go/c/csharp/kotlin/python/bash/ts/js/sql `none` запрещён — проверяется валидатором. Декларативные блоки (dockerfile, yaml, protobuf) и hlsl (компилируется только в Editor) в расчёт не идут |
+| `verified` | string | Уровень проверки кода: `compiled`, `executed`, `reviewed`, `none`. Что именно прогоняется под каждым уровнем — таблица ниже. Для `category: snippet/pattern` с кодом на go/c/csharp/kotlin/python/bash/ts/js/sql `none` запрещён — проверяется валидатором. Декларативные блоки (dockerfile, yaml, protobuf) и hlsl (компилируется только в Editor) в расчёт не идут |
 | `updated` | date | Дата последнего содержательного обновления; обязан совпадать с `updated` в frontmatter файла. Позволяет агенту/кешу проверять свежесть записи, не читая файл |
 
 Правила:
@@ -55,6 +55,32 @@
   проверяется валидатором. При содержательном изменении записи обновите обе.
 - Имя секционного файла = название раздела; новые разделы — только после
   расширения `ALLOWED_SECTIONS` в `tools/validate.py`.
+
+## Что стоит за `verified`
+
+`make verify` (`tools/verify_snippets.py`) вытаскивает код-блоки записей и гоняет
+их в Docker. `compiled` означает ровно прогон из своей строки таблицы — ни «должно
+собираться», ни «на моей машине собралось».
+
+| Язык | Прогон |
+|---|---|
+| go | `gofmt -l` + `go build ./...`; запись = один модуль, блоки — его пакеты |
+| ts | `tsc --noEmit --strict --lib es2024` (typescript, @types/node, zod, vitest) |
+| js | `node --check` |
+| python | `compile()` на 3.14: синтаксис и байт-код (импорты третьих сторон не разрешаются) |
+| c | `gcc -std=c23 -fsyntax-only -Wall -Wextra` |
+| bash, sh | `shellcheck -f gcc` (код 0 — замечаний нет) |
+| sql, csharp, kotlin, hlsl | раннера нет: `verified` ставится вручную (живой PG, dotnet/kotlinc, Unity Editor) |
+
+Вердикты прогона: `ok`, `fail` (код битый — править запись), `fmt` (gofmt
+переформатирует блок), `deps` (не хватает сгенерированных или чужих пакетов —
+например grpc-стабов или пакета из соседней записи), `fragment` (блок без
+`package` — проверить нельзя, и выдумывать за автора обёртки не нужно).
+
+`make verify-fix` поднимает `verified` до `compiled` и обновляет `updated` в
+каталоге и frontmatter там, где прогон это доказал. Уровень только растёт:
+`executed` не понижается. `--record <id>` / `--section <раздел>` — проверить
+одну запись или раздел после правки.
 
 ## Структура сниппета (category: snippet)
 

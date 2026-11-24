@@ -17,6 +17,8 @@
 - **YAML frontmatter** у каждой записи — метаданные для поиска (теги, версия, статус).
 - **Высокая плотность сигнала** — «когда использовать / когда нет», Do/Don't-пары, pitfalls.
 - **Закреплённые версии языков** — агент не пишет устаревшие идиомы.
+- **`verified` — факт прогона** — код записей гоняется в CI настоящими тулчейнами
+  (`make verify`: go build, tsc, gcc, shellcheck, node, python), а не «на веру».
 - **`AGENTS.md`** — короткий «роутер» для агента, а не дамп контента.
 
 ## Роутинг агента
@@ -113,6 +115,8 @@ awesome-coding/
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 - Валидация: `make validate` (frontmatter, manifest, индексы, ссылки)
+- Проверка кода: `make verify` (код-блоки через тулчейны в Docker), `make verify-fix` —
+  поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле
 
 ## Статус разделов
