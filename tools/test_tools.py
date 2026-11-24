@@ -496,6 +496,13 @@ class CsProjectTest(unittest.TestCase):
         self.assertEqual(verdict, "fail")
         self.assertIn("CS1002", note)
 
+    def test_unity_code_is_not_built(self):
+        """Unity-код собирается только Editor: в csharp-прогон он не идёт."""
+        blocks = [(1, "using UnityEngine;\nsealed class P : MonoBehaviour { }"),
+                  (2, "var x = 1;")]
+        jobs = [b for _, c in blocks if not vs.CS_UNITY.search(c) for b in [c]]
+        self.assertEqual(jobs, ["var x = 1;"])
+
     def test_framework_reference_is_not_deprecated(self):
         """Блок без top-level statements должен собираться Library — скрипт это умеет."""
         self.assertIn("CS5001", vs.CS_SCRIPT)

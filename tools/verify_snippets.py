@@ -238,6 +238,10 @@ CS_PACKAGES = {
     "xunit": [("xunit", "2.9.*")],
 }
 CS_TYPES = re.compile(r"\b(WebApplicationBuilder|WebApplication|Microsoft\.AspNetCore|HttpContext|Results)\b")
+# Unity-код собирается только Unity Editor: не нехватка пакета, а отсутствие
+# тулчейна (ADR-0005). Такие блоки в прогон не идут — вердикт deps врал бы, что
+# дело в зависимостях, и гонял бы dotnet впустую.
+CS_UNITY = re.compile(r"\b(UnityEngine|MonoBehaviour|GameObject|ScriptableObject|SerializeField)\b")
 
 CS_PROJECT = """<Project Sdk="{sdk}">
   <PropertyGroup>
@@ -456,8 +460,9 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
                 if blocks:
                     jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
             elif lang == "csharp":
-                if blocks:
-                    jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
+                checkable = [(i, c) for i, c in blocks if not CS_UNITY.search(c)]
+                if checkable:
+                    jobs.append(Job(rel, rid, lang, [i for i, _ in checkable], codes=checkable))
             else:
                 for i, code in blocks:
                     jobs.append(Job(rel, rid, lang, [i], {FNAME[lang]: RUNNERS[lang].preamble(code)}))

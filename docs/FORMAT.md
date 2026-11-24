@@ -73,7 +73,7 @@
 | bash, sh | `shellcheck -f gcc` (код 0 — замечаний нет) |
 | sql | psql на PostgreSQL 18 (Docker): блоки записи выполняются по порядку в одной схеме; ссылка на таблицу из чужого блока — `deps` |
 | llm | по языку кодового блока (go, python) — отдельного тулчейна у раздела нет |
-| csharp | `dotnet build` .NET 10: проект на блок (Exe, с падением на Library для блоков без точки входа), `FrameworkReference Microsoft.AspNetCore.App`, NuGet-пакеты по признаку блока (OpenApi, resilience, xunit) |
+| csharp | `dotnet build` .NET 10: проект на блок (Exe, с падением на Library для блоков без точки входа), `FrameworkReference Microsoft.AspNetCore.App`, NuGet-пакеты по признаку блока (OpenApi, resilience, xunit). Блоки с Unity-API в прогон не идут: их собирает только Editor |
 | kotlin, hlsl | раннера нет: `verified` ставится вручную (kotlinc локально с зафиксированными версиями в шапке раздела, Unity Editor) |
 
 Вердикты прогона: `ok`, `fail` (код битый — править запись), `fmt` (gofmt
