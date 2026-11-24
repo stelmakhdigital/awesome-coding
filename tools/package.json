@@ -4,7 +4,7 @@
   "type": "module",
   "description": "Туллинг awesome-coding: валидация mermaid-блоков",
   "dependencies": {
-    "jsdom": "^25.0.0",
+    "jsdom": "^31.0.1",
     "mermaid": "^11.0.0"
   }
 }
