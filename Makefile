@@ -7,7 +7,9 @@
 #   make validate-indexes      — только индексы (README ↔ файлы, счётчики)
 #   make validate-links        — только ссылки
 #   make validate-mermaid      — синтаксис всех mermaid-блоков (нужен node + npm i)
-#   make search Q=async        — поиск записей в manifest по тегу/названию
+#   make search Q=async        — поиск записей по тегу/названию по index/*.yaml
+#   make verify                — прогон код-блоков через тулчейны в Docker (нужен docker)
+#   make verify-fix            — то же + поднять verified/updated в index/ по итогу
 #   make check-versions        — сверка закреплённых версий с актуальными (сеть)
 #   make check-stale           — записи с устаревшим `updated` (квартальный аудит)
 
@@ -15,7 +17,8 @@ PYTHON ?= python3
 NODE ?= node
 
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
-        validate-links validate-mermaid search check-versions check-stale
+        validate-links validate-mermaid search verify verify-fix \
+        check-versions check-stale
 
 help:
 	@echo "Цели:"
@@ -25,11 +28,13 @@ help:
 	@echo "  validate-indexes      — README каталогов ↔ файлы, счётчики в основном README"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
-	@echo "  search Q=<запрос>     — поиск записей в manifest по тегу/названию"
+	@echo "  search Q=<запрос>     — поиск записей по тегу/названию по index/*.yaml"
+	@echo "  verify                — код-блоки записей через реальные тулчейны (Docker)"
+	@echo "  verify-fix            — verify + поднять verified/updated в index/, где прогон доказал"
 	@echo "  check-versions        — сверка версий из AGENTS.md с актуальными (нужна сеть)"
-	@echo "  check-stale           — записи с устаревшим frontmatter `updated` (по умолчанию > 180 дней)"
+	@echo '  check-stale           — устаревший frontmatter `updated` (> 180 дней)'
 	@echo ""
-	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); для validate-mermaid — node 20+"
+	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); validate-mermaid — node 20+; verify — docker"
 
 validate: validate-frontmatter validate-manifest validate-indexes validate-links
 
@@ -53,6 +58,12 @@ validate-mermaid:
 search:
 	@test -n "$(Q)" || { echo "Использование: make search Q=async"; exit 1; }
 	$(PYTHON) tools/search.py "$(Q)"
+
+verify:
+	$(PYTHON) tools/verify_snippets.py --jobs 8
+
+verify-fix:
+	$(PYTHON) tools/verify_snippets.py --jobs 8 --fix-index
 
 check-versions:
 	$(PYTHON) tools/check_versions.py

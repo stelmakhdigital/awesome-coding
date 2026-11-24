@@ -31,3 +31,27 @@ jobs:
 
       - name: Validate mermaid blocks
         run: make validate-mermaid
+
+  # Код записей прогоняется через настоящие тулчейны. Матрица по языкам —
+  # чтобы образы тянулись параллельно и лог одного языка читался отдельно.
+  verify-snippets:
+    name: verify code (${{ matrix.lang }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: [go, ts, js, python, bash, sh, c]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Run record code through the toolchain
+        run: python3 tools/verify_snippets.py --lang ${{ matrix.lang }} --jobs 4
+
