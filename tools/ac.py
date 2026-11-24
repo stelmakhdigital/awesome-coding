@@ -14,9 +14,13 @@
 from __future__ import annotations
 
 import re
+import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ImportError:
+    sys.exit("ОШИБКА: нужен PyYAML: pip install pyyaml")
 
 ROOT = Path(__file__).resolve().parent.parent
 INDEX_DIR = ROOT / "index"

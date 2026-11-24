@@ -225,11 +225,16 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
     return jobs
 
 
+# Не код, а оформление: их отсутствие раннера — не пробел в покрытии.
+NOT_CODE = {"", "text", "console", "diff", "markdown"}
+
+
 def present_langs() -> set[str]:
     langs: set[str] = set()
     for path in content_files():
         for lang, _ in fence_blocks(path.read_text(encoding="utf-8"), None):
-            langs.add(lang)
+            if lang not in NOT_CODE:
+                langs.add(lang)
     return langs
 
 
@@ -423,7 +428,9 @@ def main() -> int:
               + f"  всего={len(done)}")
         if skipped:
             print(f"без раннера (не проверялось): {', '.join(skipped)}")
-    return 1 if any(j.result["verdict"] == "fail" for j in done) else 0
+    # fail — код битый; fmt — блок расходятся с gofmt. Оба ломают сборку:
+    # код из библиотеки копируют как есть, «почти отформатированный» не годится.
+    return 1 if any(j.result["verdict"] in ("fail", "fmt") for j in done) else 0
 
 
 if __name__ == "__main__":
