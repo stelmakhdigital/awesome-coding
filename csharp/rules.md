@@ -4,9 +4,9 @@ title: C# Rules
 lang: csharp
 min_version: "10"
 category: rule-set
-tags: [rules, guardrails, style, async, errors]
+tags: [rules, guardrails, style, async, errors, exceptions, nullable, di]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # C# Rules — обязательные guardrails

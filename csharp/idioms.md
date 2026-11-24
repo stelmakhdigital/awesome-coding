@@ -4,9 +4,9 @@ title: C# Idioms
 lang: csharp
 min_version: "10"
 category: idioms
-tags: [idioms, style, modern-csharp]
+tags: [idioms, style, modern-csharp, primary-ctor, records]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # C# Idioms — идиоматичный современный C#

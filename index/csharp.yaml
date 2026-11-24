@@ -5,10 +5,10 @@ rule_set:
   - id: csharp-rules
     title: "C# Rules"
     path: csharp/rules.md
-    tags: [rules, guardrails, async, exceptions, nullable, di]
+    tags: [rules, guardrails, style, async, errors, exceptions, nullable, di]
     status: stable
     verified: none
-    updated: 2026-09-07
+    updated: 2026-11-24
 idioms:
   - id: csharp-idioms
     title: "C# Idioms"
@@ -16,7 +16,7 @@ idioms:
     tags: [idioms, style, modern-csharp, primary-ctor, records]
     status: stable
     verified: compiled
-    updated: 2026-09-06
+    updated: 2026-11-24
 decisions:
   - id: csharp-decisions
     title: "C# Decisions"
