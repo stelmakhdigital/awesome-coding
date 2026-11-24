@@ -20,3 +20,4 @@ Docker, Kubernetes, релиз и откат). Здесь они не дубли
 - [matrix.md](matrix.md) — матричные сборки (версии, кэш, fail-fast)
 - [gh-cli.md](gh-cli.md) — `gh` в скриптах: чтение, запись, пагинация, ожидание CI
 - [integration-tests.md](integration-tests.md) — интеграционные тесты на реальном стеке контейнеров
+- [local-stack.md](local-stack.md) — локальный стек: compose + обратный прокси с внутренним TLS

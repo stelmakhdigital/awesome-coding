@@ -66,3 +66,10 @@ snippets:
     status: stable
     verified: executed
     updated: 2026-11-25
+  - id: cicd-local-stack
+    title: "Локальный стек: compose + обратный прокси с внутренним TLS"
+    path: cicd/local-stack.md
+    tags: [local-stack, docker-compose, caddy, https, internal-ca, reverse-proxy, healthcheck, sse, secure-context]
+    status: stable
+    verified: executed
+    updated: 2026-11-25
