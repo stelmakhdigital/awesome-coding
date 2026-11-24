@@ -141,7 +141,7 @@ def main() -> int:
         p = version_tuple(pinned_v)
         c = version_tuple(cur)[: len(p)]
         if c > p:
-            print(f"{tech:<12} {pinned_v:<10} {cur:<12} ⚠️  есть новая стабильная")
+            print(f"{tech:<12} {pinned_v:<10} {cur:<12} есть новее")
             stale.append(f"{tech}: {pinned_v} → {cur}")
         elif c == p:
             print(f"{tech:<12} {pinned_v:<10} {cur:<12} ✓ актуальна")
@@ -150,7 +150,7 @@ def main() -> int:
 
     print()
     if stale:
-        print("⚠️  Устаревшие версии (обновите таблицу в AGENTS.md + manifest):")
+        print("Вышли новые версии (решение за человеком — см. «Версии» в AGENTS.md):")
         for line in stale:
             print(f"  - {line}")
     else:
