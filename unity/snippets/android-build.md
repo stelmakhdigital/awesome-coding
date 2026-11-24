@@ -43,7 +43,7 @@ public sealed class AndroidDiagnostics : MonoBehaviour
         // API level: адаптация фич (например, 12+ — новые разрешения).
         Debug.Log($"Android API level: {Application.androidApiLevel}");
 
-        // Память: на低端 — снижаем качество.
+        // Память: на бюджетных — снижаем качество.
         var mem = SystemInfo.systemMemorySize; // MB
         if (mem < 4096)
         {

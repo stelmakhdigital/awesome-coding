@@ -66,7 +66,7 @@ public sealed class SaveSystem
     public static void Save(SaveData data)
     {
         // Атомарно: пишем в temp, затем заменяем.
-        // Кrash в середине записи не оставляет полусогласованного сейва.
+        // Crash в середине записи не оставляет полусогласованного сейва.
         var tmp = SavePath + ".tmp";
         File.WriteAllText(tmp, JsonSerializer.Serialize(data, JsonOpts));
         if (File.Exists(SavePath))

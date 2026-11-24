@@ -74,7 +74,7 @@ spec:
 
 | Паттерн | Суть |
 |---|---|
-| **requests/limits** | requests — для планировщика; limits — только для «ядовитых» контейнеров (иначе эвictions) |
+| **requests/limits** | requests — для планировщика; limits — только для «ядовитых» контейнеров (иначе вытеснение) |
 | **HPA** | автоскейлинг по CPU/RPS (custom metrics) |
 | **PodDisruptionBudget** | мин. доступных реплик при drain-ноды |
 | **Secrets** | `secretKeyRef`, не `env` с literal; в prod — external-secrets (Vault) |

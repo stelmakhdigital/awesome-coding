@@ -19,7 +19,7 @@ updated: 2026-09-07
 ```csharp
 using Microsoft.Extensions.Options;
 
-// 1) ПOCO-настройки: одна секция — один класс.
+// 1) POCO-настройки: одна секция — один класс.
 sealed class StorageOptions
 {
     public const string SectionName = "Storage";

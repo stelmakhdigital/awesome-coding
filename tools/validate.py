@@ -10,6 +10,7 @@
                 кодом, sections ↔ файлы index/*.yaml.
   indexes     — README каталога упоминает все .md каталога (блок «Статус
                 разделов» основного README генерируется: tools/readme.py).
+  text        — в тексте нет CJK-символов и смешения раскладок («batч», «Кrash»).
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
 Использование:
@@ -307,10 +308,33 @@ def check_indexes() -> list[str]:
     return issues
 
 
+def check_text() -> list[str]:
+    """Текст: без CJK и без прилипшей латиницы к кириллице.
+
+    Контент пишут агенты: во фразу попадают иероглифы и слова, набранные в латинской
+    раскладке («batч», «Кrash»). Разделитель (пробел, дефис) — норма, слитное
+    написание — опечатка раскладки; латинские части составных слов склеены дефисом.
+    """
+    cjk = re.compile(r"[\u3000-\u9fff\uff00-\uffef]")
+    sticky = re.compile(r"[а-яА-Я][A-Za-z]{3,}|[A-Za-z]{3,}[а-яА-Я]")
+    issues: list[str] = []
+    for path in sorted(ROOT.rglob("*.md")):
+        if ".git" in path.parts or "node_modules" in path.parts:
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        for i, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+            if cjk.search(line):
+                issues.append(f"{rel}:{i}: CJK-символы — «{line.strip()[:60]}»")
+            elif sticky.search(line):
+                issues.append(f"{rel}:{i}: смешение раскладок — «{line.strip()[:60]}»")
+    return issues
+
+
 CHECKS = {
     "frontmatter": check_frontmatter,
     "manifest": check_manifest,
     "indexes": check_indexes,
+    "text": check_text,
     "links": check_links,
 }
 

@@ -16,7 +16,7 @@ updated: 2026-09-06
 | Задача | Рекомендация | Альтернатива | Когда |
 |---|---|---|---|
 | Компилятор | **tsc 7.x** (нативный, Go) | tsc 5.x (JS) | 7.x быстрее в разы; 5.x — если нужна экосистема |
-| Bundler (веб) | **Vite** | esbuild напрямую, Rollup | SPA/либraries |
+| Bundler (веб) | **Vite** | esbuild напрямую, Rollup | SPA и библиотеки |
 | Node-приложение | tsx / ts-node (dev) + tsc (build) | Bun | — |
 | Рантайм | Node 22+ | Deno, Bun | Node — стандарт |
 
