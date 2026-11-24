@@ -6,7 +6,7 @@ min_version: "C23"
 category: rule-set
 tags: [rules, guardrails, memory, safety, c23]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # C Rules — обязательные правила
@@ -22,9 +22,11 @@ updated: 2026-09-07
 
 ## Строки
 
-- ✅ C23: `<stdstring.h>` (`cstr_*`) — не «руками strlen/strcpy».
-- ✅ Буферы — с явным размером; `cstr_copy(dst, dst_size, src)`.
+- ✅ Размер буфера рядом с операцией: `snprintf(buf, sizeof buf, …)`, `memcpy(dst, src, n)` + `dst[n] = '\0'`.
+- ✅ `snprintf` проверяет усечение: вернулось `n >= size` — строка обрезана, это ошибка.
 - ❌ `strcpy`/`strcat`/`sprintf` без границ (переполнение).
+- ❌ `strncpy(dst, src, n)` как «безопасный strcpy» — не ставит `'\0'`, если `src` длиннее `n`.
+- ❌ `#include <stdstring.h>` и `cstr_*` — в C23 этого нет (bounds-checked API — план C2y), код не соберётся.
 - ✅ Строка в C — `const char *`, если не мутатируется.
 
 ## Типы и константность

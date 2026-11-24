@@ -6,7 +6,7 @@ min_version: "C23"
 category: decisions
 tags: [decisions, allocator, strings, testing, choices]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # C — таблицы решений
@@ -15,7 +15,7 @@ updated: 2026-09-06
 
 | Задача | Рекомендация | Альтернатива | Когда |
 |---|---|---|---|
-| Новый проект «на C» | **C23** | C17 | C23: `auto`, `typeof`, `nullptr`, `stdstring.h` |
+| Новый проект «на C» | **C23** | C17 | C23: `auto`, `typeof`, `nullptr`, `static_assert` без сообщения (gcc 14.3) |
 | Максимальная совместимость | C17 | C23 | старые компиляторы/RTOS |
 | Нужна безопасность памяти | Rust / C++ (RAII) | C | C — не «безопасный» язык |
 | Встраиваемое | C11/C17 | — | C23-фичи не везде |
@@ -33,7 +33,7 @@ updated: 2026-09-06
 
 | Задача | Рекомендация | Альтернатива | Когда |
 |---|---|---|---|
-| C23 | **`<stdstring.h>`** (`cstr_*`) | `<string.h>` | stdstring — с размерами |
+| Строка с контролем размера | **`snprintf` + `memcpy`** (см. snippets) | свои обёртки над `string.h` | безопасной строковой библиотеки в C23 нет |
 | Legacy (C17) | `<string.h>` + явные размеры | — | — |
 | Динамическая строка | свой builder (см. snippets) | `std::string` (C++) | — |
 
