@@ -12,35 +12,14 @@ Exit code: 0 — найдено (или нет, это информационн�
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
-import yaml
+try:
+    import yaml  # noqa: F401  — нужен tools/ac.py
+except ImportError:
+    print("ОШИБКА: нужен PyYAML: pip install pyyaml", file=sys.stderr)
+    sys.exit(2)
 
-ROOT = Path(__file__).resolve().parent.parent
-INDEX_DIR = ROOT / "index"
-
-
-def entries():
-    for mf in sorted(INDEX_DIR.glob("*.yaml")):
-        try:
-            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
-        except yaml.YAMLError:
-            continue
-        if not isinstance(data, dict):
-            continue
-
-        def walk(node):
-            if isinstance(node, dict):
-                if "id" in node and "path" in node:
-                    yield node
-                for value in node.values():
-                    if isinstance(value, (dict, list)):
-                        yield from walk(value)
-            elif isinstance(node, list):
-                for item in node:
-                    yield from walk(item)
-
-        yield from walk(data)
+from ac import index_entries  # noqa: E402
 
 
 def main() -> int:
@@ -50,7 +29,7 @@ def main() -> int:
     query = sys.argv[1].strip().lower()
 
     found = 0
-    for entry in entries():
+    for _, entry in index_entries():
         tags = [str(t).lower() for t in entry.get("tags", [])]
         title = str(entry.get("title", "")).lower()
         # Точное совпадение тега ИЛИ подстрока в тегах/названии.

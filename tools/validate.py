@@ -33,9 +33,18 @@ except ImportError:
     print("ОШИБКА: нужен PyYAML: pip install pyyaml", file=sys.stderr)
     sys.exit(2)
 
-ROOT = Path(__file__).resolve().parent.parent
-INDEX_DIR = ROOT / "index"
-MANIFEST = INDEX_DIR / "manifest.yaml"
+from ac import (  # noqa: E402  — разбор формата один на весь тулинг (tools/ac.py)
+    MANIFEST,
+    NO_FRONTMATTER,
+    NO_FRONTMATTER_DIRS,
+    ROOT,
+    all_md_files,
+    code_fences,
+    index_entries,
+    index_files,
+    needs_frontmatter,
+    parse_frontmatter,
+)
 
 # Допустимые имена секционных файлов index/<section>.yaml.
 ALLOWED_SECTIONS = {
@@ -44,14 +53,6 @@ ALLOWED_SECTIONS = {
     "database", "messaging", "cicd", "pm",
 }
 
-# Файлы, которым frontmatter НЕ требуется.
-NO_FRONTMATTER = {
-    "README.md",  # любой README (индексы разделов)
-    "AGENTS.md",
-    "CHANGELOG.md",
-}
-NO_FRONTMATTER_DIRS = {"docs", "skills"}  # skills — SKILL.md со своим форматом frontmatter
-
 ALLOWED_LANGS = {
     "go", "typescript", "javascript", "python", "c", "bash",
     "csharp", "kotlin", "unity", "shared", "database", "messaging", "cicd", "pm",
@@ -59,12 +60,6 @@ ALLOWED_LANGS = {
 ALLOWED_CATEGORIES = {"concept", "rule-set", "idioms", "decisions", "snippet", "pattern"}
 ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
 ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
-# Языки, код которых проверяется компилятором/интерпретатором. Для записей
-# category snippet/pattern verified=none с таким кодом — ошибка каталога.
-# Декларативные (dockerfile, yaml, protobuf) и компилируемые только в Editor
-# (hlsl) сюда не входят.
-CODE_LANGS = {"go", "c", "csharp", "kotlin", "python", "bash", "sh", "ts", "js", "sql"}
-CODE_FENCE_RE = re.compile(r"^```([a-zA-Z]+)[ \n]", re.M)
 SKILL_FIELDS = ("name", "description", "whenToUse", "updated")
 ID_PREFIXES = (
     "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
@@ -81,34 +76,6 @@ def norm_date(v) -> str | None:
     return v.isoformat() if hasattr(v, "isoformat") else str(v)
 ID_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
-
-
-def parse_frontmatter(path: Path) -> dict | None:
-    """Вернуть dict frontmatter или None (файл без frontmatter)."""
-    text = path.read_text(encoding="utf-8")
-    if not text.startswith("---\n"):
-        return None
-    end = text.find("\n---\n", 4)
-    if end == -1:
-        return None
-    raw = text[4:end]
-    data = yaml.safe_load(raw)
-    if not isinstance(data, dict):
-        return None
-    return data
-
-
-def all_md_files() -> list[Path]:
-    skip = {".git", "node_modules"}
-    return sorted(p for p in ROOT.rglob("*.md") if not (skip & set(p.parts)))
-
-
-def needs_frontmatter(path: Path) -> bool:
-    if path.name in NO_FRONTMATTER:
-        return False
-    if any(part in NO_FRONTMATTER_DIRS for part in path.parts):
-        return False
-    return True
 
 
 def check_frontmatter() -> list[str]:
@@ -176,50 +143,14 @@ def check_frontmatter() -> list[str]:
     return issues
 
 
-def code_fences(path: Path) -> set[str]:
-    """Языки код-блоков записи (```<lang>), только известные языки."""
-    try:
-        langs = set(CODE_FENCE_RE.findall(path.read_text(encoding="utf-8")))
-    except OSError:
-        return set()
-    return {lang.lower() for lang in langs} & CODE_LANGS
-
-
 def manifest_files() -> list[Path]:
     """Каталог: index/manifest.yaml (шапка) + index/<section>.yaml (записи)."""
-    return sorted(INDEX_DIR.glob("*.yaml"))
+    return index_files()
 
 
 def manifest_entries() -> list[tuple[Path, dict]]:
-    """Все записи каталога: (section, entry dict).
-
-    Ходит по всем файлам index/*.yaml; секция = имя файла без расширения.
-    """
-    entries: list[tuple[Path, dict]] = []
-
-    def walk(node, section: Path):
-        if isinstance(node, dict):
-            if "path" in node and "id" in node:
-                entries.append((section, node))
-            for key, value in node.items():
-                if isinstance(value, (dict, list)):
-                    walk(value, section / str(key))
-        elif isinstance(node, list):
-            for item in node:
-                walk(item, section)
-
-    for mf in manifest_files():
-        try:
-            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
-        except yaml.YAMLError:
-            continue  # невалидный YAML уже отмечен в check_manifest
-        if not isinstance(data, dict):
-            continue
-        for key, value in data.items():
-            if key in ("version", "updated", "languages"):
-                continue
-            walk(value, Path(mf.stem) / str(key))
-    return entries
+    """Все записи каталога: (section, entry dict). Секция = `<section>/<ключ>`."""
+    return index_entries()
 
 
 def check_manifest() -> list[str]:
@@ -306,7 +237,7 @@ def check_manifest() -> list[str]:
         # verified=none означает «кода нет» — для сниппетов/паттернов с кодом
         # это обещание, а не факт.
         if verified == "none" and fm.get("category") in ("snippet", "pattern"):
-            found = code_fences(target)
+            found = code_fences(target.read_text(encoding="utf-8"))
             if found:
                 issues.append(
                     f"manifest ({section}): '{rel}': verified=none, но в записи "

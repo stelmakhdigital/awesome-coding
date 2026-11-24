@@ -14,25 +14,14 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import sys
-from pathlib import Path
 
 try:
-    import yaml
+    import yaml  # noqa: F401  — нужен tools/ac.py
 except ImportError:
     print("ОШИБКА: нужен PyYAML: pip install pyyaml", file=sys.stderr)
     sys.exit(2)
 
-ROOT = Path(__file__).resolve().parent.parent
-SKIP_DIRS = {".git", "node_modules"}
-
-
-def content_files() -> list[Path]:
-    return sorted(
-        p for p in ROOT.rglob("*.md")
-        if not (SKIP_DIRS & set(p.parts))
-        and p.name != "README.md"
-        and not any(part == "docs" for part in p.parts)
-    )
+from ac import ROOT, all_md_files, parse_frontmatter  # noqa: E402
 
 
 def main() -> int:
@@ -43,20 +32,14 @@ def main() -> int:
     today = dt.date.today()
     stale: list[tuple[dt.date, str]] = []
     missing: list[str] = []
-    for path in content_files():
-        rel = str(path.relative_to(ROOT))
-        text = path.read_text(encoding="utf-8")
-        if not text.startswith("---\n"):
-            continue
-        end = text.find("\n---\n", 4)
-        if end == -1:
-            continue
+    for path in all_md_files():
         try:
-            fm = yaml.safe_load(text[4:end])
+            fm = parse_frontmatter(path)
         except yaml.YAMLError:
-            continue
+            continue  # невалидный YAML отмечает validate.py
         if not isinstance(fm, dict):
             continue
+        rel = str(path.relative_to(ROOT))
         updated = fm.get("updated")
         if isinstance(updated, dt.date):
             if (today - updated).days > args.days:
