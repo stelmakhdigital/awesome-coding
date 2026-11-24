@@ -62,9 +62,11 @@ jobs:
 
           if grep -Eq "Вышли новые версии|Записей старше|Нет/не распознано" report.md; then
             # Один открытый issue вместо недели одинаковых.
+            # --force: создаёт метку, а существующую обновляет на те же значения.
+            # --if-not-exists в gh нет (проверено на падении этого же шага).
             gh label create versions --repo "$GITHUB_REPOSITORY" \
               --color 5319e7 --description "Кандидаты на сдвиг пинов / устаревшие updated" \
-              --if-not-exists
+              --force
             if [ -n "$existing" ]; then
               gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --body-file report.md
             else
