@@ -1,0 +1,78 @@
+name: Freshness
+
+# Квартальная сверка версий держалась на памяти человека: «сделали в марте,
+# вспомнили в августе». Здесь она ходит сама и открывает один issue со списком
+# кандидатов; решение о сдвиге пина остаётся за человеком — сдвиг требует
+# перепроверки затронутых записей, а не правки таблицы в AGENTS.md.
+
+on:
+  schedule:
+    - cron: "0 7 * * 1" # понедельник, 07:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      # Сторонние actions — по SHA, как в ci.yml (cicd/rules.md).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Проверить версии и свежесть записей
+        run: |
+          {
+            echo "Прогон: $(date -u +%F)"
+            echo
+            echo "Это список кандидатов, а не план действий. Пин двигается только вместе"
+            echo "с перепроверкой затронутых записей (`make verify`), а не одной правкой"
+            echo "таблицы; свежие мажоры обычно хуже проверенных предыдущих (ADR-0002)."
+            echo
+            echo "## make check-versions"
+            echo
+            echo '```'
+            python3 tools/check_versions.py
+            echo '```'
+            echo
+            echo "## make check-stale"
+            echo
+            echo '```'
+            python3 tools/check_stale.py
+            echo '```'
+          } > report.md
+          cat report.md
+
+      - name: Обновить issue с кандидатами
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          existing=$(gh issue list --repo "$GITHUB_REPOSITORY" --label versions \
+            --state open --json number --jq '.[0].number // empty')
+
+          if grep -Eq "Вышли новые версии|Записей старше|Нет/не распознано" report.md; then
+            # Один открытый issue вместо недели одинаковых.
+            gh label create versions --repo "$GITHUB_REPOSITORY" \
+              --color 5319e7 --description "Кандидаты на сдвиг пинов / устаревшие updated" \
+              --if-not-exists
+            if [ -n "$existing" ]; then
+              gh issue edit "$existing" --repo "$GITHUB_REPOSITORY" --body-file report.md
+            else
+              gh issue create --repo "$GITHUB_REPOSITORY" --label versions \
+                --title "Сверка версий: есть кандидаты" \
+                --body-file report.md
+            fi
+          elif [ -n "$existing" ]; then
+            gh issue close "$existing" --repo "$GITHUB_REPOSITORY" \
+              --comment "Кандидатов нет — закрываю автоматом, откроется заново при появлении."
+          fi

@@ -137,9 +137,11 @@ make test                  # тесты самого туллинга (верд�
 `python3 tools/verify_snippets.py --record <id>` (что проверяет каждый язык —
 таблица в `docs/FORMAT.md`).
 
-**Свежесть версий:** раз в квартал — `make check-versions` и `make check-stale`; при ⚠️ обновите
-таблицу «Версии» (проверив фолбэк), заголовок `updated` в `index/manifest.yaml`
-и перепроверьте затронутые сниппеты.
+**Свежесть версий:** `.github/workflows/freshness.yml` по понедельникам гоняет
+`make check-versions` и `make check-stale` и держит один open issue со списком
+кандидатов (чистый прогон закрывает его). Решение за человеком: пин двигается
+вместе с перепроверкой затронутых записей (`make verify`) и правкой таблицы
+«Версии» + `updated` в `index/manifest.yaml`, а не одной правкой таблицы.
 
 ## Статусы записей
 
