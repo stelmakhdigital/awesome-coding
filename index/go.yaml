@@ -117,6 +117,13 @@ snippets:
     status: stable
     verified: reviewed
     updated: 2026-09-07
+  - id: go-rate-limit
+    title: "Go: rate limiting (token bucket) и ограничение параллельности"
+    path: go/snippets/rate-limit.md
+    tags: [rate-limit, throttling, http, retry-after, backpressure, middleware]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
 patterns:
   - id: go-functional-options
     title: "Functional Options"
