@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -94,6 +95,9 @@ class Runner:
     prepare: list[str] | None = None
     probe: str = "test -n \"$(ls -A /deps)\""       # том уже прогрет?
     preamble: Callable[[str], str] = lambda t: t    # обрамление блока-фрагмента
+    env: dict[str, str] = field(default_factory=dict)
+    run_as_host_user: bool = False                  # тулчейн пишет артефакты в монт
+    timeout: int = 900
 
     def run(self, workdir: Path, files: dict[str, str]) -> tuple[str, str]:
         for name, body in files.items():
@@ -103,8 +107,14 @@ class Runner:
         args = ["docker", "run", "--rm", "-v", f"{workdir}:/w", "-w", "/w"]
         if self.volume and self.mount:
             args += ["-v", f"{self.volume}:{self.mount}"]
+        if self.run_as_host_user:
+            # Иначе артефакты сборки остаются root-owned в примонтированном
+            # каталоге, и временный каталог с хоста не удалить.
+            args += ["-u", f"{os.getuid()}:{os.getgid()}", "-e", "HOME=/tmp"]
+        for key, value in self.env.items():
+            args += ["-e", f"{key}={value}"]
         proc = subprocess.run(args + [self.image, *self.cmd], capture_output=True,
-                              text=True, timeout=900)
+                              text=True, timeout=self.timeout)
         return classify(proc.returncode, proc.stdout + proc.stderr)
 
 
@@ -216,7 +226,87 @@ def _run_sql(blocks: list[tuple[int, str]]) -> tuple[str, str]:
     return "ok", ""
 
 
+CS_IMAGE = "mcr.microsoft.com/dotnet/sdk:10.0"
+# Пакеты, без которых часть блоков не собирается, и признак, по которому они
+# подключаются. Версия плавает по строке TFM: закрепление за .NET 10, а не за
+# часом публикации пакета (сверяется кварталом, как остальное).
+CS_PACKAGES = {
+    "openapi": [("Microsoft.AspNetCore.OpenApi", "10.0.*")],
+    "resilience": [("Microsoft.Extensions.Http.Resilience", "10.11.*")],
+    # Тестовый блок собирается как обычный проект: достаточно xunit (атрибуты и
+    # Assert), раннер тест-раннер не запускается.
+    "xunit": [("xunit", "2.9.*")],
+}
+CS_TYPES = re.compile(r"\b(WebApplicationBuilder|WebApplication|Microsoft\.AspNetCore|HttpContext|Results)\b")
+
+CS_PROJECT = """<Project Sdk="{sdk}">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+{packages}</Project>
+"""
+
+# Каждый блок — свой проект: top-level statements и объявления разных видов в
+# одном файле не уживаются. Экзешник не собрался из-за отсутствия Main — блок
+# состоит из одних объявлений, собираем библиотекой.
+CS_SCRIPT = """
+set -u
+cd /w
+fails=""
+deps=""
+for d in b*/; do
+  d=${d%/}
+  out=$(dotnet build -v q --nologo "$d/p.csproj" 2>&1) && continue
+  case "$out" in
+  *"error CS5001"*)
+    sed -i "s|<OutputType>Exe</OutputType>|<OutputType>Library</OutputType>|" "$d/p.csproj"
+    out=$(dotnet build -v q --nologo "$d/p.csproj" 2>&1) && continue
+    ;;
+  esac
+  # NU* и «нет такого пространства имён» = не хватает пакета: проверить нельзя,
+  # а не сломано. Остальное — код в записи.
+  case "$out" in
+  *" error NU"*|*"error CS0234"*|*"error CS0246"*|*"error CS7069"*)
+    [ -n "$deps" ] || deps="$d: $(printf '%s' "$out" | grep -oE '(NU|CS)[0-9]+' | head -n1)"
+    ;;
+  *)
+    [ -n "$fails" ] || fails="$d: $(printf '%s' "$out" | grep -m1 'error C' | sed 's|/w/||' | cut -c1-140)"
+    ;;
+  esac
+done
+if [ -n "$fails" ]; then echo "AC:FAIL $fails"; exit 1; fi
+if [ -n "$deps" ]; then echo "AC:DEPS $deps"; exit 1; fi
+"""
+
+
+def cs_project_files(blocks: list[tuple[int, str]]) -> dict[str, str]:
+    """Запись C# как N проектов: csproj на блок, пакет — только если блок о нём просит."""
+    files: dict[str, str] = {"build.sh": CS_SCRIPT}
+    for i, code in blocks:
+        refs = ""
+        for marker, packages in CS_PACKAGES.items():
+            if marker in code.lower():
+                for package, version in packages:
+                    refs += f'    <PackageReference Include="{package}" Version="{version}" />\n'
+        files[f"b{i}/p.csproj"] = CS_PROJECT.format(
+            sdk="Microsoft.NET.Sdk.Web" if CS_TYPES.search(code) else "Microsoft.NET.Sdk",
+            packages=f"  <ItemGroup>\n{refs}  </ItemGroup>\n" if refs else "")
+        files[f"b{i}/Program.cs"] = code
+    return files
+
 def classify(code: int, out: str) -> tuple[str, str]:
+    # Маркеры скриптовых раннеров: что они увидели, решают они сами.
+    for marker, verdict in (("AC:FAIL", "fail"), ("AC:DEPS", "deps")):
+        if out.startswith(marker) or f"\n{marker}" in out:
+            line = next((x for x in out.splitlines() if x.startswith(marker)), marker)
+            return verdict, line[len(marker):].strip()[:200]
+
     lines = [x.strip() for x in out.splitlines()
              if x.strip() and x.strip() != "AC:FMT" and not x.startswith("#")]
     # трейсбек python важнее в последней строке (сама ошибка), а не в первой
@@ -278,6 +368,13 @@ RUNNERS: dict[str, Runner] = {
                 what="gcc -std=c23 -fsyntax-only -Wall -Wextra"),
     # SQL исполняется не «в контейнере блока», а на общем сервере (см. run_sql_job):
     # image здесь — образ того сервера.
+    "csharp": Runner(
+        "csharp", CS_IMAGE, ["sh", "/w/build.sh"],
+        what="dotnet build 10.0: проект на блок, Exe с падением на Library для блоков "
+             "без точки входа, FrameworkReference AspNetCore, NuGet по признаку блока",
+        env={"DOTNET_CLI_TELEMETRY_OPTOUT": "1", "DOTNET_NOLOGO": "1",
+             "DOTNET_CLI_HOME": "/tmp", "NUGET_PACKAGES": "/tmp/nuget"},
+        run_as_host_user=True, timeout=1800),
     "sql": Runner("sql", PG_IMAGE, [],
                   what="psql на PostgreSQL 18: блок выполняется в чистой схеме; "
                        "ссылки на таблицы из чужих блоков — deps, не fail"),
@@ -358,6 +455,9 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
             elif lang == "sql":
                 if blocks:
                     jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
+            elif lang == "csharp":
+                if blocks:
+                    jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
             else:
                 for i, code in blocks:
                     jobs.append(Job(rel, rid, lang, [i], {FNAME[lang]: RUNNERS[lang].preamble(code)}))
@@ -407,6 +507,18 @@ def run_job(job: Job) -> Job:
 
     def go_runsh(d: Path) -> None:
         (d / "run.sh").write_text(GO_SCRIPT, encoding="utf-8")
+
+    if job.lang == "csharp":
+        runner = RUNNERS[job.lang]
+        try:
+            with tempfile.TemporaryDirectory(prefix="acv-") as tmp:
+                verdict, note = runner.run(Path(tmp), cs_project_files(job.codes))
+        except subprocess.TimeoutExpired:
+            verdict, note = "fail", "timeout 900s"
+        except subprocess.CalledProcessError as e:
+            verdict, note = "fail", str(e)[:160]
+        job.result = {"verdict": verdict, "note": note[:200]}
+        return job
 
     with tempfile.TemporaryDirectory(prefix="acv-") as tmp:
         d = Path(tmp)

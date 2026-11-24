@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: [go, ts, tsx, js, python, bash, sh, c, sql]
+        lang: [go, ts, tsx, js, python, bash, sh, c, sql, csharp]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
@@ -74,4 +74,4 @@ jobs:
       # Разные verdicts: fail/fmt ломают сборку, deps/fragment — нет
       # (см. docs/FORMAT.md, «Что стоит за verified»).
       - name: Run record code through the toolchain
-        run: python3 tools/verify_snippets.py --lang ${{ matrix.lang }} --jobs 4
+        run: python3 tools/verify_snippets.py --lang ${{ matrix.lang }} --jobs ${{ matrix.lang == 'csharp' && 2 || 4 }}

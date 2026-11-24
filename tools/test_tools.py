@@ -472,6 +472,35 @@ class ReleaseTest(unittest.TestCase):
         self.assertTrue(release.check(log, "ac=v1.1\n", "v1.2"))
 
 
+class CsProjectTest(unittest.TestCase):
+    """Сборка C# на запись: sdk по признаку, пакеты по признаку, вердикты скрипта."""
+
+    def test_web_sdk_choosen_by_marker(self):
+        files = vs.cs_project_files([
+            (1, "var builder = WebApplication.CreateBuilder(args);"),
+            (2, "public class Plain { }"),
+        ])
+        self.assertIn('Sdk="Microsoft.NET.Sdk.Web"', files["b1/p.csproj"])
+        self.assertIn('Sdk="Microsoft.NET.Sdk"', files["b2/p.csproj"])
+        self.assertNotIn("PackageReference", files["b1/p.csproj"])
+        self.assertIn("FrameworkReference", files["b1/p.csproj"])
+
+    def test_packages_added_only_when_needed(self):
+        files = vs.cs_project_files([(1, "using Xunit;\nsealed class T { }")])
+        self.assertIn('Include="xunit"', files["b1/p.csproj"])
+        self.assertNotIn("Resilience", files["b1/p.csproj"])
+
+    def test_script_markers_become_verdicts(self):
+        self.assertEqual(vs.classify(1, "AC:DEPS b3: CS0246\n"), ("deps", "b3: CS0246"))
+        verdict, note = vs.classify(1, "ok b1\nAC:FAIL b2: b2/Program.cs(1,1): error CS1002\n")
+        self.assertEqual(verdict, "fail")
+        self.assertIn("CS1002", note)
+
+    def test_framework_reference_is_not_deprecated(self):
+        """Блок без top-level statements должен собираться Library — скрипт это умеет."""
+        self.assertIn("CS5001", vs.CS_SCRIPT)
+        self.assertIn("Library", vs.CS_SCRIPT)
+
 class McpTest(unittest.TestCase):
     """MCP-сервер: ответы JSON-RPC и stdio-обвязка. Живой клиент не нужен."""
 
