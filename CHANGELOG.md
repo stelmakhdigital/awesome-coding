@@ -3,6 +3,47 @@
 Версии — git-теги `vN.N` (semver). Агенты пинят версию в `skills/awesome-coding/SKILL.md`.
 Процесс релиза: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md), раздел «Релиз».
 
+## v1.2 — 2026-11-24
+
+Код из библиотеки проверяется шире: собраны сниппеты брокеров и БД, добавлена
+проверка SQL; CI приведён к собственным правилам.
+
+### Туллинг
+
+- `make verify` умеет SQL: поднимает `postgres:18-alpine` (закреплённая версия) и
+  выполняет блоки записи по порядку в одной схеме. `deps` — не хватает таблиц или
+  параметров `$1`; `fail` — настоящая ошибка. Раздел `database` ушёл из примечания
+  «вне make verify».
+- Проверка `text` (CJK и смешение раскладок) подключена к `make validate`: раньше
+  она существовала, но цель `validate` её не вызывала, и в CI она не запускалась.
+  Код и inline-`код` из проверки исключены, номера строк в отчёте совпадают с файлом.
+- `make verify` ломает сборку и на `fmt`, не только на `fail`; в отчёте о непокрытых
+  языках больше нет `text`/`console`/`diff`.
+- `tools/ac.py`: отсутствие PyYAML — внятная ошибка вместо traceback (важно для
+  MCP-сервера на машине агента).
+
+### Контент
+
+- Сниппеты `messaging` (Kafka producer, consumer groups, RabbitMQ, outbox) и
+  `database` (redis, n+1) дописаны до собираемых файлов. Реальные расхождения с API,
+  которые это нашло: `&kafka.Reader{...}` (нужен `kafka.NewReader(kafka.ReaderConfig{...})`),
+  `WaitForConfirms*` в amqp091-go v1.17 (подтверждение берут с `PublishWithDeferredConfirm…`),
+  `x-delivery-limit` без quorum-очереди, коммит после неудачной отправки в DLQ,
+  `publishBatch` в outbox, который был комментарием.
+- SQL-примеры `database` выполняются: добавлены схемы примеров, псевдо-SQL
+  (`INSERT INTO a (...) VALUES (...)`) конкретизирован.
+- `cicd`: `Вolumes`, `эвictions`, `дigest`, `тегуmajor`; `unity`: иероглифы вместо
+  «бюджетных»; всего 12 мест со словами в чужой раскладке.
+
+### Процессы
+
+- CI по правилам из `cicd/rules.md`: сторонние actions закреплены по SHA
+  (checkout v7.0.1, setup-python v7.1.0, setup-node v7.1.0), обновляет их dependabot
+  (`.github/dependabot.yml`); `permissions: contents: read`; `concurrency` по ref;
+  npm-зависимости через `npm ci` с кешем по lockfile.
+- Скилл: клон кэша работает тихо (`-q`, без detached-HEAD совета) — агент больше не
+  получает стену текста на ровном месте.
+
 ## v1.1 — 2026-11-24
 
 Тулчейк проверки кода, раздел `llm/`, недостающие guardrails; `verified` — по факту прогона.
