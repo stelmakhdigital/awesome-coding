@@ -25,6 +25,7 @@
 - [snippets/structured-output.md](snippets/structured-output.md) — Go: вызов со схемой и бюджетом
 - [snippets/retries-budget.md](snippets/retries-budget.md) — Python: ретраи, бюджет, кэш
 - [snippets/streaming.md](snippets/streaming.md) — Go: SSE-стриминг ответа, простои, отмена клиента
+- [snippets/tool-calls.md](snippets/tool-calls.md) — Go: вызовы с инструментами, цикл с бюджетом, резервная модель
 
 ## Related
 

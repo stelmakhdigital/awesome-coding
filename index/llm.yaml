@@ -46,3 +46,10 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-25
+  - id: llm-tool-calls
+    title: "LLM: вызовы с инструментами — цикл, бюджет, резервная модель"
+    path: llm/snippets/tool-calls.md
+    tags: [tool-calling, function-calling, agents, tool-loop, budget, fallback, openai-compatible, json-schema]
+    status: stable
+    verified: executed
+    updated: 2026-11-25
