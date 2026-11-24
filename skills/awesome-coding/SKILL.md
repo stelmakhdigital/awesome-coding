@@ -47,6 +47,7 @@ k=~/.cache/awesome-coding
 | `pyproject.toml`, `requirements.txt` | `python` |
 | `Makefile` + `*.c`/`*.h` | `c` |
 | `*.sh` / shell-скрипты | `bash` |
+| расписание с агентом внутри (`.github/workflows/*` c `schedule`, cron, systemd timer) | `agenting` |
 | `*.csproj` | `csharp` |
 | `ProjectVersion.txt` | `unity` |
 | `*.kt`, `build.gradle.kts` | `kotlin` |

@@ -15,6 +15,7 @@
 | Работа с данными: SQL, индексы, транзакции, миграции, кэш | `database/` (PostgreSQL, Redis) |
 | Брокеры сообщений: Kafka, RabbitMQ | `messaging/` |
 | Архитектура, DDD, уровни, bounded contexts, CQRS, event-driven | `architecture/` |
+| Агент работает без человека: расписание, замок, чекпоинт, охотник за дефектами, координатор и воркеры | `agenting/` |
 | CI/CD, Docker, Kubernetes | `cicd/` |
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
 | Нативный Android (Kotlin) | `kotlin/` |
@@ -26,7 +27,7 @@
 
 1. `<section>/README.md` — версии и конвенции.
 2. `<section>/rules.md` — обязательные guardrails (✅/❌), если секция его имеет
-   (есть в: go, typescript, javascript, react, python, c, bash, csharp, kotlin, unity, database,
+   (есть в: go, typescript, javascript, react, python, c, bash, csharp, kotlin, unity, database, agenting,
    messaging, cicd; нет в: shared, architecture, pm).
 3. Конкретная запись — по тегам в `index/<section>.yaml` (поиск: `grep -i "тег" index/<section>.yaml`;
    без клона — GitHub code search по этому файлу или `make search Q=тег` после клона;
@@ -106,6 +107,7 @@
   аутентификация, тесты, API, observability, время, конфигурация).
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
+- `agenting/` — агентские автоматизации: `README.md`, `rules.md`, `decisions.md`, `snippets/`, `patterns/`. Про прогоны, где агента выпустили из цикла; оркестратор не закреплён намеренно.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
 - `pm/` — проектный/продуктовый менеджмент: SDLC, PMBOK, discovery, требования,
   риски + правила ведения `roadmap.md` и `PROJECT_MEMORY.md` в целевых проектах.

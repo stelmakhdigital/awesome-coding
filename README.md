@@ -111,6 +111,7 @@ awesome-coding/
 ├── database/                  # PostgreSQL 18 + Redis 8
 ├── messaging/                 # Kafka 4.3, RabbitMQ 4.3
 ├── cicd/                      # GitHub Actions, GitLab CI, Docker, Kubernetes, secrets, matrix
+├── agenting/                  # агентские автоматизации: расписание, замок, чекпоинт, охотник, DAG
 └── pm/                        # SDLC, PMBOK, discovery, требования, риски, roadmap, PROJECT_MEMORY
 ```
 
@@ -173,8 +174,9 @@ awesome-coding/
 | `messaging/` | 4.3 (Kafka) / 4.3 (RabbitMQ) | 6 | 3 сниппета, 1 набор правил, 1 таблица решений, 1 паттерн | 4/4 | rules.md |
 | `cicd/` | — | 7 | 6 сниппетов, 1 набор правил | — | rules.md |
 | `pm/` | — | 8 | 3 паттерна, 2 концепции, 2 набора правил, 1 сниппет | — | — |
+| `agenting/` | — | 8 | 3 сниппета, 3 паттерна, 1 набор правил, 1 таблица решений | 4/4 | rules.md |
 | `llm/` | — | 5 | 2 сниппета, 1 набор правил, 1 таблица решений, 1 концепция | 2/2 | rules.md |
-| **итого** | | **184** | | **93/123** | |
+| **итого** | | **192** | | **97/127** | |
 
 ## License
 
