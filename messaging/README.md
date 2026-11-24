@@ -7,15 +7,14 @@
 > Брокеры — отдельный раздел от [database/](../database/): это не хранилище данных,
 > а транспорт событий/сообщений (другие гарантии, другие паттерны).
 
-## Конвенции
+## Правила
 
-- **Код — идемпотентный**: дубликаты сообщений возможны (at-least-once) — обработка не дублирует.
-- **Outbox pattern** для «запись в БД + событие атомарно» (см. [architecture/patterns/event-driven.md](../architecture/patterns/event-driven.md)).
-- **Контракт сообщения** — документирован (схема + версия), breaking changes — новая тема/версия.
-- **DLQ (dead letter queue)** — обязательна для очередей с обработкой.
+Обязательные guardrails — в [rules.md](rules.md) (доставка и идемпотентность,
+отказоустойчивость, порядок, схема сообщения, конфигурация брокера).
 
 ## Структура раздела
 
+- [rules.md](rules.md) — обязательные правила (✅/❌)
 - [decisions.md](decisions.md) — Kafka vs RabbitMQ vs Redis Streams
 - [snippets/kafka.md](snippets/kafka.md) — producer/consumer, exactly-once, consumer groups
 - [snippets/rabbitmq.md](snippets/rabbitmq.md) — queues, exchanges, ack/nack, DLQ

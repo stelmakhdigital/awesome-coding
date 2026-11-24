@@ -1,6 +1,14 @@
 # Записи раздела messaging. Шапка и версии языков: index/manifest.yaml.
 
 version: "4.3 (Kafka) / 4.3 (RabbitMQ)"
+rule_set:
+  - id: messaging-rules
+    title: "Messaging Rules (Kafka, RabbitMQ)"
+    path: messaging/rules.md
+    tags: [rules, guardrails, kafka, rabbitmq, delivery, poison-messages]
+    status: stable
+    verified: none
+    updated: 2026-11-24
 decisions:
   - id: messaging-decisions
     title: "Messaging Decisions (Kafka vs RabbitMQ vs Redis Streams)"
