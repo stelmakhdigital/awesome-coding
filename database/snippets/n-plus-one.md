@@ -22,6 +22,22 @@ updated: 2026-11-24
 ## Детект
 
 ```sql
+-- Схема примеров ниже.
+CREATE TABLE orders (
+    id     bigserial PRIMARY KEY,
+    status text NOT NULL DEFAULT 'unpaid',
+    total  numeric(12,2) NOT NULL
+);
+CREATE TABLE items (
+    id       bigserial PRIMARY KEY,
+    order_id bigint NOT NULL REFERENCES orders (id),
+    sku      text NOT NULL,
+    qty      int    NOT NULL
+);
+CREATE INDEX items_order_id_idx ON items (order_id); -- без него батч = N индекс-скинов зря
+```
+
+```sql
 -- Логи запросов (PG): включите log_min_duration_statement.
 ALTER SYSTEM SET log_min_duration_statement = '100ms';
 -- или: pg_stat_statements — топ по total_exec_time / calls
@@ -45,7 +61,7 @@ LIMIT 20;
 
 -- Стало (2 запроса):
 SELECT * FROM orders WHERE status = 'unpaid' LIMIT 100;
-SELECT * FROM items WHERE order_id = ANY($1); -- $1 = [id1, id2, ...]
+SELECT * FROM items WHERE order_id = ANY(ARRAY[101, 102, 103]); -- id из первого запроса
 -- группировка по order_id — в коде
 ```
 

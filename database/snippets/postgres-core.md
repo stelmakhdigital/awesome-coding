@@ -6,7 +6,7 @@ min_version: "18"
 category: snippet
 tags: [postgres, indexes, explain, pooling, performance]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # PostgreSQL: ядро производительности
@@ -15,6 +15,23 @@ updated: 2026-09-06
 **Когда НЕ использовать** — n/a: базовый сниппет.
 
 ## Индексы
+
+```sql
+-- Схема примеров ниже: индексы и EXPLAIN смотрим на ней.
+CREATE TABLE orders (
+    id          bigserial PRIMARY KEY,
+    customer_id bigint      NOT NULL,
+    status      text        NOT NULL DEFAULT 'unpaid',
+    total       numeric(12,2) NOT NULL,
+    created_at  timestamptz NOT NULL DEFAULT now()
+);
+CREATE TABLE events (
+    id         bigint PRIMARY KEY,
+    payload    jsonb     NOT NULL,
+    processed  boolean   NOT NULL DEFAULT false,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+```
 
 ```sql
 -- B-tree (по умолчанию): equality + range + sort.
@@ -40,7 +57,7 @@ CREATE INDEX idx_orders_customer_status ON orders (customer_id, status);
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT o.id, o.total
 FROM orders o
-WHERE o.customer_id = $1 AND o.status = 'unpaid'
+WHERE o.customer_id = 42 AND o.status = 'unpaid'
 ORDER BY o.created_at DESC
 LIMIT 20;
 
@@ -77,10 +94,10 @@ WHERE datname = current_database();
 -- Батч INSERT (1000–5000 строк), не по одной.
 INSERT INTO events (id, payload, created_at)
 VALUES
-  ($1, $2, now()),
-  ($3, $4, now()),
-  ...
-ON CONFLICT (id) DO NOTHING; -- идемпотентность
+  (1, '{"type": "click", "item": 7}', now()),
+  (2, '{"type": "click", "item": 8}', now()),
+  (3, '{"type": "view",  "item": 9}', now())
+ON CONFLICT (id) DO NOTHING; -- идемпотентность: повтор батча не дублирует
 
 -- Массовое обновление: батчами по PK, чтобы не блокировать.
 UPDATE events SET processed = true

@@ -28,6 +28,17 @@ updated: 2026-11-24
 ## Пример: переименование колонки (expand-contract)
 
 ```sql
+-- Схема «до» — то, что уже лежит в проде к моменту миграций ниже.
+CREATE TABLE orders (
+    id                 uuid PRIMARY KEY,
+    customer_id        uuid NOT NULL,
+    customer_full_name text NOT NULL,
+    created_at         timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX idx_orders_customer ON orders (customer_id);
+```
+
+```sql
 -- Шаг 1 (expand): добавить новую колонку, бэктрек старыми данными.
 ALTER TABLE orders ADD COLUMN customer_name text;
 UPDATE orders SET customer_name = customer_full_name;
@@ -56,10 +67,15 @@ golang-migrate) или с аннотациями goose:
 
 ```sql
 -- +goose Up
-CREATE TABLE orders (id uuid PRIMARY KEY, total numeric(12,2) NOT NULL);
+CREATE TABLE order_items (
+    order_id uuid NOT NULL REFERENCES orders (id),
+    sku      text NOT NULL,
+    qty      int  NOT NULL CHECK (qty > 0),
+    PRIMARY KEY (order_id, sku)
+);
 
 -- +goose Down
-DROP TABLE orders;
+DROP TABLE order_items;
 ```
 
 ## Related
