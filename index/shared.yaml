@@ -23,6 +23,13 @@ concepts:
     status: stable
     verified: none
     updated: 2026-09-07
+  - id: shared-authentication
+    title: "Shared: аутентификация (пароли, сессии, токены, MFA)"
+    path: shared/authentication.md
+    tags: [authentication, passwords, jwt, sessions, mfa, oauth, owasp]
+    status: stable
+    verified: none
+    updated: 2026-11-24
   - id: shared-testing
     title: "Shared: Testing (кросс-языковые принципы)"
     path: shared/testing.md

@@ -88,7 +88,8 @@
 - `<lang>/` — языковой раздел: `README.md`, `rules.md`, `idioms.md`, `decisions.md`, `snippets/`, `patterns/`.
 - `unity/` — игровые проекты (кроссплатформа + Android): та же структура + `shaders/` (HLSL); код не компилируется без Editor.
 - `architecture/` — языконезависимая архитектура и DDD: `decisions.md`, `ddd/` (tactical + strategic), `patterns/`.
-- `shared/` — кросс-языковые концепции (ошибки, конкурентность, безопасность, тесты, API, observability, время, конфигурация).
+- `shared/` — кросс-языковые концепции (ошибки, конкурентность, безопасность,
+  аутентификация, тесты, API, observability, время, конфигурация).
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.

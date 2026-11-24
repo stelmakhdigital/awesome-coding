@@ -10,6 +10,7 @@
 | Error handling | [error-handling.md](error-handling.md) |
 | Concurrency | [concurrency.md](concurrency.md) |
 | Security | [security.md](security.md) |
+| Authentication (пароли, сессии, токены, MFA) | [authentication.md](authentication.md) |
 | Testing | [testing.md](testing.md) |
 | API design (REST/gRPC/GraphQL) | [api-design.md](api-design.md) |
 | Observability | [observability.md](observability.md) |
