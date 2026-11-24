@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [architecture, layered, handlers, services, go]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Layered Architecture (слоистая)
@@ -65,6 +65,53 @@ func writeError(w http.ResponseWriter, err error) {
 ```
 
 ```go
+// domain: модель, инварианты и контракт хранилища (не знает про HTTP и БД).
+package domain
+
+import (
+	"context"
+	"errors"
+)
+
+var ErrAlreadyConfirmed = errors.New("order already confirmed")
+
+type Event struct{ OrderID string }
+
+type Order struct {
+	id        string
+	confirmed bool
+	events    []Event
+}
+
+// Confirm — инвариант здесь, не в handler'е и не в infra.
+func (o *Order) Confirm() error {
+	if o.confirmed {
+		return ErrAlreadyConfirmed
+	}
+	o.confirmed = true
+	o.events = append(o.events, Event{OrderID: o.id})
+	return nil
+}
+
+func (o *Order) PullEvents() []Event {
+	ev := o.events
+	o.events = nil
+	return ev
+}
+
+// Tx — единица транзакции хранилища; реализация — в другом слое.
+type Tx interface {
+	Get(ctx context.Context, id string) (*Order, error)
+	Save(ctx context.Context, o *Order) error
+	Commit(ctx context.Context) error
+}
+
+type OrderRepository interface {
+	Begin(ctx context.Context) (Tx, error)
+}
+```
+
+```go
 // application: use case — оркестрация и транзакции.
 package application
 
@@ -77,6 +124,11 @@ import (
 type OrderService struct {
 	repo   domain.OrderRepository
 	events Events
+}
+
+// Events — порт публикации: реализацию подставляет infra.
+type Events interface {
+	Publish(ctx context.Context, events ...domain.Event) error
 }
 
 func (s *OrderService) Confirm(ctx context.Context, id string) error {
