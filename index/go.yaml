@@ -152,6 +152,13 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-25
+  - id: go-state-machine
+    title: "Go: автомат состояний — таблица переходов, guard, параллельные запросы"
+    path: go/snippets/state-machine.md
+    tags: [state-machine, fsm, transitions, guards, idempotency, optimistic-lock, workflow, debug-mode]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
 patterns:
   - id: go-functional-options
     title: "Functional Options"

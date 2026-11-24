@@ -39,3 +39,10 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-24
+  - id: llm-streaming
+    title: "LLM: стриминг ответа — SSE из Go, простои, отмена клиента"
+    path: llm/snippets/streaming.md
+    tags: [streaming, sse, llm, tokens, first-token, flush, heartbeat, cancellation, openai-compatible]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25

@@ -24,6 +24,7 @@
 - [evals.md](evals.md) — как проверять смену промпта и модели
 - [snippets/structured-output.md](snippets/structured-output.md) — Go: вызов со схемой и бюджетом
 - [snippets/retries-budget.md](snippets/retries-budget.md) — Python: ретраи, бюджет, кэш
+- [snippets/streaming.md](snippets/streaming.md) — Go: SSE-стриминг ответа, простои, отмена клиента
 
 ## Related
 
