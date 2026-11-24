@@ -1,6 +1,14 @@
 # Записи раздела cicd. Шапка и версии языков: index/manifest.yaml.
 
 version: null
+rule_set:
+  - id: cicd-rules
+    title: "CI/CD Rules (GitHub Actions, GitLab CI, Docker, Kubernetes)"
+    path: cicd/rules.md
+    tags: [rules, guardrails, github-actions, gitlab-ci, docker, kubernetes, supply-chain]
+    status: stable
+    verified: none
+    updated: 2026-11-24
 snippets:
   - id: cicd-github-actions
     title: "GitHub Actions: паттерны"
