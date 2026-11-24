@@ -18,7 +18,7 @@ updated: 2026-11-24
 ac=v1.1                                   # пин версии библиотеки (обновляется при релизе)
 r=https://github.com/stelmakhdigital/awesome-coding
 k=~/.cache/awesome-coding
-[ -d "$k/.git" ] || git clone --depth 1 --branch "$ac" "$r" "$k"
+[ -d "$k/.git" ] || git -c advice.detachedHead=false clone -q --depth 1 --branch "$ac" "$r" "$k"
 # find ниже выдаёт путь, если файл свежее 7 дней (exit у него всегда 0 — проверять вывод)
 [ -n "$(find "$k/index/manifest.yaml" -mtime -7 2>/dev/null)" ] || {
   git -C "$k" fetch -q --depth 1 origin tag "$ac" && git -C "$k" checkout -q "$ac"
