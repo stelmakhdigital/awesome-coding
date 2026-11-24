@@ -44,7 +44,7 @@ def count_form(n: int, cat: str) -> str:
         return f"{n} {forms[2]}"
     return f"{n} {forms[{1: 0, 2: 1, 3: 1, 4: 1}.get(n % 10, 2)]}"
 # Разделы, где код проверяется вне make verify (нужны живые PG/SDK/Editor).
-OUT_OF_CI = {"database": "SQL — живой PostgreSQL 18", "csharp": "dotnet build",
+OUT_OF_CI = {"csharp": "dotnet build",
              "kotlin": "kotlinc", "unity": "Unity Editor"}
 
 

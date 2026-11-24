@@ -133,7 +133,7 @@ awesome-coding/
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 - Валидация: `make validate` (frontmatter, каталог, индексы, текст, README, ссылки)
-- Проверка кода: `make verify` (код-блоки через тулчейны в Docker), `make verify-fix` —
+- Проверка кода: `make verify` (go/tsc/python/node/shellcheck/gcc/PostgreSQL в Docker), `make verify-fix` —
   поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле
 
@@ -142,7 +142,7 @@ awesome-coding/
 Счётчики и версии генерируются из `index/*.yaml` (`make readme`), вручную не правятся.
 «Код проверен» — записи с программным кодом, прошедшие прогон тулчейном
 (`compiled`/`executed`, см. [docs/FORMAT.md](docs/FORMAT.md)). Вне `make verify` остаются
-`database` — SQL — живой PostgreSQL 18; `csharp` — dotnet build; `kotlin` — kotlinc; `unity` — Unity Editor — там уровень ставится по фактической проверке.
+`csharp` — dotnet build; `kotlin` — kotlinc; `unity` — Unity Editor — там уровень ставится по фактической проверке.
 
 | Раздел | Версия | Записей | Состав | Код проверен | Guardrails |
 |---|---|---|---|---|---|

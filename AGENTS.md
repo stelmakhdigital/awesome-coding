@@ -117,7 +117,7 @@ make validate-links        # только ссылки
 make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
 make readme                # перегенерировать «Статус разделов» из index/*.yaml
 make search Q=async        # поиск записей по тегу/названию по index/*.yaml
-make verify                # код-блоки записей через реальные тулчейны в Docker
+make verify                # код-блоки через тулчейны в Docker (go/tsc/python/node/shellcheck/gcc/PG 18)
 make verify-fix            # то же + поднять verified/updated, где прогон доказал
 make check-versions        # сверка закреплённых версий с актуальными (сеть)
 make check-stale           # записи с устаревшим frontmatter `updated` (квартальный аудит)

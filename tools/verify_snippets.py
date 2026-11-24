@@ -36,6 +36,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -53,6 +55,11 @@ FM_UPDATED_RE = re.compile(r"(?s)^(---\n.*?updated: )\d{4}-\d{2}-\d{2}", re.M)
 HEAD_UPDATED_RE = re.compile(r"^(updated: )\d{4}-\d{2}-\d{2}", re.M)
 
 GO_MOD_CACHE = "/go/pkg/mod"
+PG_CONTAINER = "ac-verify-pg"
+PG_IMAGE = "postgres:18-alpine"
+# SQLSTATE «объекта нет»: блок ссылается на схему из соседнего блока. Это deps —
+# проверить нельзя, а не сломано.
+PG_MISSING = {"42P01", "42703", "42883", "42P02", "42704", "42P10"}
 GO_IMPORT = re.compile(r'"example\.com/([^/"]+)')
 
 
@@ -95,6 +102,65 @@ go build ./... || { go mod tidy; go build ./...; }
 TS_MODULE = lambda t: t if re.search(r"^\s*(import|export)\b", t, re.M) else "export {};\n" + t
 # Фрагмент bash без shebang: shellcheck нужен shell-директива.
 BASH_SHELL = lambda t: t if t.startswith("#!") else "# shellcheck shell=bash\n" + t
+
+
+def pg_server() -> None:
+    """Поднять общий проверочный сервер PostgreSQL (один на прогон)."""
+    running = subprocess.run(["docker", "inspect", "-f", "{{.State.Running}}", PG_CONTAINER],
+                             capture_output=True, text=True)
+    if running.stdout.strip() == "true":
+        return
+    subprocess.run(["docker", "rm", "-f", PG_CONTAINER], capture_output=True)
+    print(f"[подготовка] сервер {PG_CONTAINER} ({PG_IMAGE})…", file=sys.stderr)
+    # pg_stat_statements — единственное расширение, на которое ссылается контент;
+    # без preload оно не создаётся.
+    subprocess.run(["docker", "run", "-d", "--name", PG_CONTAINER,
+                    "-e", "POSTGRES_HOST_AUTH_METHOD=trust", PG_IMAGE,
+                    "-c", "shared_preload_libraries=pg_stat_statements"], check=True,
+                   capture_output=True)
+    for _ in range(90):
+        ready = subprocess.run(["docker", "exec", PG_CONTAINER,
+                               "pg_isready", "-U", "postgres"], capture_output=True)
+        if ready.returncode == 0:
+            return
+        time.sleep(1)
+    raise RuntimeError("PostgreSQL не поднялся за 90s")
+
+
+_PG_LOCK = threading.Lock()  # схема одна на сервер: блоки прогоняются по очереди
+
+
+def run_sql_job(blocks: list[tuple[int, str]]) -> tuple[str, str]:
+    with _PG_LOCK:
+        return _run_sql(blocks)
+
+
+def _run_sql(blocks: list[tuple[int, str]]) -> tuple[str, str]:
+    """SQL-блоки записи в одной схеме: CREATE из первого блока годится остальным.
+
+    Схема одна на запись (как один go-модуль), блоки идут по порядку. Первый
+    же блок, где что-то упало, определяет вердикт всей записи.
+    """
+    pg_server()
+    subprocess.run(["docker", "exec", PG_CONTAINER, "psql", "-U", "postgres", "-q", "-c",
+                    "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public;\n"
+                    "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;"],
+                   check=True, capture_output=True)
+    for i, code in blocks:
+        proc = subprocess.run(
+            ["docker", "exec", "-i", PG_CONTAINER, "psql", "-U", "postgres", "-X", "-q",
+             "-v", "ON_ERROR_STOP=1", "-v", "VERBOSITY=verbose", "-f", "-"],
+            input=code, capture_output=True, text=True, timeout=120)
+        if proc.returncode == 0:
+            continue
+        out = proc.stdout + proc.stderr
+        note = f"#{i}: " + next((line.strip()[:150] for line in out.splitlines()
+                                 if "ERROR" in line), "")
+        state = re.search(r"(?:ERROR:\s+|SQLSTATE:\s*)([0-9A-Z]{5})\b", out)
+        if state and state.group(1) in PG_MISSING:
+            return "deps", note
+        return "fail", note
+    return "ok", ""
 
 
 def classify(code: int, out: str) -> tuple[str, str]:
@@ -145,9 +211,14 @@ RUNNERS: dict[str, Runner] = {
     "c": Runner("c", "gcc:14-bookworm",
                 ["gcc", "-std=c23", "-fsyntax-only", "-Wall", "-Wextra", "/w/block.c"],
                 what="gcc -std=c23 -fsyntax-only -Wall -Wextra"),
+    # SQL исполняется не «в контейнере блока», а на общем сервере (см. run_sql_job):
+    # image здесь — образ того сервера.
+    "sql": Runner("sql", PG_IMAGE, [],
+                  what="psql на PostgreSQL 18: блок выполняется в чистой схеме; "
+                       "ссылки на таблицы из чужих блоков — deps, не fail"),
 }
 # Имя файла, в который кладётся блок (go собирается иначе — см. go_files).
-FNAME = {"python": "block.py", "ts": "block.ts", "js": "block.js",
+FNAME = {"sql": "block.sql", "python": "block.py", "ts": "block.ts", "js": "block.js",
          "bash": "block.sh", "sh": "block.sh", "c": "block.c"}
 PACKAGE_RE = re.compile(r"^package\s+(\w+)", re.M)
 
@@ -219,6 +290,9 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
                 whole = [(i, c) for i, c in blocks if PACKAGE_RE.search(c)]
                 if whole:
                     jobs.append(Job(rel, rid, lang, [i for i, _ in whole], codes=whole))
+            elif lang == "sql":
+                if blocks:
+                    jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
             else:
                 for i, code in blocks:
                     jobs.append(Job(rel, rid, lang, [i], {FNAME[lang]: RUNNERS[lang].preamble(code)}))
@@ -255,6 +329,15 @@ def prepare_volumes(runners: list[Runner]) -> None:
 def run_job(job: Job) -> Job:
     if job.result:
         return job
+    if job.lang == "sql":
+        job.result = {"verdict": "fail", "note": ""}
+        try:
+            verdict, note = run_sql_job(job.codes)
+        except (subprocess.TimeoutExpired, subprocess.CalledProcessError, RuntimeError) as e:
+            verdict, note = "fail", str(e)[:160]
+        job.result = {"verdict": verdict, "note": note[:200]}
+        return job
+
     runner = RUNNERS[job.lang]
 
     def go_runsh(d: Path) -> None:
