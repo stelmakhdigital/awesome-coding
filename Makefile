@@ -1,10 +1,11 @@
 # awesome-coding — туллинг
 #
 # Цели:
-#   make validate              — все проверки (frontmatter + manifest + индексы + ссылки)
+#   make validate              — все проверки (frontmatter + manifest + индексы + README + ссылки)
 #   make validate-frontmatter  — только frontmatter
 #   make validate-manifest     — только manifest
-#   make validate-indexes      — только индексы (README ↔ файлы, счётчики)
+#   make validate-indexes      — README каталогов ↔ файлы раздела
+#   make readme                — перегенерировать «Статус разделов» из index/*.yaml
 #   make validate-links        — только ссылки
 #   make validate-mermaid      — синтаксис всех mermaid-блоков (нужен node + npm i)
 #   make search Q=async        — поиск записей по тегу/названию по index/*.yaml
@@ -17,15 +18,16 @@ PYTHON ?= python3
 NODE ?= node
 
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
-        validate-links validate-mermaid search verify verify-fix \
+        validate-links validate-mermaid validate-readme readme search verify verify-fix \
         check-versions check-stale
 
 help:
 	@echo "Цели:"
-	@echo "  validate              — все проверки (frontmatter + manifest + индексы + ссылки)"
+	@echo "  validate              — все проверки (frontmatter + manifest + индексы + README + ссылки)"
 	@echo "  validate-frontmatter  — YAML frontmatter (обязательные поля, id, статусы)"
 	@echo "  validate-manifest     — index/*.yaml (пути, соответствие frontmatter)"
-	@echo "  validate-indexes      — README каталогов ↔ файлы, счётчики в основном README"
+	@echo "  validate-indexes      — README каталогов упоминают все файлы раздела"
+	@echo "  readme                — перегенерировать «Статус разделов» из index/*.yaml"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
 	@echo "  search Q=<запрос>     — поиск записей по тегу/названию по index/*.yaml"
@@ -36,7 +38,7 @@ help:
 	@echo ""
 	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); validate-mermaid — node 20+; verify — docker"
 
-validate: validate-frontmatter validate-manifest validate-indexes validate-links
+validate: validate-frontmatter validate-manifest validate-indexes validate-readme validate-links
 
 validate-frontmatter:
 	$(PYTHON) tools/validate.py --check frontmatter
@@ -46,6 +48,12 @@ validate-manifest:
 
 validate-indexes:
 	$(PYTHON) tools/validate.py --check indexes
+
+validate-readme:
+	$(PYTHON) tools/readme.py --check
+
+readme:
+	$(PYTHON) tools/readme.py
 
 validate-links:
 	$(PYTHON) tools/validate.py --check links

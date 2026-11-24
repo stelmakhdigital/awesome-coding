@@ -34,7 +34,8 @@
 
 - `make validate` (и `make validate-mermaid`, если менялись mermaid-блоки) — зелёные.
 - Индексы обновлены в том же коммите, что и контент: `index/<section>.yaml`,
-  README раздела, основной README (счётчики).
+  README раздела. Блок «Статус разделов» основного README не правится руками —
+  `make readme` (он генерируется из каталога, и `make validate` это проверяет).
 - `verified` в каталоге `index/` отражает фактическую проверку: `executed` / `compiled` /
   `reviewed` / `none` — не обещание, а факт.
 - `git status` — нет чужих файлов (`node_modules/`, временные артефакты).

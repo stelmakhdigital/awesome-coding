@@ -55,9 +55,11 @@ flowchart LR
 ```
 awesome-coding/
 ├── AGENTS.md                  # точка входа для агента (роутер)
-├── Makefile                   # make validate — валидация репо
+├── Makefile                   # make validate — проверки, make verify — прогон кода
 ├── tools/
-│   └── validate.py            # валидатор: frontmatter, manifest, ссылки
+│   ├── validate.py            # валидатор: frontmatter, каталог, ссылки
+│   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
+│   └── readme.py              # генерация блока «Статус разделов»
 ├── docs/
 │   ├── FORMAT.md              # спецификация формата записей
 │   ├── CONTRIBUTING.md
@@ -114,30 +116,36 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Валидация: `make validate` (frontmatter, manifest, индексы, ссылки)
+- Валидация: `make validate` (frontmatter, каталог, индексы, README, ссылки)
 - Проверка кода: `make verify` (код-блоки через тулчейны в Docker), `make verify-fix` —
   поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле
 
 ## Статус разделов
 
-| Раздел | Статус |
-|---|---|
-| `go/` | ядро: snippets, patterns, rules, idioms, decisions |
-| `architecture/` | полный: DDD (tactical + strategic) + 7 архитектурных паттернов |
-| `csharp/` | полный: snippets, patterns, rules, idioms, decisions (.NET 10 / C# 14, код компилируется) |
-| `unity/` | полный: snippets, patterns, rules, idioms, decisions + HLSL-шейдеры (6.3 LTS, Android) |
-| `kotlin/` | полный: rules, idioms, decisions, 6 сниппетов (2.3; корутины — скомпилированы и выполнены, Ktor — скомпилирован) |
-| `shared/` | полный: 15 кросс-языковых концепций |
-| `database/` | полный: PostgreSQL 18 + Redis 8 (rules, decisions, 5 сниппетов; SQL прогнан на живом PG 18.6) |
-| `messaging/` | полный: Kafka 4.3 + RabbitMQ 4.3 (decisions, 4 сниппета; Go-код скомпилирован, outbox/consumer-groups — gofmt + ревью) |
-| `cicd/` | полный: GitHub Actions, GitLab CI, Docker, Kubernetes, секреты, матричные сборки |
-| `typescript/` | полный: rules, idioms, decisions, 5 сниппетов (tsc 7.0.2 strict — код проверен) |
-| `javascript/` | полный: rules, idioms, decisions, 4 сниппета (node 22 — код выполнен, node:test 5/5) |
-| `python/` | полный: rules, idioms, decisions, 6 сниппетов (Python 3.14.7 — код выполнен, pytest) |
-| `c/` | полный: rules, idioms, decisions, 4 сниппета (clang -std=c23, ASan-чисто) |
-| `bash/` | полный: rules, idioms, decisions, 4 сниппета (bash 5.3 — код выполнен) |
-| `pm/` | полный: SDLC, PMBOK, discovery, требования, опрос, roadmap, PROJECT_MEMORY, риски (8 записей) |
+Счётчики и версии генерируются из `index/*.yaml` (`make readme`), вручную не правятся.
+«Код проверен» — записи с программным кодом, прошедшие прогон тулчейном
+(`compiled`/`executed`, см. [docs/FORMAT.md](docs/FORMAT.md)). Вне `make verify` остаются
+`database` — SQL — живой PostgreSQL 18; `csharp` — dotnet build; `kotlin` — kotlinc; `unity` — Unity Editor — там уровень ставится по фактической проверке.
+
+| Раздел | Версия | Записей | Состав | Код проверен | Guardrails |
+|---|---|---|---|---|---|
+| `go/` | 1.27 | 20 | 13 сниппетов, 4 паттерна, 1 набор правил, 1 idioms, 1 таблица решений | 16/18 | rules.md |
+| `typescript/` | 7.0 | 8 | 5 сниппетов, 1 набор правил, 1 idioms, 1 таблица решений | 6/6 | rules.md |
+| `javascript/` | ES2025 | 7 | 4 сниппета, 1 набор правил, 1 idioms, 1 таблица решений | 5/5 | rules.md |
+| `python/` | 3.14 | 9 | 6 сниппетов, 1 набор правил, 1 idioms, 1 таблица решений | 7/7 | rules.md |
+| `c/` | C23 | 7 | 4 сниппета, 1 набор правил, 1 idioms, 1 таблица решений | 5/5 | rules.md |
+| `bash/` | 5.3 | 7 | 4 сниппета, 1 набор правил, 1 idioms, 1 таблица решений | 5/5 | rules.md |
+| `csharp/` | 14 (.NET 10) | 15 | 9 сниппетов, 3 паттерна, 1 набор правил, 1 idioms, 1 таблица решений | 10/13 | rules.md |
+| `kotlin/` | 2.3 | 9 | 6 сниппетов, 1 набор правил, 1 idioms, 1 таблица решений | 2/7 | rules.md |
+| `unity/` | 6.3 LTS | 18 | 12 сниппетов, 3 паттерна, 1 набор правил, 1 idioms, 1 таблица решений | 0/14 | rules.md |
+| `shared/` | — | 15 | 10 концепций, 5 наборов правил | 0/3 | — |
+| `architecture/` | — | 18 | 13 паттернов, 4 концепции, 1 таблица решений | 13/15 | — |
+| `database/` | 18 (PostgreSQL) / 8 (Redis) | 7 | 5 сниппетов, 1 набор правил, 1 таблица решений | 5/5 | rules.md |
+| `messaging/` | 4.3 (Kafka) / 4.3 (RabbitMQ) | 5 | 3 сниппета, 1 таблица решений, 1 паттерн | 2/4 | — |
+| `cicd/` | — | 6 | 6 сниппетов | — | — |
+| `pm/` | — | 8 | 3 паттерна, 2 концепции, 2 набора правил, 1 сниппет | — | — |
+| **итого** | | **159** | | **76/107** | |
 
 ## License
 

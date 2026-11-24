@@ -8,8 +8,8 @@
                 контент-файлы есть в каталоге, id/title/status/tags/updated
                 совпадает с frontmatter, verified честен для сниппетов с
                 кодом, sections ↔ файлы index/*.yaml.
-  indexes     — README каталога упоминает все .md каталога; счётчики
-                «Статус разделов» в основном README совпадают с фактом.
+  indexes     — README каталога упоминает все .md каталога (блок «Статус
+                разделов» основного README генерируется: tools/readme.py).
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
 Использование:
@@ -289,10 +289,12 @@ def check_links() -> list[str]:
 
 
 def check_indexes() -> list[str]:
-    """Синхронизация индексов: README каталога упоминает все .md каталога,
-    счётчики в основном README совпадают с фактическим числом файлов."""
+    """README каталога упоминает все .md этого каталога.
+
+    Блок «Статус разделов» основного README не проверяется здесь: он генерируется
+    из каталога (`tools/readme.py --check`)."""
     issues: list[str] = []
-    # 1) README каталога → каждый .md каталога упомянут по basename.
+    # README каталога → каждый .md каталога упомянут по basename.
     for readme in sorted(ROOT.rglob("README.md")):
         if "node_modules" in readme.parts or readme.parent == ROOT:
             continue
@@ -301,43 +303,6 @@ def check_indexes() -> list[str]:
             if f.name != "README.md" and f.name not in text:
                 issues.append(f"{readme.relative_to(ROOT)}: не упомянут {f.name}")
 
-    # 2) Счётчики в «Статус разделов» основного README.
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    if "## Статус разделов" not in readme:
-        return issues
-    status = readme.split("## Статус разделов", 1)[1].split("\n## ", 1)[0]
-
-    def count_files(p: Path) -> int | None:
-        if not p.exists():
-            return None
-        return len([f for f in p.glob("*.md") if f.name != "README.md"])
-
-    for line in status.splitlines():
-        m = re.match(r"^\|\s*`([a-z-]+)/`\s*\|(.+)\|$", line)
-        if not m:
-            continue
-        section, desc = m.group(1), m.group(2)
-        n = re.search(r"(\d+)\s+сниппет", desc)
-        if n:
-            actual = count_files(ROOT / section / "snippets")
-            if actual is not None and int(n.group(1)) != actual:
-                issues.append(
-                    f"README: {section}/ — указано {n.group(1)} сниппетов, фактически {actual}"
-                )
-        n = re.search(r"(\d+)\s+кросс-языковых концепций", desc)
-        if n:
-            actual = count_files(ROOT / "shared")
-            if actual is not None and int(n.group(1)) != actual:
-                issues.append(
-                    f"README: shared/ — указано {n.group(1)} концепций, фактически {actual}"
-                )
-        n = re.search(r"(\d+)\s+архитектурных паттернов", desc)
-        if n:
-            actual = count_files(ROOT / "architecture" / "patterns")
-            if actual is not None and int(n.group(1)) != actual:
-                issues.append(
-                    f"README: architecture/ — указано {n.group(1)} паттернов, фактически {actual}"
-                )
     return issues
 
 

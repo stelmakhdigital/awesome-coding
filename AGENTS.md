@@ -100,23 +100,30 @@
   роутинг разделов + лимит загрузок. Используется репо «через себя».
 - `docs/FORMAT.md` — спецификация формата записей (для контрибьюторов).
 - `docs/adr/` — архитектурные решения репозитория (ADR).
-- `tools/validate.py` + `Makefile` — валидация (frontmatter, manifest, ссылки).
+- `tools/validate.py` + `Makefile` — валидация (frontmatter, каталог, ссылки);
+  `tools/verify_snippets.py` — прогон кода записей через тулчейны, `tools/readme.py` —
+  генерация блока «Статус разделов».
 
 ## Туллинг
 
 ```bash
-make validate              # все проверки (frontmatter + manifest + индексы + ссылки)
+make validate              # все проверки (frontmatter + manifest + индексы + README + ссылки)
 make validate-frontmatter  # только frontmatter
 make validate-manifest     # только manifest
-make validate-indexes      # только индексы (README ↔ файлы, счётчики)
+make validate-indexes      # README каталогов упоминают все файлы раздела
 make validate-links        # только ссылки
 make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
-make search Q=async        # поиск записей в manifest по тегу/названию
+make readme                # перегенерировать «Статус разделов» из index/*.yaml
+make search Q=async        # поиск записей по тегу/названию по index/*.yaml
+make verify                # код-блоки записей через реальные тулчейны в Docker
+make verify-fix            # то же + поднять verified/updated, где прогон доказал
 make check-versions        # сверка закреплённых версий с актуальными (сеть)
 make check-stale           # записи с устаревшим frontmatter `updated` (квартальный аудит)
 ```
 
-Перед коммитом новых записей запустите `make validate`.
+Перед коммитом — `make validate`; меняли код в записи — ещё и
+`python3 tools/verify_snippets.py --record <id>` (что проверяет каждый язык —
+таблица в `docs/FORMAT.md`).
 
 **Свежесть версий:** раз в квартал — `make check-versions` и `make check-stale`; при ⚠️ обновите
 таблицу «Версии» (проверив фолбэк), заголовок `updated` в `index/manifest.yaml`
