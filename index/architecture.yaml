@@ -140,4 +140,4 @@ patterns:
     tags: [sandbox, untrusted-code, isolation, docker, limits, timeout, cidfile, security, gvisor, oom]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24

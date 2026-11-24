@@ -6,7 +6,7 @@ min_version: null
 category: pattern
 tags: [bug-hunter, automation, diff, dedup, finding, schedule, review, triage]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Охотник за дефектами по диффу
@@ -54,7 +54,7 @@ updated: 2026-11-25
         «сохранено» и потерянный ответ.
 Почему: чтение и запись состояния не под одной транзакцией (BEGIN нет).
 Повтор: go test ./internal/session -run TestConcurrentPatch
-Найдено: прогон 2026-11-25, дифф 3f2a19c..81de0aa
+Найдено: прогон 2026-11-24, дифф 3f2a19c..81de0aa
 <!-- ac-scan: internal/session/store.go:118 -->
 ```
 

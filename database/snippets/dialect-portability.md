@@ -6,7 +6,7 @@ min_version: null
 category: snippet
 tags: [sqlite, postgres, dialect, portability, testing, pure-go, embed, parity, migration]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Две СУБД в одном коде: SQLite в тестах, PostgreSQL в проде

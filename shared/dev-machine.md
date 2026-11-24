@@ -6,7 +6,7 @@ min_version: null
 category: concept
 tags: [dev-machine, git, ssh, worktree, credentials, non-interactive, toolchain, doctor, cleanup]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Машина под агента: неинтерактивный git, ключи, worktree, проверка тулчейна

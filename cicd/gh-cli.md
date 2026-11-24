@@ -6,7 +6,7 @@ min_version: "2.105"
 category: snippet
 tags: [gh-cli, github, api, issues, pull-request, pagination, rate-limit, jq, ci, idempotency]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # gh в скриптах: чтение, запись, пагинация, ожидание CI

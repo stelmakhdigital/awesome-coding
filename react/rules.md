@@ -6,7 +6,7 @@ min_version: "19.3"
 category: rule-set
 tags: [rules, guardrails, hooks, jsx, a11y, testing]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # React Rules — обязательные правила

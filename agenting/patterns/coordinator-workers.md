@@ -6,7 +6,7 @@ min_version: null
 category: pattern
 tags: [orchestration, coordinator, workers, worktree, parallel, fan-out, merge, gate]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Координатор и воркеры в отдельных worktree

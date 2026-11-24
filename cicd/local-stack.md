@@ -6,7 +6,7 @@ min_version: "2.11"
 category: snippet
 tags: [local-stack, docker-compose, caddy, https, internal-ca, reverse-proxy, healthcheck, sse, secure-context]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Локальный стек: compose + обратный прокси с внутренним TLS

@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [lazy, suspense, code-splitting, monaco, excalidraw, lifecycle, dispose, activity, performance]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Тяжёлый виджет: ленивая загрузка, императивный API, dispose, Activity

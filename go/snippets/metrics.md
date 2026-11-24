@@ -6,7 +6,7 @@ min_version: "1.22"
 category: snippet
 tags: [metrics, prometheus, observability, healthz, readiness, histogram, cardinality, pprof, red]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Метрики Prometheus: RED-middleware, healthz, бизнес-метрики

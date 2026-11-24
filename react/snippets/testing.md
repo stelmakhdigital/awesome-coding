@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [testing, vitest, jsdom, testing-library, user-event, a11y, mocks, timers]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Тесты: Vitest 5 + Testing Library по поведению

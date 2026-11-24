@@ -6,7 +6,7 @@ min_version: null
 category: snippet
 tags: [tool-calling, function-calling, agents, tool-loop, budget, fallback, openai-compatible, json-schema]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Вызовы с инструментами: цикл, бюджет, резервная модель

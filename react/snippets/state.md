@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [state, usereducer, usestate, derived-state, usesyncexternalstore, store, websocket, reset]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Состояние: редьюсер, выводимое значение, внешний стор

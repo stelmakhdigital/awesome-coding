@@ -58,18 +58,18 @@ snippets:
     tags: [gh-cli, github, api, issues, pull-request, pagination, rate-limit, jq, ci, idempotency]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: cicd-integration-tests
     title: "CI: интеграционные тесты на реальном стеке контейнеров"
     path: cicd/integration-tests.md
     tags: [integration-tests, docker-compose, healthcheck, ci, github-actions, teardown, artifacts, port-conflict]
     status: stable
     verified: executed
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: cicd-local-stack
     title: "Локальный стек: compose + обратный прокси с внутренним TLS"
     path: cicd/local-stack.md
     tags: [local-stack, docker-compose, caddy, https, internal-ca, reverse-proxy, healthcheck, sse, secure-context]
     status: stable
     verified: executed
-    updated: 2026-11-25
+    updated: 2026-11-24

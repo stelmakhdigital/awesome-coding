@@ -6,7 +6,7 @@ category: snippet
 min_version: "19.3"
 tags: [browser, layout, getComputedStyle, accessibility, contrast, tap-target, verification, agent]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Проверка вёрстки числами: без скриншотов и vision-модели

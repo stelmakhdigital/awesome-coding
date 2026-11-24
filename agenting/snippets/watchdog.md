@@ -6,7 +6,7 @@ min_version: "5.3"
 category: snippet
 tags: [bash, timeout, setsid, process-group, watchdog, budget, output-limit, self-test]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Лимит времени и убийство группы процессов

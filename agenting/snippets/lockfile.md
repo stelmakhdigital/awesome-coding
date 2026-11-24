@@ -6,7 +6,7 @@ min_version: "5.3"
 category: snippet
 tags: [bash, flock, lock, concurrency, idempotency, cron, self-test, scheduler]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Единовременный прогон на flock

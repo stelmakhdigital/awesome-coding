@@ -6,7 +6,7 @@ min_version: "19.3"
 category: pattern
 tags: [structure, feature-sliced, folders, boundaries, imports, scaling]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Структура проекта по фичам

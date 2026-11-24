@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [hooks, useeffect, cleanup, abortcontroller, strictmode, effect-event, resize-observer]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Границы useEffect: отмена, cleanup, effect event

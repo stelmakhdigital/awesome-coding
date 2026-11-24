@@ -6,7 +6,7 @@ min_version: "1.22"
 category: snippet
 tags: [websocket, ws, http, upgrade, origin, ping, backpressure, reconnect, coder-websocket]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # WebSocket: handshake, медленные клиенты, переподключение

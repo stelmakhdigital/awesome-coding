@@ -6,7 +6,7 @@ min_version: "1.22"
 category: snippet
 tags: [state-machine, fsm, transitions, guards, idempotency, optimistic-lock, workflow, debug-mode]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Автомат состояний: таблица переходов, guard, параллельные запросы

@@ -1,6 +1,6 @@
 # React
 
-Целевые версии: **React 19.3** (fallback: 18.3), **Vite 8.3** (fallback: 6.x), **Vitest 5.1** (fallback: 3.x), **Testing Library 16.3**. Закреплено на 2026-11-25 (сниппеты проверены на tsc 7.0.2 + react 19.3.1).
+Целевые версии: **React 19.3** (fallback: 18.3), **Vite 8.3** (fallback: 6.x), **Vitest 5.1** (fallback: 3.x), **Testing Library 16.3**. Закреплено на 2026-11-24 (сниппеты проверены на tsc 7.0.2 + react 19.3.1).
 
 > 19-я линия сломала много тихого: удалены `defaultProps` у функций, string refs, `ReactDOM.render`; глобального пространства имён `JSX` в типах больше нет; `useRef` требует начальный аргумент. Vite 8 заменил бандлер (Rolldown вместо esbuild + Rollup), Vitest 5 поднял `clearMocks` по умолчанию. Раздел описывает текущее состояние, fallback-строки — про то, что лежит в живых проектах.
 

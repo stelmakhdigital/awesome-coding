@@ -8,7 +8,7 @@ rule_set:
     tags: [rules, guardrails, automation, idempotency, budget, evidence, permissions, cron]
     status: stable
     verified: none
-    updated: 2026-11-25
+    updated: 2026-11-24
 decisions:
   - id: agenting-decisions
     title: "Агентские автоматизации: решения (площадка, состояние, вывод, деление работы)"
@@ -16,7 +16,7 @@ decisions:
     tags: [decisions, scheduler, cron, systemd, state, output, dag, model-choice, worktree]
     status: stable
     verified: none
-    updated: 2026-11-25
+    updated: 2026-11-24
 snippets:
   - id: agenting-lockfile
     title: "bash: единовременный прогон на flock с self-test"
@@ -24,21 +24,21 @@ snippets:
     tags: [bash, flock, lock, concurrency, idempotency, cron, self-test, scheduler]
     status: stable
     verified: executed
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: agenting-run-state
     title: "bash: чекпоинт прогона и дедупликация вывода в трекере"
     path: agenting/snippets/run-state.md
     tags: [bash, checkpoint, state, idempotency, gh, github, dedup, marker, tracker, self-test]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: agenting-watchdog
     title: "bash: лимит времени и убийство группы процессов у прогона"
     path: agenting/snippets/watchdog.md
     tags: [bash, timeout, setsid, process-group, watchdog, budget, output-limit, self-test]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24
 patterns:
   - id: agenting-bug-hunter
     title: "Периодический охотник за дефектами по диффу"
@@ -46,18 +46,18 @@ patterns:
     tags: [bug-hunter, automation, diff, dedup, finding, schedule, review, triage]
     status: stable
     verified: none
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: agenting-coordinator-workers
     title: "Координатор и воркеры в отдельных worktree"
     path: agenting/patterns/coordinator-workers.md
     tags: [orchestration, coordinator, workers, worktree, parallel, fan-out, merge, gate]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: agenting-spec-as-contract
     title: "Спецификация как контракт между агентами"
     path: agenting/patterns/spec-as-contract.md
     tags: [spec, acceptance-criteria, contract, judge, planner, rework, verification, prompt]
     status: stable
     verified: none
-    updated: 2026-11-25
+    updated: 2026-11-24

@@ -6,7 +6,7 @@ min_version: "5.3"
 category: snippet
 tags: [bash, checkpoint, state, idempotency, gh, github, dedup, marker, tracker, self-test]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Чекпоинт прогона и дедупликация вывода
@@ -69,8 +69,8 @@ if [[ "${1:-}" == "--self-test" ]]; then
   fi
 
   # Два ключа в одном файле не затирают друг друга.
-  STATE_FILE="$tmp/state.env" state_set last_run "2026-11-25"
-  [[ "$(STATE_FILE="$tmp/state.env" state_get last_run)" == "2026-11-25" ]] || { echo "FAIL: второй ключ потерян"; exit 1; }
+  STATE_FILE="$tmp/state.env" state_set last_run "2026-11-24"
+  [[ "$(STATE_FILE="$tmp/state.env" state_get last_run)" == "2026-11-24" ]] || { echo "FAIL: второй ключ потерян"; exit 1; }
   [[ "$(STATE_FILE="$tmp/state.env" state_get last_input)" == "deadbeef" ]] || { echo "FAIL: первый ключ потерян"; exit 1; }
 
   # После записи нет временных хвостов.

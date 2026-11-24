@@ -6,7 +6,7 @@ min_version: "8.3"
 category: snippet
 tags: [vite, rolldown, env, proxy, build, config, codesplitting, dev-server, toolchain]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Vite 8: конфиг, окружение, прокси, чанки

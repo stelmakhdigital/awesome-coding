@@ -6,7 +6,7 @@ min_version: null
 category: pattern
 tags: [sandbox, untrusted-code, isolation, docker, limits, timeout, cidfile, security, gvisor, oom]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Песочница для чужого кода

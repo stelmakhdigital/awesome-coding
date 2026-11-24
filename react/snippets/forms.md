@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [forms, useactionstate, useformstatus, validation, zod, a11y, submit, abort]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Форма: контролируемые поля, статус отправки, серверные ошибки

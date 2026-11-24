@@ -6,7 +6,7 @@ min_version: null
 category: pattern
 tags: [spec, acceptance-criteria, contract, judge, planner, rework, verification, prompt]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Спецификация как контракт между агентами

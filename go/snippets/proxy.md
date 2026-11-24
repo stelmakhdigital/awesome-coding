@@ -6,7 +6,7 @@ min_version: "1.22"
 category: snippet
 tags: [proxy, reverse-proxy, timeout, cancellation, streaming, maxbytes, http, statuses]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Прокси и границы времени: таймауты, отмена, 502/503/504

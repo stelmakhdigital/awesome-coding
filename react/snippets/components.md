@@ -6,7 +6,7 @@ min_version: "19.3"
 category: snippet
 tags: [components, props, jsx, ref, children, keys, a11y, use-id]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Компонент: пропсы, слоты, ref, ключи

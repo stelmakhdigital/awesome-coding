@@ -6,7 +6,7 @@ min_version: null
 category: snippet
 tags: [streaming, sse, llm, tokens, first-token, flush, heartbeat, cancellation, openai-compatible]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Стриминг ответа: SSE из Go, простои, отмена клиента

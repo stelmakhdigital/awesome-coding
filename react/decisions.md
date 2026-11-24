@@ -6,7 +6,7 @@ min_version: "19.3"
 category: decisions
 tags: [decisions, state, data-fetching, forms, testing, vite, migration]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # React: таблицы решений

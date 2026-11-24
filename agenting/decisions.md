@@ -6,7 +6,7 @@ min_version: null
 category: decisions
 tags: [decisions, scheduler, cron, systemd, state, output, dag, model-choice, worktree]
 status: stable
-updated: 2026-11-25
+updated: 2026-11-24
 ---
 
 # Агентские автоматизации: таблицы решений

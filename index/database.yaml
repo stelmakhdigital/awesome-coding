@@ -67,4 +67,4 @@ snippets:
     tags: [sqlite, postgres, dialect, portability, testing, pure-go, embed, parity, migration]
     status: stable
     verified: compiled
-    updated: 2026-11-25
+    updated: 2026-11-24

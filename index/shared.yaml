@@ -8,7 +8,7 @@ concepts:
     tags: [dev-machine, git, ssh, worktree, credentials, non-interactive, toolchain, doctor, cleanup]
     status: stable
     verified: executed
-    updated: 2026-11-25
+    updated: 2026-11-24
   - id: shared-error-handling
     title: "Shared: Error handling (кросс-языковые принципы)"
     path: shared/error-handling.md
