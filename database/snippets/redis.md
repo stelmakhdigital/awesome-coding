@@ -4,7 +4,7 @@ title: "Redis: кэширование, структуры данных, TTL"
 lang: database
 min_version: "8"
 category: snippet
-tags: [redis, caching, ttl, data-structures, streams]
+tags: [redis, caching, cache-aside, ttl, data-structures, streams]
 status: stable
 updated: 2026-11-24
 ---

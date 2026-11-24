@@ -4,9 +4,9 @@ title: "Shared: Observability (логи, метрики, трейсинг)"
 lang: shared
 min_version: null
 category: concept
-tags: [observability, logging, metrics, tracing, opentelemetry]
+tags: [observability, logging, metrics, tracing, opentelemetry, p99, histogram]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Observability — принципы

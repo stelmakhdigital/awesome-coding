@@ -4,9 +4,9 @@ title: "Shared: Security (кросс-языковые принципы)"
 lang: shared
 min_version: null
 category: concept
-tags: [security, owasp, secrets, injection, tls]
+tags: [security, owasp, secrets, injection, sql-injection, tls]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # Security — принципы

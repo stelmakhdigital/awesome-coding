@@ -35,7 +35,7 @@ snippets:
   - id: database-transactions
     title: "PostgreSQL: транзакции, изоляция, advisory locks"
     path: database/snippets/transactions.md
-    tags: [postgres, transactions, isolation, savepoint, locks]
+    tags: [postgres, transactions, isolation, savepoint, locks, on-conflict]
     status: stable
     verified: executed
     updated: 2026-11-24
@@ -56,7 +56,7 @@ snippets:
   - id: database-redis
     title: "Redis: кэширование, структуры данных, TTL"
     path: database/snippets/redis.md
-    tags: [redis, caching, ttl, data-structures, streams]
+    tags: [redis, caching, cache-aside, ttl, data-structures, streams]
     status: stable
     verified: executed
     updated: 2026-11-24

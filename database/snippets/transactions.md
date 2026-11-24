@@ -4,7 +4,7 @@ title: "PostgreSQL: транзакции, изоляция, advisory locks"
 lang: database
 min_version: "18"
 category: snippet
-tags: [postgres, transactions, isolation, savepoint, locks]
+tags: [postgres, transactions, isolation, savepoint, locks, on-conflict]
 status: stable
 updated: 2026-11-24
 ---

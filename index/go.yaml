@@ -120,14 +120,14 @@ snippets:
   - id: go-tracing
     title: "Go: OpenTelemetry — трейсер, span'ы, propagate контекста"
     path: go/snippets/tracing.md
-    tags: [tracing, opentelemetry, observability, context, http]
+    tags: [tracing, opentelemetry, otel, observability, context, http]
     status: stable
     verified: compiled
     updated: 2026-11-24
   - id: go-rate-limit
     title: "Go: rate limiting (token bucket) и ограничение параллельности"
     path: go/snippets/rate-limit.md
-    tags: [rate-limit, throttling, http, retry-after, backpressure, middleware]
+    tags: [rate-limit, ratelimiting, throttling, http, "429", retry-after, backpressure]
     status: stable
     verified: compiled
     updated: 2026-11-24

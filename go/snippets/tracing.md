@@ -4,7 +4,7 @@ title: "Go: OpenTelemetry — трейсер, span'ы, propagate контекс�
 lang: go
 min_version: "1.22"
 category: snippet
-tags: [tracing, opentelemetry, observability, context, http]
+tags: [tracing, opentelemetry, otel, observability, context, http]
 status: stable
 updated: 2026-11-24
 ---

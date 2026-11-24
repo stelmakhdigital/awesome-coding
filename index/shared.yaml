@@ -19,10 +19,10 @@ concepts:
   - id: shared-security
     title: "Shared: Security (кросс-языковые принципы)"
     path: shared/security.md
-    tags: [security, owasp, secrets, injection, tls]
+    tags: [security, owasp, secrets, injection, sql-injection, tls]
     status: stable
     verified: none
-    updated: 2026-09-07
+    updated: 2026-11-24
   - id: shared-authentication
     title: "Shared: аутентификация (пароли, сессии, токены, MFA)"
     path: shared/authentication.md
@@ -47,10 +47,10 @@ concepts:
   - id: shared-observability
     title: "Shared: Observability (логи, метрики, трейсинг)"
     path: shared/observability.md
-    tags: [observability, logging, metrics, tracing, opentelemetry]
+    tags: [observability, logging, metrics, tracing, opentelemetry, p99, histogram]
     status: stable
     verified: none
-    updated: 2026-09-06
+    updated: 2026-11-24
   - id: shared-time-dates
     title: "Shared: Time and dates (кросс-языковые принципы)"
     path: shared/time-and-dates.md

@@ -4,7 +4,7 @@ title: "Go: rate limiting (token bucket) и ограничение паралл�
 lang: go
 min_version: "1.22"
 category: snippet
-tags: [rate-limit, throttling, http, retry-after, backpressure, middleware]
+tags: [rate-limit, ratelimiting, throttling, http, "429", retry-after, backpressure]
 status: stable
 updated: 2026-11-24
 ---
