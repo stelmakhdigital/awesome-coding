@@ -23,6 +23,7 @@
 | Refactoring (безопасный рефакторинг) | [refactoring.md](refactoring.md) |
 | Debugging (методология отладки) | [debugging.md](debugging.md) |
 | CLI (правила командных интерфейсов) | [cli.md](cli.md) |
+| Машина под агента (git, ключи, worktree) | [dev-machine.md](dev-machine.md) |
 
 ## Как использовать
 

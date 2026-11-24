@@ -2,6 +2,13 @@
 
 version: null
 concepts:
+  - id: shared-dev-machine
+    title: "Машина под агента: неинтерактивный git, ключи, worktree, проверка тулчейна"
+    path: shared/dev-machine.md
+    tags: [dev-machine, git, ssh, worktree, credentials, non-interactive, toolchain, doctor, cleanup]
+    status: stable
+    verified: executed
+    updated: 2026-11-25
   - id: shared-error-handling
     title: "Shared: Error handling (кросс-языковые принципы)"
     path: shared/error-handling.md
