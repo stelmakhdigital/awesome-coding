@@ -61,3 +61,10 @@ snippets:
     verified: executed
     updated: 2026-11-24
 
+  - id: database-dialect-portability
+    title: "Две СУБД в одном коде: SQLite в тестах, PostgreSQL в проде"
+    path: database/snippets/dialect-portability.md
+    tags: [sqlite, postgres, dialect, portability, testing, pure-go, embed, parity, migration]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
