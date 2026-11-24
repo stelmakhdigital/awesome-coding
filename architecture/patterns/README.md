@@ -9,6 +9,7 @@
 | CQRS | разделение моделей чтения и записи | experimental | [cqrs.md](cqrs.md) |
 | Event Sourcing | состояние = fold по событиям | experimental | [event-sourcing.md](event-sourcing.md) |
 | Event-Driven | асинхронное взаимодействие через события | experimental | [event-driven.md](event-driven.md) |
+| Code Sandbox | изолированный прогон чужого кода с бюджетом ресурсов | stable | [code-sandbox.md](code-sandbox.md) |
 
 ## Быстрый выбор
 
@@ -19,3 +20,4 @@
 - Асимметрия чтения/записи → **CQRS**.
 - Аудит истории состояний → **Event Sourcing**.
 - Слабая связанность, интеграции → **Event-Driven** (outbox).
+- Исполняем код, который принёс пользователь → **Code Sandbox**.

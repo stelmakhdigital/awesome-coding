@@ -134,3 +134,10 @@ patterns:
     verified: compiled
     updated: 2026-11-24
 
+  - id: arch-code-sandbox
+    title: "Песочница для чужого кода: лимиты, таймаут, что контейнер не защищает"
+    path: architecture/patterns/code-sandbox.md
+    tags: [sandbox, untrusted-code, isolation, docker, limits, timeout, cidfile, security, gvisor, oom]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
