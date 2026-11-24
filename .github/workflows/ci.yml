@@ -60,7 +60,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        lang: [go, ts, js, python, bash, sh, c, sql]
+        lang: [go, ts, tsx, js, python, bash, sh, c, sql]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 

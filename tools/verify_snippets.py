@@ -55,6 +55,23 @@ FM_UPDATED_RE = re.compile(r"(?s)^(---\n.*?updated: )\d{4}-\d{2}-\d{2}", re.M)
 HEAD_UPDATED_RE = re.compile(r"^(updated: )\d{4}-\d{2}-\d{2}", re.M)
 
 GO_MOD_CACHE = "/go/pkg/mod"
+
+# Зависимости ts/tsx-раннера зафиксированы: без пинов том каждый раз нагревался бы
+# «свежим latest», и тулчейн уезжал бы вперёд без спроса (TypeScript 7 → 8 сломал бы
+# прогон не кода, а сборки). Обновлять вместе с таблицей «Версии» в AGENTS.md.
+TS_DEPS = ("typescript@7.0.2 @types/node@26.6.6 zod@4.6.7 vitest@5.1.1"
+           " react@19.3.1 @types/react@19.3.0 @types/react-dom@19.3.0"
+           " @testing-library/react@16.3.3 @testing-library/user-event@14.6.13")
+TS_VOLUME = "ac-tsdeps"
+TS_PREPARE = ("npm i --no-audit --no-fund --prefix /build " + TS_DEPS +
+              " >/dev/null && cp -a /build/node_modules/. /deps/")
+# Проба смотрит на самый поздно добавленный пакет: том из старого набора
+# не пройдёт её, и зависимости переставятся.
+TS_PROBE = "test -d /deps/@testing-library/react"
+TS_TSC = ["node", "/w/node_modules/typescript/bin/tsc", "--noEmit", "--strict",
+          "--target", "es2024", "--lib", "es2024", "--module", "preserve",
+          "--moduleResolution", "bundler", "--typeRoots", "/w/node_modules/@types",
+          "--types", "node"]
 PG_CONTAINER = "ac-verify-pg"
 PG_IMAGE = "postgres:18-alpine"
 # SQLSTATE «объекта нет»: блок ссылается на схему из соседнего блока. Это deps —
@@ -205,7 +222,8 @@ def classify(code: int, out: str) -> tuple[str, str]:
     note = lines[-1] if lines and "Traceback" in out else (lines[0] if lines else "")
     if code == 0:
         return ("fmt", "gofmt переформатировал файл") if "AC:FMT" in out else ("ok", "")
-    if "no required module provides" in out or "cannot find module" in out:
+    low = out.lower()  # tsc пишет «Cannot find module», go — «cannot find module»
+    if "no required module provides" in low or "cannot find module" in low:
         return "deps", note
     return "fail", note
 
@@ -222,17 +240,28 @@ RUNNERS: dict[str, Runner] = {
          "/w/block.py"],
         what="compile(): синтаксис Python 3.14 (импорты третьих сторон не разрешаются)"),
     "ts": Runner(
-        "ts", "node:22-slim",
+        "ts", "node:22-slim", TS_TSC + ["/w/block.ts"],
+        what="tsc 7.0 --noEmit --strict --lib es2024 (typescript, @types/node, zod, vitest,"
+             " react, Testing Library — том ac-tsdeps)",
+        volume=TS_VOLUME, mount="/w/node_modules",
+        prepare=["sh", "-c", TS_PREPARE],
+        probe=TS_PROBE,
+        preamble=TS_MODULE),
+    # React-код: те же зависимости, но .tsx, JSX-фабрика и DOM-типы.
+    # dom обязателен: без него типы элементов берутся из @types/react/global.d.ts —
+    # урезанного набора, где у input нет .value, а ResizeObserver отсутствует;
+    # падения выглядят как «код в записи битый», хотя дело в конфигурации прогона.
+    "tsx": Runner(
+        "tsx", "node:22-slim",
         ["node", "/w/node_modules/typescript/bin/tsc", "--noEmit", "--strict",
-         "--target", "es2024", "--lib", "es2024", "--module", "preserve",
+         "--target", "es2024", "--lib", "es2024,dom", "--module", "preserve",
          "--moduleResolution", "bundler", "--typeRoots", "/w/node_modules/@types",
-         "--types", "node", "/w/block.ts"],
-        what="tsc 7.0 --noEmit --strict --lib es2024 (typescript, @types/node, zod, vitest в томе ac-tsdeps)",
-        volume="ac-tsdeps", mount="/w/node_modules",
-        prepare=["sh", "-c",
-                 "npm i --no-audit --no-fund --prefix /build typescript @types/node zod vitest"
-                 " >/dev/null && cp -a /build/node_modules/. /deps/"],
-        probe="test -d /deps/typescript",
+         "--types", "node", "--jsx", "react-jsx", "/w/block.tsx"],
+        what="tsc 7.0 --noEmit --strict --lib es2024,dom --jsx react-jsx (react 19,"
+             " @types/react, @testing-library/react — том ac-tsdeps)",
+        volume=TS_VOLUME, mount="/w/node_modules",
+        prepare=["sh", "-c", TS_PREPARE],
+        probe=TS_PROBE,
         preamble=TS_MODULE),
     "js": Runner("js", "node:22-slim", ["node", "--check", "/w/block.js"],
                  what="node --check: синтаксис JS"),
@@ -253,8 +282,8 @@ RUNNERS: dict[str, Runner] = {
                        "ссылки на таблицы из чужих блоков — deps, не fail"),
 }
 # Имя файла, в который кладётся блок (go собирается иначе — см. go_files).
-FNAME = {"sql": "block.sql", "python": "block.py", "ts": "block.ts", "js": "block.js",
-         "bash": "block.sh", "sh": "block.sh", "c": "block.c"}
+FNAME = {"sql": "block.sql", "python": "block.py", "ts": "block.ts", "tsx": "block.tsx",
+         "js": "block.js", "bash": "block.sh", "sh": "block.sh", "c": "block.c"}
 PACKAGE_RE = re.compile(r"^package\s+(\w+)", re.M)
 
 

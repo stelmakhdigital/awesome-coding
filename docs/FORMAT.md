@@ -66,6 +66,7 @@
 |---|---|
 | go | `gofmt -l` + `go build ./...`; запись = один модуль, блоки — его пакеты |
 | ts | `tsc --noEmit --strict --lib es2024` (typescript, @types/node, zod, vitest) |
+| tsx | `tsc --noEmit --strict --lib es2024,dom --jsx react-jsx` (react 19, @types/react, Testing Library) |
 | js | `node --check` |
 | python | `compile()` на 3.14: синтаксис и байт-код (импорты третьих сторон не разрешаются) |
 | c | `gcc -std=c23 -fsyntax-only -Wall -Wextra` |

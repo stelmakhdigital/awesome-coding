@@ -139,8 +139,11 @@ class ClassifyTest(unittest.TestCase):
         self.assertIn("gofmt", note)
 
     def test_deps_is_not_fail(self):
-        verdict, _ = vs.classify(1, "no required module provides package example.com/x")
-        self.assertEqual(verdict, "deps")
+        for out in ("no required module provides package example.com/x",
+                    # tsc — с заглавной: тот же случай «модуля нет», а не «код битый»
+                    "block.tsx(5,25): error TS2307: Cannot find module './subject'"):
+            with self.subTest(out=out[:30]):
+                self.assertEqual(vs.classify(1, out)[0], "deps")
 
     def test_fail_keeps_first_line(self):
         verdict, note = vs.classify(1, "x.go:3:2: undefined: foo\nsecond line")

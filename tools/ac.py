@@ -35,7 +35,8 @@ SKIP_DIRS = {".git", "node_modules"}
 
 # Языки, код которых проверяется компилятором/интерпретатором. Декларативные
 # (dockerfile, yaml, protobuf) и компилируемые только в Editor (hlsl) сюда не входят.
-CODE_LANGS = {"go", "c", "csharp", "kotlin", "python", "bash", "sh", "ts", "js", "sql"}
+CODE_LANGS = {"go", "c", "csharp", "kotlin", "python", "bash", "sh",
+              "ts", "tsx", "js", "sql"}
 CODE_FENCE_RE = re.compile(r"^```([a-zA-Z]+)[ \n]", re.M)
 
 

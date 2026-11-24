@@ -54,13 +54,13 @@ from ac import (  # noqa: E402  — разбор формата один на в
 
 # Допустимые имена секционных файлов index/<section>.yaml.
 ALLOWED_SECTIONS = {
-    "go", "typescript", "javascript", "python", "c", "bash",
+    "go", "typescript", "javascript", "react", "python", "c", "bash",
     "csharp", "kotlin", "unity", "shared", "architecture",
     "database", "messaging", "cicd", "pm", "llm",
 }
 
 ALLOWED_LANGS = {
-    "go", "typescript", "javascript", "python", "c", "bash",
+    "go", "typescript", "javascript", "react", "python", "c", "bash",
     "csharp", "kotlin", "unity", "shared", "architecture",
     "database", "messaging", "cicd", "pm", "llm",
 }
@@ -69,7 +69,7 @@ ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
 ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
 SKILL_FIELDS = ("name", "description", "whenToUse", "updated")
 ID_PREFIXES = (
-    "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
+    "go", "ts", "js", "react", "py", "c", "bash", "csharp", "kotlin", "unity",
     "shared", "ddd", "arch", "database", "messaging", "cicd", "pm", "llm",
 )
 REQUIRED_FIELDS = ("id", "title", "lang", "min_version", "category", "tags", "status", "updated")
