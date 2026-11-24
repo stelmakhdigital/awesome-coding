@@ -66,6 +66,7 @@ updated: 2026-09-06
 
 ## Related
 
-- [go/snippets/logging.md](../go/snippets/logging.md) — slog
+- [../go/snippets/logging.md](../go/snippets/logging.md) — slog
+- [../go/snippets/tracing.md](../go/snippets/tracing.md) — OpenTelemetry в Go: трейсер, span'ы, propagate `traceparent`
 - [csharp/snippets/logging.md](../csharp/snippets/logging.md) — M.E.Logging
 - [error-handling.md](error-handling.md) — ошибки в логах

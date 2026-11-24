@@ -18,3 +18,4 @@
 | `go-sql` | [sql.md](sql.md) | sql, postgres, pgx, transactions |
 | `go-grpc` | [grpc.md](grpc.md) | grpc, protobuf, rpc, status |
 | `go-rate-limit` | [rate-limit.md](rate-limit.md) | rate-limit, throttling, retry-after, backpressure |
+| `go-tracing` | [tracing.md](tracing.md) | tracing, opentelemetry, observability |

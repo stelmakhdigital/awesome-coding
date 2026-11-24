@@ -117,6 +117,13 @@ snippets:
     status: stable
     verified: reviewed
     updated: 2026-09-07
+  - id: go-tracing
+    title: "Go: OpenTelemetry — трейсер, span'ы, propagate контекста"
+    path: go/snippets/tracing.md
+    tags: [tracing, opentelemetry, observability, context, http]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
   - id: go-rate-limit
     title: "Go: rate limiting (token bucket) и ограничение параллельности"
     path: go/snippets/rate-limit.md
