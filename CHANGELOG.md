@@ -3,6 +3,39 @@
 Версии — git-теги `vN.N` (semver). Агенты пинят версию в `skills/awesome-coding/SKILL.md`.
 Процесс релиза: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md), раздел «Релиз».
 
+## v1.13 — 2026-11-25
+
+### Содержимое
+
+- **Раннер `csharp` в CI**: `dotnet build` .NET 10, проект на блок, Exe с падением
+  на Library для блоков без точки входа, `FrameworkReference
+  Microsoft.AspNetCore.App`, NuGet по признаку блока (OpenApi, resilience, xunit).
+  Блоки с Unity-API в прогон не идут — их собирает только Editor.
+- **Раздел C# поправлен компилятором.** Найдены четыре API, которых не
+  существует: `AddTransientHttpResilience` (реально —
+  `AddStandardResilienceHandler`), `OptionsValidationResult` (реально —
+  `ValidateOptionsResult`, и подпись `Validate(string?, …)`), цепочка
+  `.Validate<TValidator>()` (перегрузок с нулём аргументов нет — валидатор
+  регистрируется в DI как `IValidateOptions<T>`), `JsonDefaults` и
+  `TimeProvider.LocalNow` (реально — `GetLocalNow()`). Плюс `using` дописан там,
+  где блок на него не смотрел, и регистрация настроек переехала в local function
+  (top-level statements обязаны идти раньше объявлений типов).
+- **ADR-0004** — ни сайта, ни векторного поиска: файлы и каталог остаются
+  единственным доступом, с причиной (второй источник истины разъезжается) и
+  условием пересмотра.
+- **ADR-0005** — `reviewed` как потолок для разделов без тулчейна; исключение
+  kotlin описана явно, случай C# приведён как доказательство, что проверка
+  компиляцией ловит то, чего рецензия не видит.
+- `tools/release.py`: понижение пина блокируется (`--allow-downgrade` для
+  переиздания).
+
+### Цифры
+
+201 запись. Проверено прогоном: 187 блоков, 174 ok, 4 — `deps`, 9 — фрагменты.
+`verified` у C#-раздела: 13 записей `compiled` (было 10 + 3 вручную помеченных
+`reviewed`). Тесты туллинга: 60 (добавлены MCP-протокол, сборка C# на запись,
+шаги релиза).
+
 ## v1.12 — 2026-11-25
 
 ### Содержимое
