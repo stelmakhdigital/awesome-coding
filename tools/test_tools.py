@@ -8,8 +8,9 @@
 якорем не вставляет блок молча, и три релиза так вышли без записи.
 
 Что покрыто: вердикты раннеров, разбор формата (frontmatter, блоки каталога),
-текстовые и структурные проверки, каталог, алиасы, порядок поиска, русские
-формы счётчика. Проверки, которым нужен живой тулчейн или сеть (verify,
+вердикты раннеров, разбор формата (frontmatter, блоки каталога), текстовые и
+структурные проверки, каталог, алиасы, порядок поиска, русские формы счётчика,
+MCP-протокол (ответы и stdio-обвязка), шаги релиза. Проверки, которым нужен живой тулчейн или сеть (verify,
 check-versions, mermaid), здесь не запускаются.
 
 Запуск: python3 tools/test_tools.py [-v]
@@ -18,6 +19,8 @@ check-versions, mermaid), здесь не запускаются.
 from __future__ import annotations
 
 import contextlib
+import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -27,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ac
 import find
+import mcp_server
 import readme
 import release
 import validate
@@ -449,6 +453,16 @@ class ReleaseTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             release.bump_pin("версии здесь нет\n", "v1.2")
 
+    def test_downgrade_blocked(self):
+        with self.assertRaises(ValueError):
+            release.bump_pin("ac=v1.12  # пин\n", "v1.9")
+        self.assertTrue(release.bump_pin("ac=v1.12  # пин\n", "v1.9",
+                                        allow_downgrade=True).startswith("ac=v1.9"))
+
+    def test_patch_bump_is_not_downgrade(self):
+        out = release.bump_pin("ac=v1.9  # пин\n", "v1.9.1")
+        self.assertTrue(out.startswith("ac=v1.9.1"))
+
     def test_check_reports_mismatch(self):
         skill = "ac=v1.2  # пин\n"
         log = "# C\n\n## v1.2 — 2026-02-03\n\nтело\n"
@@ -457,6 +471,58 @@ class ReleaseTest(unittest.TestCase):
         self.assertTrue(release.check(log.replace("## v1.2", "## v1.0"), skill, "v1.2"))
         self.assertTrue(release.check(log, "ac=v1.1\n", "v1.2"))
 
+
+class McpTest(unittest.TestCase):
+    """MCP-сервер: ответы JSON-RPC и stdio-обвязка. Живой клиент не нужен."""
+
+    def test_initialize_and_tools_list(self):
+        init = mcp_server.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+        self.assertEqual(init["result"]["protocolVersion"], mcp_server.PROTOCOL)
+        self.assertEqual(init["result"]["serverInfo"]["name"], "awesome-coding")
+
+        tools = mcp_server.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})["result"]["tools"]
+        self.assertEqual([t["name"] for t in tools], ["search", "get"])
+        for tool in tools:
+            self.assertEqual(tool["inputSchema"]["type"], "object")
+            self.assertTrue(tool["inputSchema"]["required"])
+
+    def test_search_and_get_return_text(self):
+        hits = mcp_server.call_tool("search", {"query": "http client", "section": "go"})
+        self.assertIn("go-http-client", hits)
+
+        body = mcp_server.call_tool("get", {"id": "go-http-client"})
+        self.assertIn("path: go/snippets/http-client.md", body)
+        self.assertNotIn("id: go-http-client", body)  # frontmatter срезается
+
+    def test_search_without_hits_is_text_not_error(self):
+        self.assertIn("не найдено", mcp_server.call_tool("search", {"query": "квантовая-кукуруза"}))
+
+    def test_unknown_tool_is_error_flag_not_exception(self):
+        resp = mcp_server.handle({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
+                                  "params": {"name": "нет-такого", "arguments": {}}})
+        self.assertTrue(resp["result"]["isError"])
+        self.assertIn("неизвестный инструмент", resp["result"]["content"][0]["text"])
+
+    def test_unknown_method_and_notification(self):
+        bad = mcp_server.handle({"jsonrpc": "2.0", "id": 4, "method": "resources/templates/list"})
+        self.assertEqual(bad["error"]["code"], -32601)
+        self.assertIsNone(mcp_server.handle({"jsonrpc": "2.0", "method": "notifications/initialized"}))
+
+    def test_stdio_framing_survives_garbage(self):
+        """Сервер читает построчно: битая строка не должна ронять соединение."""
+        msgs = [
+            '{"jsonrpc":"2.0","id":1,"method":"ping"}',
+            'это не json',
+            '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get","arguments":{"id":"go-http-client"}}}',
+        ]
+        proc = subprocess.run(
+            [sys.executable, str(Path(mcp_server.__file__).resolve())],
+            input="\n".join(msgs) + "\n", capture_output=True, text=True, timeout=60)
+        replies = [json.loads(line) for line in proc.stdout.splitlines() if line.strip()]
+        self.assertEqual(len(replies), 3, proc.stderr)
+        self.assertEqual(replies[0]["id"], 1)
+        self.assertEqual(replies[1]["error"]["code"], -32700)  # ошибка разбора — ответ, не обвал
+        self.assertIn("path:", replies[2]["result"]["content"][0]["text"])
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

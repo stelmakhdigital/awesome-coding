@@ -48,12 +48,23 @@ def insert_entry(changelog: str, version: str, date: str, body: str) -> str:
     return changelog[:pos] + heading + "\n" + changelog[pos:]
 
 
-def bump_pin(skill: str, version: str) -> str:
+def version_tuple(v: str) -> tuple:
+    return tuple(int(x) for x in v.lstrip("v").split("."))
+
+
+def bump_pin(skill: str, version: str, allow_downgrade: bool = False) -> str:
     """Поднять пин `ac=vN.N` в SKILL.md. Отсутствие строки — ошибка, а не «нечего делать»."""
     if not VERSION_RE.match(version):
         raise ValueError(f"некорректная версия: {version!r}")
-    if not PIN_RE.search(skill):
+    pin = PIN_RE.search(skill)
+    if pin is None:
         raise ValueError("в SKILL.md нет строки пина вида `ac=v1.2`")
+
+    # Опустить пин — значит сказать агентам, что кэш протух в обратную сторону.
+    # Обычно это опечатка в версии, а не намерение.
+    if not allow_downgrade and version_tuple(pin.group(1)) > version_tuple(version):
+        raise ValueError(
+            f"пин опускается: {pin.group(1)} → {version}. Если это намеренно, передайте allow_downgrade")
 
     def sub(m: re.Match) -> str:
         return f"ac={version}" + (f"  {m.group(2)}" if m.group(2) else "")
@@ -89,6 +100,8 @@ def main() -> int:
     prep.add_argument("--version", required=True)
     prep.add_argument("--date", required=True)
     prep.add_argument("--body", required=True, help="файл с текстом записи")
+    prep.add_argument("--allow-downgrade", action="store_true",
+                      help="разрешить понижение пина (переиздание старой версии)")
 
     chk = sub.add_parser("check", help="проверить готовность к тегу")
     chk.add_argument("--version", required=True)
@@ -108,7 +121,7 @@ def main() -> int:
 
     body = (ROOT / args.body).read_text(encoding="utf-8") if (ROOT / args.body).exists() else args.body
     new_changelog = insert_entry(changelog, args.version, args.date, body)
-    new_skill = bump_pin(skill, args.version)
+    new_skill = bump_pin(skill, args.version, allow_downgrade=args.allow_downgrade)
 
     CHANGELOG.write_text(new_changelog, encoding="utf-8")
     SKILL.write_text(new_skill, encoding="utf-8")
