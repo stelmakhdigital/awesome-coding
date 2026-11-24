@@ -5,8 +5,9 @@
   frontmatter — YAML frontmatter всех .md: обязательные поля, допустимые
                 значения, уникальные id, формат полей.
   manifest    — index/*.yaml (шапка + секции): пути существуют, все
-                контент-файлы есть в каталоге, id/title/status/updated
-                совпадает с frontmatter, sections ↔ файлы index/*.yaml.
+                контент-файлы есть в каталоге, id/title/status/tags/updated
+                совпадает с frontmatter, verified честен для сниппетов с
+                кодом, sections ↔ файлы index/*.yaml.
   indexes     — README каталога упоминает все .md каталога; счётчики
                 «Статус разделов» в основном README совпадают с фактом.
   links       — относительные markdown-ссылки указывают на существующие файлы.
@@ -47,6 +48,7 @@ ALLOWED_SECTIONS = {
 NO_FRONTMATTER = {
     "README.md",  # любой README (индексы разделов)
     "AGENTS.md",
+    "CHANGELOG.md",
 }
 NO_FRONTMATTER_DIRS = {"docs", "skills"}  # skills — SKILL.md со своим форматом frontmatter
 
@@ -57,6 +59,13 @@ ALLOWED_LANGS = {
 ALLOWED_CATEGORIES = {"concept", "rule-set", "idioms", "decisions", "snippet", "pattern"}
 ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
 ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
+# Языки, код которых проверяется компилятором/интерпретатором. Для записей
+# category snippet/pattern verified=none с таким кодом — ошибка каталога.
+# Декларативные (dockerfile, yaml, protobuf) и компилируемые только в Editor
+# (hlsl) сюда не входят.
+CODE_LANGS = {"go", "c", "csharp", "kotlin", "python", "bash", "sh", "ts", "js", "sql"}
+CODE_FENCE_RE = re.compile(r"^```([a-zA-Z]+)[ \n]", re.M)
+SKILL_FIELDS = ("name", "description", "whenToUse", "updated")
 ID_PREFIXES = (
     "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
     "shared", "ddd", "arch", "database", "messaging", "cicd", "pm",
@@ -152,7 +161,28 @@ def check_frontmatter() -> list[str]:
         mv = fm.get("min_version")
         if mv is not None and not isinstance(mv, (str, int, float)):
             issues.append(f"{rel}: min_version должен быть строкой/числом или null")
+
+    # Скиллы живут по своему формату frontmatter — проверяем минимум.
+    for skill in sorted((ROOT / "skills").glob("*/SKILL.md")):
+        rel = skill.relative_to(ROOT)
+        try:
+            fm = parse_frontmatter(skill) or {}
+        except yaml.YAMLError:
+            issues.append(f"{rel}: невалидный YAML в frontmatter")
+            continue
+        for field in SKILL_FIELDS:
+            if not fm.get(field):
+                issues.append(f"{rel}: нет поля '{field}' (формат скилла)")
     return issues
+
+
+def code_fences(path: Path) -> set[str]:
+    """Языки код-блоков записи (```<lang>), только известные языки."""
+    try:
+        langs = set(CODE_FENCE_RE.findall(path.read_text(encoding="utf-8")))
+    except OSError:
+        return set()
+    return {lang.lower() for lang in langs} & CODE_LANGS
 
 
 def manifest_files() -> list[Path]:
@@ -265,6 +295,23 @@ def check_manifest() -> list[str]:
                 issues.append(
                     f"manifest ({section}): '{rel}': {field}={entry.get(field)!r} "
                     f"!= frontmatter {fm.get(field)!r}"
+                )
+        if sorted(str(t) for t in entry.get("tags") or []) != sorted(
+            str(t) for t in fm.get("tags") or []
+        ):
+            issues.append(
+                f"manifest ({section}): '{rel}': tags={entry.get('tags')!r} "
+                f"!= frontmatter {fm.get('tags')!r}"
+            )
+        # verified=none означает «кода нет» — для сниппетов/паттернов с кодом
+        # это обещание, а не факт.
+        if verified == "none" and fm.get("category") in ("snippet", "pattern"):
+            found = code_fences(target)
+            if found:
+                issues.append(
+                    f"manifest ({section}): '{rel}': verified=none, но в записи "
+                    f"есть код на {sorted(found)} — поднимите verified до "
+                    f"compiled/executed/reviewed"
                 )
         idx_upd = entry.get("updated")
         if idx_upd is None:
