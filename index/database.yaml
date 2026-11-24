@@ -18,6 +18,13 @@ decisions:
     verified: none
     updated: 2026-09-06
 snippets:
+  - id: database-pagination
+    title: "Пагинация: OFFSET против keyset, непрозрачный курсор"
+    path: database/snippets/pagination.md
+    tags: [postgres, pagination, keyset, cursor, offset, api]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
   - id: database-postgres-core
     title: "PostgreSQL: индексы, EXPLAIN, пулы соединений"
     path: database/snippets/postgres-core.md

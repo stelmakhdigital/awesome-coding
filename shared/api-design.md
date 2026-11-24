@@ -29,7 +29,10 @@ updated: 2026-09-06
 2. **Глагол — в HTTP-методе**: `GET/POST/PUT/PATCH/DELETE`; `POST` — создание, `PUT` — замена, `PATCH` — частичное.
 3. **Коды ответов — по смыслу**: `200/201/204`, `400` (валидация), `401` (auth), `403` (authz), `404`, `409` (конфликт), `422` (семантика), `429` (rate limit), `500` (сбой сервера).
 4. **Ошибки — структурированные**: `{ "error": { "code": "ORDER_NOT_FOUND", "message": "..." } }` — стабильные коды для клиентов.
-5. **Пагинация**: cursor-based для больших коллекций (`?cursor=...&limit=...`), offset — только для UI.
+5. **Пагинация**: cursor-based для больших коллекций (`?cursor=...&limit=...`), offset — только
+   для UI и заведомо маленьких списков: глубокий offset платит за пропущенные строки,
+   а страницы плывут при вставках
+   ([реализация](../database/snippets/pagination.md)). Размер страницы задаёт сервер.
 6. **Идемпотентность**: `PUT`/`DELETE` — идемпотентны; `POST` — с `Idempotency-Key` для критичных операций.
 7. **Версионирование**: `/v1/` в URL; breaking changes — только новая версия; deprecation — заголовки + срок.
 8. **Контракт — OpenAPI (Swagger)**: генерируется из кода или пишется первым (contract-first).
@@ -62,4 +65,6 @@ updated: 2026-09-06
 
 - [go/snippets/http-server.md](../go/snippets/http-server.md) — REST-сервер (Go)
 - [typescript/snippets/http-client.md](../typescript/snippets/http-client.md) — HTTP-клиент
+- [../database/snippets/pagination.md](../database/snippets/pagination.md) — keyset-курсор на PostgreSQL
+- [../go/snippets/rate-limit.md](../go/snippets/rate-limit.md) — откуда берётся `429` и `Retry-After`
 - [cicd/](../cicd/) — как деплоить API

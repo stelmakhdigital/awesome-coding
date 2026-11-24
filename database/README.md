@@ -4,10 +4,11 @@
 - **PostgreSQL 18** (latest: 18.6); fallback: 17.
 - **Redis 8** (latest: 8.10.1); fallback: 8.0.
 
-> Статус кода: SQL — прогнан на живом PostgreSQL 18.6 (индексы, EXPLAIN, транзакции, savepoint,
-> advisory locks, ON CONFLICT, CREATE INDEX CONCURRENTLY, материализованные представления,
-> pg_stat_statements); Go (Redis) — скомпилирован (go-redis v9, Go 1.27.1).
-> Перед применением в критичных местах проверьте `EXPLAIN`.
+> Статус кода: SQL этих записей выполняется на PostgreSQL 18 в Docker (`make verify`):
+> индексы, EXPLAIN, транзакции, savepoints, advisory locks, ON CONFLICT,
+> `CREATE INDEX CONCURRENTLY`, материализованные представления, pg_stat_statements,
+> keyset-пагинация; Go-блоки (go-redis v9, database/sql) собираются go build 1.27.
+> На своей схеме и своих данных запрос всё равно стоит проверить `EXPLAIN`.
 
 ## Конвенции
 
@@ -26,3 +27,4 @@
   - [migrations.md](snippets/migrations.md) — паттерны миграций (expand-contract)
   - [n-plus-one.md](snippets/n-plus-one.md) — N+1: детект и лечение
   - [redis.md](snippets/redis.md) — кэширование, структуры, TTL
+  - [pagination.md](snippets/pagination.md) — keyset против OFFSET, курсор
