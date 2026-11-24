@@ -12,6 +12,7 @@
 #   make search Q=async        — поиск записей по тегу/названию/алиасу (ранжировано)
 #   make verify                — прогон код-блоков через тулчейны в Docker (нужен docker)
 #   make verify-fix            — то же + поднять verified/updated в index/ по итогу
+#   make gofmt RECORD=go/snippets/x.md — отформатировать go-блоки записи на месте (нужен docker)
 #   make check-versions        — сверка закреплённых версий с актуальными (сеть)
 #   make check-stale           — записи с устаревшим `updated` (квартальный аудит)
 
@@ -21,7 +22,7 @@ NODE ?= node
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
         validate-structure validate-text validate-aliases \
         validate-links validate-mermaid validate-readme readme test search verify verify-fix \
-        check-versions check-stale
+        check-versions check-stale gofmt
 
 help:
 	@echo "Цели:"
@@ -39,6 +40,7 @@ help:
 	@echo "  search Q=<запрос>     — поиск по тегу/названию/алиасу, от близких к далёким"
 	@echo "  verify                — код-блоки записей через реальные тулчейны (Docker)"
 	@echo "  verify-fix            — verify + поднять verified/updated в index/, где прогон доказал"
+	@echo "  gofmt RECORD=<путь>     — отформатировать go-блоки записи на месте (Docker)"
 	@echo "  check-versions        — сверка версий из AGENTS.md с актуальными (нужна сеть)"
 	@echo '  check-stale           — устаревший frontmatter `updated` (> 180 дней)'
 	@echo ""
@@ -93,6 +95,9 @@ verify-fix:
 
 check-versions:
 	$(PYTHON) tools/check_versions.py
+
+gofmt:
+	$(PYTHON) tools/gofmt_records.py $(RECORD)
 
 check-stale:
 	$(PYTHON) tools/check_stale.py
