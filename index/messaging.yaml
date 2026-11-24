@@ -19,31 +19,31 @@ decisions:
     updated: 2026-09-06
 snippets:
   - id: messaging-kafka
-    title: "Kafka: producer, consumer, consumer groups"
+    title: "Kafka: producer (acks=all, порядок на сущность, версия схемы)"
     path: messaging/snippets/kafka.md
     tags: [kafka, producer, consumer, consumer-group, exactly-once]
     status: stable
     verified: compiled
-    updated: 2026-09-06
+    updated: 2026-11-24
   - id: messaging-rabbitmq
     title: "RabbitMQ: queues, exchanges, ack/nack, DLQ"
     path: messaging/snippets/rabbitmq.md
     tags: [rabbitmq, amqp, queue, exchange, dlq, ack]
     status: stable
     verified: compiled
-    updated: 2026-09-06
+    updated: 2026-11-24
   - id: messaging-outbox
     title: "Outbox: события из транзакции без потери и дублей"
     path: messaging/snippets/outbox.md
     tags: [outbox, events, transaction, reliability, cdc, kafka]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
   - id: messaging-consumer-groups
     title: "Kafka consumer groups: партицирование, rebalance, идемпотентность, DLQ"
     path: messaging/snippets/consumer-groups.md
     tags: [kafka, consumer-group, rebalance, idempotency, dlq, lag]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
 

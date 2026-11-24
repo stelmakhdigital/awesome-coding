@@ -1,71 +1,64 @@
 ---
 id: messaging-kafka
-title: "Kafka: producer, consumer, consumer groups"
+title: "Kafka: producer (acks=all, порядок на сущность, версия схемы)"
 lang: messaging
 min_version: "4.3"
 category: snippet
 tags: [kafka, producer, consumer, consumer-group, exactly-once]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
-# Kafka: producer и consumer
+# Kafka: producer
 
 **Когда использовать** — лог событий, high-throughput, реплей, event-driven.
 **Когда НЕ использовать** — простая task queue с routing (RabbitMQ проще).
 
-## Код (Go, `segmentio/kafka-go`)
+## Продюсер (Go, `segmentio/kafka-go`)
 
 ```go
-// Producer: с подтверждением всех ISR-реплик.
-w := &kafka.Writer{
-    Addr:         kafka.TCP("broker:9092"),
-    Topic:        "orders.created",
-    Balancer:     &kafka.Hash{}, // по ключу -> один партишн на сущность
-    RequiredAcks: kafka.RequireAll, // все ISR-реплики подтвердили запись
-}
-defer w.Close()
+// Package orders — продюсер темы заказов: порядок на сущность, подтверждение от ISR.
+package orders
 
-err := w.WriteMessages(ctx,
-    kafka.Message{
-        Key:   []byte(orderID), // partitioning: один заказ -> один партишн
-        Value: mustMarshal(orderEvent),
-        Headers: []kafka.Header{
-            {Key: "schema_version", Value: []byte("1")},
-        },
-    },
+import (
+	"context"
+	"encoding/json"
+	"time"
+
+	"github.com/segmentio/kafka-go"
 )
 
-// Consumer: consumer group, at-least-once, ручное подтверждение.
-r := kafka.NewReader(kafka.ReaderConfig{
-    Brokers:   []string{"broker:9092"},
-    Topic:     "orders.created",
-    GroupID:   "order-processor",
-    MinBytes:  1, // не ждать батч
-    MaxBytes:  1e6,
-})
-defer r.Close()
+// NewWriter — продюсер с подтверждением от всех ISR-реплик.
+// Без этого брокер отвечает до записи в реплики: событие переживёт рестарт
+// лидера только если повезёт.
+func NewWriter(broker, topic string) *kafka.Writer {
+	return &kafka.Writer{
+		Addr:         kafka.TCP(broker),
+		Topic:        topic,
+		Balancer:     &kafka.Hash{}, // по ключу: один партишн на сущность
+		RequiredAcks: kafka.RequireAll,
+		BatchTimeout: 10 * time.Millisecond,
+	}
+}
 
-for {
-    msg, err := r.FetchMessage(ctx)
-    if err == io.EOF {
-        continue // пересоединение
-    }
-    if err != nil {
-        log.Error("fetch", "err", err)
-        continue
-    }
-    if err := process(ctx, msg.Value); err != nil {
-        log.Error("process", "err", err, "key", string(msg.Key))
-        // сообщение НЕ подтверждено -> будет доставлено повторно
-        // (идемпотентная обработка обязательна!)
-        continue
-    }
-    if err := r.CommitMessages(ctx, msg); err != nil {
-        log.Error("commit", "err", err)
-    }
+// Publish — событие с версией схемы в заголовке: потребители читают старые
+// версии при ретраях, поэтому версия должна быть видна без разбора тела.
+func Publish(ctx context.Context, w *kafka.Writer, key string, event any) error {
+	value, err := json.Marshal(event)
+	if err != nil {
+		return err
+	}
+	return w.WriteMessages(ctx, kafka.Message{
+		Key:     []byte(key), // partitioning: один заказ -> один партишн
+		Value:   value,
+		Headers: []kafka.Header{{Key: "schema_version", Value: []byte("1")}},
+	})
 }
 ```
+
+Потребитель (группа, commit после обработки, DLQ) —
+[consumer-groups.md](consumer-groups.md): там цикл с обработкой ошибок и отравленными
+сообщениями, здесь только продюсер.
 
 ## Правила
 
@@ -74,16 +67,19 @@ for {
 3. **Schema version в заголовке**: consumers читают старые версии при ретраях.
 4. **Retention** — осознанно: лог событий — 7–30 дней, не «навсегда».
 5. **Мониторинг**: consumer lag (главная метрика!), under-replicated partitions.
-6. ❌ `FetchMessage` в цикле без обработки ошибок — «молча упавший» consumer.
+6. ❌ `FetchMessage` в цикле без паузы на ошибке — consumer крутится без сна
+   и пишет лог до отказа диска (пауза/backoff — в [consumer-groups.md](consumer-groups.md)).
 
 ## Exactly-once (когда нужно)
 
-```go
-// Producer transactions + idempotent consumer:
-// 1. producer: BeginTransaction -> WriteMessages (topic + reply topic) -> CommitTransaction
-// 2. consumer: в той же транзакции читает и пишет
-// Дорого и сложно: только для финансовых операций.
+```text
+producer: BeginTransaction -> WriteMessages (topic + reply topic) -> CommitTransaction
+consumer: читает и пишет в той же транзакции
 ```
+
+Дорого и сложно (транзакционный идемпотентный продюсер, `transactional.id`,
+`isolation.level=read_committed`). Только для финансовых операций; чаще дешевле
+идемпотентный потребитель + уникальный ключ обработки.
 
 ## Related
 

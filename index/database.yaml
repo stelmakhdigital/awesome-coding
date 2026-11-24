@@ -38,19 +38,19 @@ snippets:
     tags: [migrations, schema, expand-contract, goose, zero-downtime]
     status: stable
     verified: executed
-    updated: 2026-09-06
+    updated: 2026-11-24
   - id: database-n-plus-one
     title: "N+1: детект и лечение"
     path: database/snippets/n-plus-one.md
     tags: [n-plus-one, performance, queries, batching]
     status: stable
     verified: executed
-    updated: 2026-09-06
+    updated: 2026-11-24
   - id: database-redis
     title: "Redis: кэширование, структуры данных, TTL"
     path: database/snippets/redis.md
     tags: [redis, caching, ttl, data-structures, streams]
     status: stable
     verified: executed
-    updated: 2026-09-06
+    updated: 2026-11-24
 

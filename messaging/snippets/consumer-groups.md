@@ -6,7 +6,7 @@ min_version: "4.3"
 category: snippet
 tags: [kafka, consumer-group, rebalance, idempotency, dlq, lag]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # Consumer groups
@@ -17,36 +17,68 @@ updated: 2026-09-07
 ## Код (Go, `segmentio/kafka-go`)
 
 ```go
-r := &kafka.Reader{
-	Addr:     kafka.TCP("broker:9092"),
-	Topic:    "orders.created",
-	GroupID:  "order-processor", // инстансы с одинаковым GroupID делят партишены
-	MinBytes: 1,                 // не буферизовать «до 64К»
-	MaxBytes: 100_000,
-	MaxWait:  500 * time.Millisecond,
+// Package consumer — потребитель Kafka: группа, commit после обработки, DLQ.
+package consumer
+
+import (
+	"context"
+	"errors"
+	"io"
+	"log/slog"
+	"time"
+
+	"github.com/segmentio/kafka-go"
+)
+
+// NewReader — читатель с явными настройками выборки. Читатель создаётся через
+// ReaderConfig: у kafka.Reader открытых полей конфигурации нет.
+func NewReader(broker, topic, groupID string) *kafka.Reader {
+	return kafka.NewReader(kafka.ReaderConfig{
+		Brokers:  []string{broker},
+		Topic:    topic,
+		GroupID:  groupID, // инстансы с одинаковым GroupID делят партишены
+		MinBytes: 1,       // не буферизовать «до 64К», иначе ждём пачку
+		MaxBytes: 100_000,
+		MaxWait:  500 * time.Millisecond,
+	})
 }
-defer r.Close()
 
-for {
-	msg, err := r.FetchMessage(ctx) // внутри — commit после успешной обработки
-	if err == io.EOF {
-		break
-	}
-	if err != nil {
-		log.Error("fetch", "err", err)
-		time.Sleep(time.Second) // reader сам ретраит; не зацикливаться
-		continue
-	}
+// Run читает до отмены ctx: обработка -> commit. Ошибка обработки -> DLQ -> commit.
+// Commit на успехе обработки = доставка «не менее одного раза»: handle идемпотентен.
+func Run(ctx context.Context, r *kafka.Reader,
+	handle func(context.Context, kafka.Message) error,
+	dlq func(context.Context, kafka.Message) error) {
+	defer r.Close()
 
-	if err := process(ctx, msg); err != nil {
-		// Отравленное сообщение: не ретраим бесконечно.
-		log.Error("process", "offset", msg.Offset, "err", err)
-		sendToDLQ(ctx, msg)            // отдельная тема/очередь + алерт
-		_ = r.CommitMessages(ctx, msg) // пропускаем, не зацикливаем группу
-		continue
-	}
-	if err := r.CommitMessages(ctx, msg); err != nil {
-		log.Error("commit", "err", err) // дубль при повторе — consumer идемпотентен
+	for {
+		msg, err := r.FetchMessage(ctx)
+		if errors.Is(err, io.EOF) || errors.Is(err, context.Canceled) {
+			return
+		}
+		if err != nil {
+			slog.Error("fetch", "err", err)
+			select {
+			case <-ctx.Done():
+				return
+			case <-time.After(time.Second): // читатель ретраит сам; без паузы закрутимся
+			}
+			continue
+		}
+
+		if err := handle(ctx, msg); err != nil {
+			slog.Error("process", "offset", msg.Offset, "err", err)
+			if dErr := dlq(ctx, msg); dErr != nil {
+				// В DLQ не попали и коммитим — сообщение потеряно. Не коммитим:
+				// оно придёт снова (после ребаланса или перезапуска).
+				slog.Error("dlq", "offset", msg.Offset, "err", dErr)
+				continue
+			}
+			// Отравленное сообщение ушло в DLQ: пропускаем, не зацикливаем группу.
+		}
+
+		if err := r.CommitMessages(ctx, msg); err != nil {
+			slog.Error("commit", "offset", msg.Offset, "err", err)
+		}
 	}
 }
 ```
@@ -86,6 +118,7 @@ CREATE TABLE processed_events (
 - **Rebalance-шторм**: короткие session timeout'ы + медленный старт инстансов =
   постоянные rebalance. Ставьте timeout с запасом.
 - **DLQ без алерта** — сообщения «теряются» в мёртвой очереди.
+- **Commit после неудачной отправки в DLQ** — сообщение ни обработано, ни в DLQ: потеряно. Не коммитим — пусть придёт снова.
 - **Commit «на всякий случай» до обработки** — потеря событий при краше.
 - **Одна тема на всё** (orders, payments, logs в одном топике) — lag и масштабирование
   не управляются; темы — по доменным потокам.

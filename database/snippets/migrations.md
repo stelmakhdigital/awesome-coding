@@ -6,7 +6,7 @@ min_version: "18"
 category: snippet
 tags: [migrations, schema, expand-contract, goose, zero-downtime]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Миграции схемы
@@ -51,12 +51,14 @@ CREATE INDEX CONCURRENTLY idx_orders_created ON orders (created_at);
 
 ## Инструменты (Go)
 
-```go
-// golang-migrate: миграции в файлах (0001_init.up.sql / 0001_init.down.sql).
-// goose: --
-// +goose Up
+Файлы миграций — по одной на изменение (`0001_init.up.sql` / `0001_init.down.sql`,
+golang-migrate) или с аннотациями goose:
+
+```sql
+-- +goose Up
 CREATE TABLE orders (id uuid PRIMARY KEY, total numeric(12,2) NOT NULL);
-// -- +goose Down
+
+-- +goose Down
 DROP TABLE orders;
 ```
 

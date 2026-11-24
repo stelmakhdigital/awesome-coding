@@ -6,7 +6,7 @@ min_version: "18"
 category: snippet
 tags: [n-plus-one, performance, queries, batching]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # N+1: детект и лечение
@@ -64,16 +64,61 @@ LIMIT 100;
 ### 3. Data loader (кэш батчей)
 
 ```go
-// DataLoader: собирает id за «тик», один IN-запрос, кэширует результат.
-type OrderItemsLoader struct {
-    db      *sql.DB
-    pending map[string][]func(*sql.Rows)
-}
+// Package loader — батч-загрузка связанных строк: один запрос на всю страницу.
+package loader
 
-// вызовы внутри одного запроса страницы:
-//   items, _ := loader.Items(ctx, orderID) // x100
-// → 1 SELECT ... WHERE order_id = ANY(...) на все 100
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"strings"
+)
+
+// Items — позиции заказов одним запросом вместо запроса на заказ.
+// map заполнен только по заказам с позициями: пустой срез у заказа без позиций —
+// норма, а не ошибка.
+func Items(ctx context.Context, db *sql.DB, orderIDs []int64) (map[int64][]string, error) {
+	if len(orderIDs) == 0 {
+		return map[int64][]string{}, nil
+	}
+
+	// Плейсхолдеры по числу id: значения уходят как параметры, не как строка.
+	placeholders := make([]string, len(orderIDs))
+	args := make([]any, len(orderIDs))
+	for i, id := range orderIDs {
+		placeholders[i] = fmt.Sprintf("$%d", i+1)
+		args[i] = id
+	}
+
+	rows, err := db.QueryContext(ctx,
+		`SELECT order_id, sku
+		   FROM order_items
+		  WHERE order_id IN (`+strings.Join(placeholders, ",")+`)
+		  ORDER BY order_id, id`, args...)
+	if err != nil {
+		return nil, fmt.Errorf("query items: %w", err)
+	}
+	defer rows.Close()
+
+	out := make(map[int64][]string, len(orderIDs))
+	for rows.Next() {
+		var orderID int64
+		var sku string
+		if err := rows.Scan(&orderID, &sku); err != nil {
+			return nil, fmt.Errorf("scan items: %w", err)
+		}
+		out[orderID] = append(out[orderID], sku)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows items: %w", err)
+	}
+	return out, nil
+}
 ```
+
+Кэш «в рамках запроса» — это `out` выше: повторное обращение к тому же списку id
+берётся из map, а не из БД. Между запросами не кэшируем — иначе отдаём устаревшие
+позиции; для повторных страниц кэш нужен явный (см. [redis.md](redis.md)).
 
 ### 4. Предрасчёт/материализация
 
