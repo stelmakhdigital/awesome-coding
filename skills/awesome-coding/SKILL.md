@@ -15,7 +15,7 @@ updated: 2026-11-24
 ### 1. Кэш (идемпотентно, ≤1 команда)
 
 ```bash
-ac=v1.9                                   # пин версии библиотеки (обновляется при релизе)
+ac=v1.10                                   # пин версии библиотеки (обновляется при релизе)
 r=https://github.com/stelmakhdigital/awesome-coding
 k=~/.cache/awesome-coding
 [ -d "$k/.git" ] || git -c advice.detachedHead=false clone -q --depth 1 --branch "$ac" "$r" "$k"
@@ -58,7 +58,7 @@ k=~/.cache/awesome-coding
 |---|---|
 | SQL, индексы, транзакции, кэш, Redis | `database` |
 | Kafka, RabbitMQ, очереди | `messaging` |
-| CI/CD, Docker, K8s | `cicd` |
+| CI/CD, Docker, K8s, `gh` в скриптах, интеграционные тесты | `cicd` |
 | DDD, уровни, bounded contexts, CQRS | `architecture` |
 | SDLC, roadmap, риски, PMBOK | `pm` |
 | принцип, общий для языка (ошибки, тесты, безопасность, ревью) | `shared` |

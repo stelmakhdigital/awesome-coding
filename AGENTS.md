@@ -16,7 +16,7 @@
 | Брокеры сообщений: Kafka, RabbitMQ | `messaging/` |
 | Архитектура, DDD, уровни, bounded contexts, CQRS, event-driven | `architecture/` |
 | Агент работает без человека: расписание, замок, чекпоинт, охотник за дефектами, координатор и воркеры | `agenting/` |
-| CI/CD, Docker, Kubernetes | `cicd/` |
+| CI/CD, Docker, Kubernetes, `gh`-автоматизация, интеграционные тесты со стеком | `cicd/` |
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
 | Нативный Android (Kotlin) | `kotlin/` |
 | Документирование проекта, ADR, диаграммы (mermaid) | `shared/documentation.md`, `shared/mermaid.md` |
@@ -108,7 +108,8 @@
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
 - `agenting/` — агентские автоматизации: `README.md`, `rules.md`, `decisions.md`, `snippets/`, `patterns/`. Про прогоны, где агента выпустили из цикла; оркестратор не закреплён намеренно.
-- `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes.
+- `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes, `gh` в скриптах,
+  интеграционные тесты на контейнерах.
 - `pm/` — проектный/продуктовый менеджмент: SDLC, PMBOK, discovery, требования,
   риски + правила ведения `roadmap.md` и `PROJECT_MEMORY.md` в целевых проектах.
 - `index/` — машиночитаемый каталог: `manifest.yaml` (шапка, версии) +
