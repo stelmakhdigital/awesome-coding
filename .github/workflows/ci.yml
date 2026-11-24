@@ -5,29 +5,43 @@ on:
     branches: [master]
   pull_request:
 
+# Минимальные права: пайплайн только читает репозиторий (cicd/rules.md).
+permissions:
+  contents: read
+
+# Новый пуш в ту же ветку отменяет предыдущий прогон.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      # Сторонние actions — по SHA (cicd/rules.md); версия в комментарии,
+      # обновление — dependabot (.github/dependabot.yml).
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
       - name: Install Python deps
         run: pip install pyyaml
 
-      - name: Validate (frontmatter + manifest + links)
+      - name: Validate (frontmatter + каталог + текст + ссылки)
         run: make validate
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
 
       - name: Install mermaid validator deps
         working-directory: tools
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
 
       - name: Validate mermaid blocks
         run: make validate-mermaid
@@ -43,15 +57,16 @@ jobs:
       matrix:
         lang: [go, ts, js, python, bash, sh, c]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12"
 
       - name: Install Python deps
         run: pip install pyyaml
 
+      # Разные verdicts: fail/fmt ломают сборку, deps/fragment — нет
+      # (см. docs/FORMAT.md, «Что стоит за verified»).
       - name: Run record code through the toolchain
         run: python3 tools/verify_snippets.py --lang ${{ matrix.lang }} --jobs 4
-

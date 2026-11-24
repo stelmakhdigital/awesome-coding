@@ -1,0 +1,17 @@
+version: 2
+updates:
+  # Action'ы закреплены по SHA (cicd/rules.md) — без этого пина они молча
+  # меняются вместе с тегом. PR приходит сюда, SHA меняется в ci.yml.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: npm
+    directory: /tools
+    schedule:
+      interval: monthly
