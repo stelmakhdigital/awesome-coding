@@ -52,3 +52,10 @@ snippets:
     status: stable
     verified: reviewed
     updated: 2026-09-07
+  - id: cicd-gh-cli
+    title: "gh в скриптах: чтение, запись, пагинация, ожидание CI"
+    path: cicd/gh-cli.md
+    tags: [gh-cli, github, api, issues, pull-request, pagination, rate-limit, jq, ci, idempotency]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
