@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [architecture, microservices, distributed, saga, go]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Microservices (микросервисы)

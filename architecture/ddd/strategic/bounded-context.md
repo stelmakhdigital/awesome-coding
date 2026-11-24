@@ -6,7 +6,7 @@ min_version: "n/a"
 category: concept
 tags: [ddd, bounded-context, strategic, boundaries, modules]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Bounded Context (ограниченный контекст)

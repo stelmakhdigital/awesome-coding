@@ -6,7 +6,7 @@ min_version: "1.20"
 category: pattern
 tags: [concurrency, workers, pool, errgroup]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Worker Pool

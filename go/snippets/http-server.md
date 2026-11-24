@@ -6,7 +6,7 @@ min_version: "1.22"
 category: snippet
 tags: [http, net, server, stdlib]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # HTTP server (stdlib)

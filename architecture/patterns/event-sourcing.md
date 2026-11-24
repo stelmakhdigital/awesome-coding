@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [architecture, event-sourcing, audit, projections, advanced, go]
 status: experimental
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Event Sourcing

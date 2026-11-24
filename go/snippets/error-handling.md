@@ -6,7 +6,7 @@ min_version: "1.20"
 category: snippet
 tags: [errors, error-handling, stdlib]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Error handling

@@ -6,7 +6,7 @@ min_version: "1.21"
 category: snippet
 tags: [testing, benchmarks, subtests, stdlib]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Testing

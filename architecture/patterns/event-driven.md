@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [architecture, event-driven, outbox, messaging, advanced, go]
 status: experimental
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Event-Driven Architecture

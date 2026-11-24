@@ -31,71 +31,71 @@ snippets:
     path: go/snippets/error-handling.md
     tags: [errors, error-handling, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-http-server
     title: "HTTP server (stdlib, Go 1.22+)"
     path: go/snippets/http-server.md
     tags: [http, net, server, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-context
     title: "Context: timeout, cancellation, values"
     path: go/snippets/context.md
     tags: [context, cancellation, timeout, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-goroutines
     title: "Goroutines: WaitGroup, errgroup, worker pool"
     path: go/snippets/goroutines.md
     tags: [concurrency, goroutines, workers, errgroup]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-testing
     title: "Testing: table-driven, subtests, benchmarks"
     path: go/snippets/testing.md
     tags: [testing, benchmarks, subtests, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-json
     title: "JSON: encoding/json/v2 (1.27+) и v1"
     path: go/snippets/json.md
     tags: [json, encoding, stdlib, v2]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-slices-maps
     title: "Slices и Maps (stdlib, Go 1.21+)"
     path: go/snippets/slices-maps.md
     tags: [slices, maps, stdlib, collections]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-logging
     title: "Structured logging: log/slog"
     path: go/snippets/logging.md
     tags: [slog, logging, observability, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-graceful-shutdown
     title: "Graceful shutdown: signal.NotifyContext"
     path: go/snippets/graceful-shutdown.md
     tags: [signals, lifecycle, shutdown, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-file-io
     title: "File I/O: ReadFile, streaming, temp files"
     path: go/snippets/file-io.md
     tags: [files, io, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-http-client
     title: "HTTP client: context, таймауты, JSON, ретраи"
     path: go/snippets/http-client.md
@@ -108,8 +108,8 @@ snippets:
     path: go/snippets/sql.md
     tags: [sql, postgres, pgx, database, transactions, pool]
     status: stable
-    verified: reviewed
-    updated: 2026-09-07
+    verified: compiled
+    updated: 2026-11-24
   - id: go-grpc
     title: "gRPC: сервер, клиент, статусы, ctx-таймауты"
     path: go/snippets/grpc.md
@@ -123,26 +123,26 @@ patterns:
     path: go/patterns/functional-options.md
     tags: [design, configuration, api, options]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-worker-pool
     title: "Worker Pool (ограниченный параллелизм)"
     path: go/patterns/worker-pool.md
     tags: [concurrency, workers, pool, errgroup]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-repository
     title: "Repository (изоляция доступа к данным)"
     path: go/patterns/repository.md
     tags: [architecture, data, sql, interface, di]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24
   - id: go-http-middleware
     title: "HTTP Middleware"
     path: go/patterns/http-middleware.md
     tags: [http, middleware, server, stdlib]
     status: stable
-    verified: reviewed
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-24

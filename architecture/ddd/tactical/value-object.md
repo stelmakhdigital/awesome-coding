@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [ddd, value-object, immutability, domain, go]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Value Object (объект значения)

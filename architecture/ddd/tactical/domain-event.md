@@ -6,7 +6,7 @@ min_version: "1.21"
 category: pattern
 tags: [ddd, domain-event, events, go]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-24
 ---
 
 # Domain Event (доменное событие)

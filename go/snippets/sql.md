@@ -6,7 +6,7 @@ min_version: "1.21"
 category: snippet
 tags: [sql, postgres, pgx, database, transactions, pool]
 status: stable
-updated: 2026-09-07
+updated: 2026-11-24
 ---
 
 # SQL: database/sql + pgx
