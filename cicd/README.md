@@ -19,3 +19,4 @@ Docker, Kubernetes, релиз и откат). Здесь они не дубли
 - [secrets.md](secrets.md) — секреты в CI (OIDC, маскирование)
 - [matrix.md](matrix.md) — матричные сборки (версии, кэш, fail-fast)
 - [gh-cli.md](gh-cli.md) — `gh` в скриптах: чтение, запись, пагинация, ожидание CI
+- [integration-tests.md](integration-tests.md) — интеграционные тесты на реальном стеке контейнеров

@@ -59,3 +59,10 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-25
+  - id: cicd-integration-tests
+    title: "CI: интеграционные тесты на реальном стеке контейнеров"
+    path: cicd/integration-tests.md
+    tags: [integration-tests, docker-compose, healthcheck, ci, github-actions, teardown, artifacts, port-conflict]
+    status: stable
+    verified: executed
+    updated: 2026-11-25
