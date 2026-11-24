@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "awesome-coding": {
+      "command": "python3",
+      "args": ["tools/mcp_server.py"],
+      "description": "Поиск по библиотеке awesome-coding: search по тегам/названию, get по id. Источник истины — index/*.yaml этого репозитория."
+    }
+  }
+}

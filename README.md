@@ -50,6 +50,21 @@ flowchart LR
 | Надёжно публиковать события из транзакции | `messaging/snippets/outbox.md` |
 | Начать проект с discovery, вести roadmap и память | `pm/sdlc.md` + `pm/roadmap.md` + `pm/project-memory.md` |
 
+### Поиск без чтения файлов: MCP
+
+`tools/mcp_server.py` — MCP-сервер (stdio) поверх каталога: `search(query, section)`
+и `get(id)`. Клиент получает id, статус и `verified` из `index/*.yaml`, а текст —
+только выбранной записи.
+
+```bash
+pi mcp add -l awesome-coding -- python3 tools/mcp_server.py   # в этом репо
+python3 ~/.cache/awesome-coding/tools/mcp_server.py           # из кэша скилла
+```
+
+Локальный `.pi/mcp.json` в репозитории уже лежит; pi подхватит его после
+подтверждения доверия к проекту. Того же требует и любой другой MCP-клиент:
+`command: python3`, `args: [tools/mcp_server.py]`.
+
 ## Структура
 
 ```
@@ -59,6 +74,7 @@ awesome-coding/
 ├── tools/
 │   ├── validate.py            # валидатор: frontmatter, каталог, ссылки
 │   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
+│   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
 │   └── readme.py              # генерация блока «Статус разделов»
 ├── docs/
 │   ├── FORMAT.md              # спецификация формата записей
