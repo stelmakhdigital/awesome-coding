@@ -1,14 +1,14 @@
 # awesome-coding — туллинг
 #
 # Цели:
-#   make validate              — все проверки (frontmatter + manifest + индексы + README + ссылки)
+#   make validate              — все проверки (frontmatter + manifest + индексы + текст + алиасы + README + ссылки)
 #   make validate-frontmatter  — только frontmatter
 #   make validate-manifest     — только manifest
 #   make validate-indexes      — README каталогов ↔ файлы раздела
 #   make readme                — перегенерировать «Статус разделов» из index/*.yaml
 #   make validate-links        — только ссылки
 #   make validate-mermaid      — синтаксис всех mermaid-блоков (нужен node + npm i)
-#   make search Q=async        — поиск записей по тегу/названию по index/*.yaml
+#   make search Q=async        — поиск записей по тегу/названию/алиасу (ранжировано)
 #   make verify                — прогон код-блоков через тулчейны в Docker (нужен docker)
 #   make verify-fix            — то же + поднять verified/updated в index/ по итогу
 #   make check-versions        — сверка закреплённых версий с актуальными (сеть)
@@ -18,6 +18,7 @@ PYTHON ?= python3
 NODE ?= node
 
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
+        validate-structure validate-text validate-aliases \
         validate-links validate-mermaid validate-readme readme search verify verify-fix \
         check-versions check-stale
 
@@ -29,10 +30,11 @@ help:
 	@echo "  validate-indexes      — README каталогов упоминают все файлы раздела"
 	@echo "  validate-structure    — у сниппетов/паттернов есть разделы выбора и Related"
 	@echo "  validate-text         — CJK и смешение раскладок в прозе"
+	@echo "  validate-aliases      — index/aliases.yaml: форма ключей и существующие id"
 	@echo "  readme                — перегенерировать «Статус разделов» из index/*.yaml"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
-	@echo "  search Q=<запрос>     — поиск записей по тегу/названию по index/*.yaml"
+	@echo "  search Q=<запрос>     — поиск по тегу/названию/алиасу, от близких к далёким"
 	@echo "  verify                — код-блоки записей через реальные тулчейны (Docker)"
 	@echo "  verify-fix            — verify + поднять verified/updated в index/, где прогон доказал"
 	@echo "  check-versions        — сверка версий из AGENTS.md с актуальными (нужна сеть)"
@@ -40,7 +42,7 @@ help:
 	@echo ""
 	@echo "Зависимости: $(PYTHON) 3.9+, PyYAML (pip install pyyaml); validate-mermaid — node 20+; verify — docker"
 
-validate: validate-frontmatter validate-manifest validate-indexes validate-structure validate-text validate-readme validate-links
+validate: validate-frontmatter validate-manifest validate-indexes validate-structure validate-text validate-aliases validate-readme validate-links
 
 validate-frontmatter:
 	$(PYTHON) tools/validate.py --check frontmatter
@@ -56,6 +58,9 @@ validate-structure:
 
 validate-text:
 	$(PYTHON) tools/validate.py --check text
+
+validate-aliases:
+	$(PYTHON) tools/validate.py --check aliases
 
 validate-readme:
 	$(PYTHON) tools/readme.py --check

@@ -25,6 +25,8 @@ except ImportError:
 ROOT = Path(__file__).resolve().parent.parent
 INDEX_DIR = ROOT / "index"
 MANIFEST = INDEX_DIR / "manifest.yaml"
+# Файлы каталога, которые не являются разделом записей.
+INDEX_AUX = {"manifest.yaml", "aliases.yaml"}
 
 # Файлы и каталоги, которым frontmatter НЕ требуется.
 NO_FRONTMATTER = {"README.md", "AGENTS.md", "CHANGELOG.md"}
@@ -66,8 +68,9 @@ def content_files() -> list[Path]:
 
 
 def index_files() -> list[Path]:
-    """Каталог: index/manifest.yaml (шапка) + index/<section>.yaml (записи)."""
-    return sorted(INDEX_DIR.glob("*.yaml"))
+    """Секционные файлы каталога: index/<section>.yaml. Шапка и алиасы — не разделы
+    (manifest.yaml читается отдельно, aliases.yaml — справочник поиска, не записи)."""
+    return sorted(p for p in INDEX_DIR.glob("*.yaml") if p.name not in INDEX_AUX)
 
 
 def index_entries() -> list[tuple[Path, dict]]:

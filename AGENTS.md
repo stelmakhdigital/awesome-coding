@@ -28,7 +28,8 @@
    (есть в: go, typescript, javascript, python, c, bash, csharp, kotlin, unity, database,
    messaging, cicd; нет в: shared, architecture, pm).
 3. Конкретная запись — по тегам в `index/<section>.yaml` (поиск: `grep -i "тег" index/<section>.yaml`;
-   без клона — GitHub code search по этому файлу или `make search Q=тег` после клона).
+   без клона — GitHub code search по этому файлу или `make search Q=тег` после клона;
+   синонимы, которых нет в тегах, — в `index/aliases.yaml`).
 4. Выбор библиотеки/подхода — `<section>/decisions.md` (таблицы решений), если есть.
 
 **Шаг 3 — приоритеты:** язык-специфика (`<lang>/`) важнее `shared/`, если запись явно не говорит об обратном.
@@ -116,14 +117,15 @@
 ## Туллинг
 
 ```bash
-make validate              # все проверки (frontmatter, каталог, индексы, структура, текст, README, ссылки)
+make validate              # все проверки (frontmatter, каталог, индексы, структура, текст, алиасы, README, ссылки)
 make validate-frontmatter  # только frontmatter
 make validate-manifest     # только manifest
 make validate-indexes      # README каталогов упоминают все файлы раздела
+make validate-aliases      # index/aliases.yaml: форма ключей и существующие id
 make validate-links        # только ссылки
 make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
 make readme                # перегенерировать «Статус разделов» из index/*.yaml
-make search Q=async        # поиск записей по тегу/названию по index/*.yaml
+make search Q=async        # поиск по тегу/названию/алиасу, от близких к далёким (tools/find.py)
 make verify                # код-блоки через тулчейны в Docker (go/tsc/python/node/shellcheck/gcc/PG 18)
 make verify-fix            # то же + поднять verified/updated, где прогон доказал
 make check-versions        # сверка закреплённых версий с актуальными (сеть)

@@ -13,6 +13,7 @@
   structure   — у snippet/pattern есть «Когда использовать», «Когда НЕ
                 использовать» и Related.
   text        — в тексте нет CJK-символов и смешения раскладок («batч», «Кrash»).
+  aliases     — index/aliases.yaml: форма ключей, несуществующие id.
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
 Использование:
@@ -37,6 +38,7 @@ except ImportError:
     sys.exit(2)
 
 from ac import (  # noqa: E402  — разбор формата один на весь тулинг (tools/ac.py)
+    INDEX_DIR,
     MANIFEST,
     NO_FRONTMATTER,
     NO_FRONTMATTER_DIRS,
@@ -337,6 +339,49 @@ def check_structure() -> list[str]:
     return issues
 
 
+ALIAS_FORM = re.compile(r"^[a-z0-9][a-z0-9.-]*$")
+
+
+def check_aliases() -> list[str]:
+    """index/aliases.yaml: ключ в форме тега, все target-ы — существующие записи.
+
+    Алиасы — единственное место каталога, где связь «слово → запись» держится
+    руками. Без проверки опечатка в id или переезд записи молча превращают
+    подсказку поиска в несбыточное обещание.
+    """
+    path = INDEX_DIR / "aliases.yaml"
+    if not path.exists():
+        return []
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        return [f"index/aliases.yaml: невалидный YAML — {e}"]
+    aliases = data.get("aliases")
+    if not isinstance(aliases, dict):
+        return ["index/aliases.yaml: нужен ключ `aliases:` со словарём"]
+
+    entries = [e for _, e in index_entries()]
+    ids = {str(e.get("id")) for e in entries}
+    tags = {str(t).lower() for e in entries for t in (e.get("tags") or [])}
+
+    issues: list[str] = []
+    for key, targets in aliases.items():
+        k = str(key)
+        if not ALIAS_FORM.match(k):
+            issues.append(f"index/aliases.yaml: ключ «{k}» не в форме тега "
+                          "(строчные буквы, дефисы, без пробелов)")
+        elif k in tags or k in ids:
+            issues.append(f"index/aliases.yaml: «{k}» — уже тег или id; "
+                          "допишите тег записи, алиас не нужен")
+        if not isinstance(targets, list) or not targets:
+            issues.append(f"index/aliases.yaml: «{k}» — нужен непустой список id")
+            continue
+        for target in targets:
+            if str(target) not in ids:
+                issues.append(f"index/aliases.yaml: «{k}» → {target}: записи нет в каталоге")
+    return issues
+
+
 def check_text() -> list[str]:
     """Текст: без CJK и без прилипшей латиницы к кириллице.
 
@@ -372,6 +417,7 @@ CHECKS = {
     "indexes": check_indexes,
     "structure": check_structure,
     "text": check_text,
+    "aliases": check_aliases,
     "links": check_links,
 }
 

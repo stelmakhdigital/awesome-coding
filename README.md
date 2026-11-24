@@ -72,7 +72,8 @@ awesome-coding/
 ├── AGENTS.md                  # точка входа для агента (роутер)
 ├── Makefile                   # make validate — проверки, make verify — прогон кода
 ├── tools/
-│   ├── validate.py            # валидатор: frontmatter, каталог, текст, ссылки
+│   ├── validate.py            # валидатор: frontmatter, каталог, текст, алиасы, ссылки
+│   ├── find.py                # поиск по каталогу: нормализация, алиасы, ранжирование
 │   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
 │   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
 │   └── readme.py              # генерация блока «Статус разделов»
@@ -82,6 +83,7 @@ awesome-coding/
 │   └── adr/                   # ADR — архитектурные решения репозитория
 ├── index/
 │   ├── manifest.yaml          # шапка каталога: версии языков
+│   ├── aliases.yaml           # синонимы для поиска: слово → id записей
 │   └── <section>.yaml         # записи раздела (go, bash, shared, …)
 ├── go/                        # языковой раздел (эталонный)
 │   ├── README.md              # версия, конвенции, quick-reference

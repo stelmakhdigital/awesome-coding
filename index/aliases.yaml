@@ -1,0 +1,20 @@
+# index/aliases.yaml — слова, которыми ищут запись, но которые не стоят у неё в тегах.
+#
+# Теги — названия, которыми запись называет себя сама. Алиасы — чужая лексика:
+# «upsert» в тексте есть, в тегах его нет. Алиас указывает конкретные id, потому
+# что одно слово обычно относится к разным разделам (upsert — и про ON CONFLICT,
+# и про Outbox, и про Room).
+#
+# Проверяется валидатором (check_aliases): ключ — в форме тегов (строчные,
+# дефисы), не совпадает с тегом или id, список непустой и все id существуют.
+#
+# Синхронность с содержимым проверяет человек: алиас — это ответ на запрос, а не
+# утверждение, что записи связаны. Тавтологии (слово уже в тексте записи) тут не
+# нужны — их чинят тегом, иначе одно и то же живёт в двух местах.
+
+aliases:
+  circuit-breaker: [arch-microservices, csharp-http-client]
+  deadlock: [database-transactions, go-goroutines, go-worker-pool]
+  openid: [cicd-secrets]
+  percentile: [shared-observability]
+  upsert: [database-transactions, kotlin-room, messaging-outbox]

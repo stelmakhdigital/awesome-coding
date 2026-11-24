@@ -2,8 +2,9 @@
 """MCP-сервер каталога awesome-coding (stdio, JSON-RPC 2.0, без зависимостей).
 
 Даёт агенту поиск по репозиторию без клона и без grep: два инструмента —
-`search` (по тегу/названию) и `get` (текст записи). Логика та же, что у
-`tools/search.py`: читается каталог `index/*.yaml`, а не всё содержимое репо.
+`search` (по тегу/названию/алиасу) и `get` (текст записи). Ранжирование и
+алиасы — общие с `tools/search.py` (см. `tools/find.py`): читается каталог
+`index/*.yaml`, а не всё содержимое репо.
 
 Запуск вручную (для проверки):
   printf '%s\\n' '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}' | python3 tools/mcp_server.py
@@ -25,13 +26,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ac import ROOT, index_entries  # noqa: E402
+from find import find as find_entries  # noqa: E402  — ранжирование + алиасы
 
 PROTOCOL = "2024-11-05"
-SERVER = {"name": "awesome-coding", "version": "1.0"}
+SERVER = {"name": "awesome-coding", "version": "1.1"}
 INSTRUCTIONS = (
     "Библиотека сниппетов и правил awesome-coding. search(query, section) — найти "
-    "записи по тегу/названию (section: go, typescript, python, shared, database, …), "
-    "get(id) — полный текст записи. Перед копированием кода читайте «Когда "
+    "записи по тегу/названию/алиасу, от близких к далёким (section: go, typescript, "
+    "python, shared, database, …), get(id) — полный текст записи. Перед копированием кода читайте «Когда "
     "использовать / Когда НЕ использовать» и статус verified."
 )
 
@@ -42,7 +44,8 @@ TOOLS = [
         "inputSchema": {
             "type": "object",
             "properties": {
-                "query": {"type": "string", "description": "тег или подстрока названия"},
+                "query": {"type": "string",
+                            "description": "тег, подстрока названия или алиас (upsert, deadlock, …)"},
                 "section": {"type": "string",
                             "description": "раздел: go, typescript, python, shared, database, …"},
             },
@@ -59,21 +62,6 @@ TOOLS = [
         },
     },
 ]
-
-
-def find(query: str, section: str | None = None) -> list[dict]:
-    q = (query or "").strip().lower()
-    out = []
-    for _, entry in index_entries():
-        if section and not entry["path"].startswith(section.strip("/") + "/"):
-            continue
-        tags = [str(t).lower() for t in entry.get("tags", [])]
-        title = str(entry.get("title", "")).lower()
-        if q and not (q in tags or q in title or any(q in t for t in tags)):
-            continue
-        out.append({k: entry.get(k) for k in
-                    ("id", "title", "path", "tags", "status", "verified")})
-    return out
 
 
 def get(rid: str) -> str:
@@ -93,7 +81,7 @@ def get(rid: str) -> str:
 
 def call_tool(name: str, args: dict) -> str:
     if name == "search":
-        hits = find(args.get("query", ""), args.get("section"))
+        hits = find_entries(args.get("query", ""), args.get("section"))
         if not hits:
             return "ничего не найдено; попробуйте другой тег или section"
         return "\n".join(

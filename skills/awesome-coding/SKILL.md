@@ -66,14 +66,19 @@ k=~/.cache/awesome-coding
 ### 3. Поиск (индекс → полнотекст)
 
 ```bash
-# 1) по тегу/названию в индексе нужных разделов (150 строк, мгновенно):
+# 0) есть python3 + PyYAML — ранжированный поиск с синонимами (best first):
+python3 "$k"/tools/search.py "upsert"
+
+# 1) нет python — по тегу/названию в индексе нужных разделов (150 строк, мгновенно):
 grep -i "retry" "$k"/index/go.yaml "$k"/index/shared.yaml
 
 # 2) не нашлось — полнотекст по каталогам разделов:
 rg -l -i "retry" "$k/go" "$k/shared" -g '*.md'
 ```
 
-Из индекса берёте `path` + `status`/`verified` одним взглядом.
+Из индекса берёте `path` + `status`/`verified` одним взглядом. Синонимы, которых
+нет в тегах записей («upsert» при теге `on-conflict»), — в `$k/index/aliases.yaml`;
+известные слова ищутся и по ним.
 
 Если в сессии уже подключён MCP-сервер `awesome-coding` (`python3 $k/tools/mcp_server.py`),
 первые два шага заменяются одним вызовом: `search(query, section)`, затем `get(id)`
