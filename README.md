@@ -76,6 +76,7 @@ awesome-coding/
 │   ├── find.py                # поиск по каталогу: нормализация, алиасы, ранжирование
 │   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
 │   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
+│   ├── test_tools.py          # тесты туллинга (make test)
 │   └── readme.py              # генерация блока «Статус разделов»
 ├── docs/
 │   ├── FORMAT.md              # спецификация формата записей

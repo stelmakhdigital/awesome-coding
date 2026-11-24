@@ -130,9 +130,10 @@ make verify                # код-блоки через тулчейны в Do
 make verify-fix            # то же + поднять verified/updated, где прогон доказал
 make check-versions        # сверка закреплённых версий с актуальными (сеть)
 make check-stale           # записи с устаревшим frontmatter `updated` (квартальный аудит)
+make test                  # тесты самого туллинга (вердикты раннеров, валидатор, поиск)
 ```
 
-Перед коммитом — `make validate`; меняли код в записи — ещё и
+Перед коммитом — `make validate` (и `make test`, если правили `tools/`); меняли код в записи — ещё и
 `python3 tools/verify_snippets.py --record <id>` (что проверяет каждый язык —
 таблица в `docs/FORMAT.md`).
 

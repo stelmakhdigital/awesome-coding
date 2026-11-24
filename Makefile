@@ -8,6 +8,7 @@
 #   make readme                — перегенерировать «Статус разделов» из index/*.yaml
 #   make validate-links        — только ссылки
 #   make validate-mermaid      — синтаксис всех mermaid-блоков (нужен node + npm i)
+#   make test                  — тесты туллинга (валидатор, разбор формата, поиск)
 #   make search Q=async        — поиск записей по тегу/названию/алиасу (ранжировано)
 #   make verify                — прогон код-блоков через тулчейны в Docker (нужен docker)
 #   make verify-fix            — то же + поднять verified/updated в index/ по итогу
@@ -19,7 +20,7 @@ NODE ?= node
 
 .PHONY: help validate validate-frontmatter validate-manifest validate-indexes \
         validate-structure validate-text validate-aliases \
-        validate-links validate-mermaid validate-readme readme search verify verify-fix \
+        validate-links validate-mermaid validate-readme readme test search verify verify-fix \
         check-versions check-stale
 
 help:
@@ -34,6 +35,7 @@ help:
 	@echo "  readme                — перегенерировать «Статус разделов» из index/*.yaml"
 	@echo "  validate-links        — относительные markdown-ссылки"
 	@echo "  validate-mermaid      — синтаксис mermaid-блоков (нужны node + npm install в tools/)"
+	@echo "  test                  — тесты туллинга (вердикты раннеров, валидатор, поиск)"
 	@echo "  search Q=<запрос>     — поиск по тегу/названию/алиасу, от близких к далёким"
 	@echo "  verify                — код-блоки записей через реальные тулчейны (Docker)"
 	@echo "  verify-fix            — verify + поднять verified/updated в index/, где прогон доказал"
@@ -75,6 +77,9 @@ validate-mermaid:
 	@test -f tools/node_modules/mermaid/package.json \
 		|| { echo "нужны зависимости: cd tools && npm install"; exit 1; }
 	$(NODE) tools/validate_mermaid.mjs
+
+test:
+	$(PYTHON) tools/test_tools.py
 
 search:
 	@test -n "$(Q)" || { echo "Использование: make search Q=async"; exit 1; }

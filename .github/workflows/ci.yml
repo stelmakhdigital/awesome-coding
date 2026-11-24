@@ -30,6 +30,11 @@ jobs:
       - name: Install Python deps
         run: pip install pyyaml
 
+      # Сначала тесты туллинга: сломанный валидатор даёт зелёный `make validate`
+      # из неправильных предпосылок (см. tools/test_tools.py).
+      - name: Tooling tests
+        run: make test
+
       - name: Validate (frontmatter + каталог + текст + ссылки)
         run: make validate
 
