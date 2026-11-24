@@ -49,6 +49,19 @@
 - После коммита — push в `master` (PR-флоу в репозитории нет).
 - Force-push в `master` — запрещён.
 
+## Релиз
+
+Версия — git-тег `vN.N` (semver). Агенты пинят её в `skills/awesome-coding/SKILL.md`,
+поэтому тег — единственная точка, по которой кэш агента понимает, что он читает.
+
+1. `make validate` и `make check-versions` — зелёные.
+2. `CHANGELOG.md` — новый блок `## vN.N — YYYY-MM-DD`: что добавлено/изменено с прошлого
+   тега (источник — `git log <prev-tag>..HEAD --oneline`).
+3. Пин `ac=vN.N` в `SKILL.md` и блок CHANGELOG — одним коммитом.
+4. `git tag -a vN.N -m "…" && git push origin master vN.N`.
+5. MAJOR — только если сломан роутинг агента (структура разделов, формат frontmatter,
+   смысл `verified`); тогда же — ADR в `docs/adr/`.
+
 ## Стиль
 
 - Плотность сигнала: без вводных и повторов.

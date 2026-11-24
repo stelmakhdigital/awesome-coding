@@ -112,7 +112,8 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Валидация: `make validate` (frontmatter, manifest, ссылки)
+- Валидация: `make validate` (frontmatter, manifest, индексы, ссылки)
+- Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле
 
 ## Статус разделов
 
