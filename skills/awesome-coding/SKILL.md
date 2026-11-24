@@ -2,6 +2,7 @@
 name: awesome-coding
 description: "Библиотека проверенных сниппетов, паттернов и правил для кодинг-агентов: Go, TypeScript, JavaScript, Python, C, Bash, C#, Kotlin, Unity + PostgreSQL/Redis, Kafka/RabbitMQ, CI/CD, PM. Локальный кэш (git clone), поиск по тегам/полнотексту, офлайн-фолбэк."
 whenToUse: "Перед написанием, ревью или рефакторингом кода на Go/TS/JS/Python/C/Bash/C#/Kotlin/Unity, при работе с PostgreSQL, Redis, Kafka, RabbitMQ, CI/CD, архитектурой (DDD) или проектным менеджментом."
+updated: 2026-11-24
 ---
 
 # awesome-coding — локальная библиотека сниппетов и правил
@@ -14,14 +15,23 @@ whenToUse: "Перед написанием, ревью или рефактор�
 ### 1. Кэш (идемпотентно, ≤1 команда)
 
 ```bash
+ac=v1.0                                   # пин версии библиотеки (обновляется при релизе)
+r=https://github.com/stelmakhdigital/awesome-coding
 k=~/.cache/awesome-coding
-[ -d "$k/.git" ] || git clone --depth 1 https://github.com/stelmakhdigital/awesome-coding "$k"
-find "$k/index/manifest.yaml" -mtime -7 2>/dev/null || git -C "$k" pull --ff-only
+[ -d "$k/.git" ] || git clone --depth 1 --branch "$ac" "$r" "$k"
+# find ниже выдаёт путь, если файл свежее 7 дней (exit у него всегда 0 — проверять вывод)
+[ -n "$(find "$k/index/manifest.yaml" -mtime -7 2>/dev/null)" ] || {
+  git -C "$k" fetch -q --depth 1 origin tag "$ac" && git -C "$k" checkout -q "$ac"
+} 2>/dev/null || true
 ```
 
-- Первый запуск — клон (~1.4 МБ). Дальше — 0 работы.
-- Кэш старше 7 дней — `git pull`. **Сети нет или pull упал — молча работаем со
-  старым кэшем**, задачу не блокируем.
+- Первый запуск — клон на пин (~1.4 МБ). Дальше — 0 работы.
+- Кэш старше 7 дней — подтянуть тот же пин (переклон не нужен, сети почти нет).
+  Не `find … || git pull`: `find` выходит с кодом 0 и без находки, ветка `||` не
+  сработала бы никогда — проверяется вывод.
+- **Сети нет или fetch упал — молча работаем со старым кэшем**, задачу не блокируем.
+- Кэш всегда на известной версии: `git -C "$k" describe --tags` — какой ровно набор
+  правил вы применили. При проблемах в выводах сверяйте пин с `CHANGELOG.md`.
 - Если текущий проект и есть awesome-coding — `k` = корень репо, шаги пропускать.
 
 ### 2. Разделы под задачу (1–3, не «все»)
