@@ -9,6 +9,8 @@
   TypeScript, React, Vite, Vitest — npm registry
   PostgreSQL  — endoflife.date
   Redis       — GitHub releases (redis/redis)
+  gh CLI      — GitHub releases (cli/cli)
+  Caddy       — GitHub releases (caddyserver/caddy)
   Kafka       — GitHub releases (apache/kafka)
   RabbitMQ    — GitHub releases (rabbitmq/rabbitmq-server)
 Остальные (JavaScript/ES, C, Bash, Unity) — «н/д»: проверяйте вручную.
@@ -105,8 +107,9 @@ def current_version(tech: str, pinned: str) -> str | None:
                    "Vite": "vite", "Vitest": "vitest"}[tech]
             data = get_json(f"https://registry.npmjs.org/{pkg}/latest")
             return data.get("version")
-        elif tech in ("Redis", "RabbitMQ"):
-            repo = {"Redis": "redis/redis", "RabbitMQ": "rabbitmq/rabbitmq-server"}[tech]
+        elif tech in ("Redis", "RabbitMQ", "gh CLI", "Caddy"):
+            repo = {"Redis": "redis/redis", "RabbitMQ": "rabbitmq/rabbitmq-server",
+                    "gh CLI": "cli/cli", "Caddy": "caddyserver/caddy"}[tech]
             data = get_json(f"https://api.github.com/repos/{repo}/releases?per_page=15")
             for rel in data:
                 if not rel.get("prerelease") and rel.get("tag_name"):
