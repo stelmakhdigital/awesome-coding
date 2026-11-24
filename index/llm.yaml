@@ -1,0 +1,41 @@
+# Каталог записей раздела llm.
+# Формат: docs/FORMAT.md. Записи: llm/.
+rule_sets:
+  - id: llm-rules
+    title: "LLM Rules (приложения с моделью)"
+    path: llm/rules.md
+    tags: [rules, guardrails, llm, prompts, tokens, cost, evals]
+    status: stable
+    verified: reviewed
+    updated: 2026-11-24
+decisions:
+  - id: llm-decisions
+    title: "LLM Decisions (SDK против HTTP, модель, где считать, стриминг)"
+    path: llm/decisions.md
+    tags: [decisions, llm, sdk, models, streaming, cost, caching]
+    status: stable
+    verified: reviewed
+    updated: 2026-11-24
+concepts:
+  - id: llm-evals
+    title: "LLM: как проверять смену промпта и модели"
+    path: llm/evals.md
+    tags: [llm, evals, testing, regression, prompts, quality]
+    status: stable
+    verified: reviewed
+    updated: 2026-11-24
+snippets:
+  - id: llm-structured-output
+    title: "LLM: вызов со схемой ответа, ретраями и бюджетом (Go)"
+    path: llm/snippets/structured-output.md
+    tags: [llm, http, json-schema, retry, budget, go]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
+  - id: llm-retries-budget
+    title: "LLM: ретраи, бюджет и кэш вызовов (Python)"
+    path: llm/snippets/retries-budget.md
+    tags: [llm, retry, budget, caching, httpx, python]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24

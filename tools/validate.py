@@ -13,7 +13,7 @@
   links       — относительные markdown-ссылки указывают на существующие файлы.
 
 Использование:
-  python3 tools/validate.py [--check frontmatter|manifest|links|all]
+  python3 tools/validate.py [--check frontmatter|manifest|indexes|text|links|all]
 
 Зависимости: Python 3.9+, PyYAML (pip install pyyaml).
 Exit code: 0 — всё ок, 1 — найдены проблемы.
@@ -50,12 +50,13 @@ from ac import (  # noqa: E402  — разбор формата один на в
 ALLOWED_SECTIONS = {
     "go", "typescript", "javascript", "python", "c", "bash",
     "csharp", "kotlin", "unity", "shared", "architecture",
-    "database", "messaging", "cicd", "pm",
+    "database", "messaging", "cicd", "pm", "llm",
 }
 
 ALLOWED_LANGS = {
     "go", "typescript", "javascript", "python", "c", "bash",
-    "csharp", "kotlin", "unity", "shared", "database", "messaging", "cicd", "pm",
+    "csharp", "kotlin", "unity", "shared", "architecture",
+    "database", "messaging", "cicd", "pm", "llm",
 }
 ALLOWED_CATEGORIES = {"concept", "rule-set", "idioms", "decisions", "snippet", "pattern"}
 ALLOWED_STATUS = {"stable", "experimental", "deprecated"}
@@ -63,7 +64,7 @@ ALLOWED_VERIFIED = {"compiled", "executed", "reviewed", "none"}
 SKILL_FIELDS = ("name", "description", "whenToUse", "updated")
 ID_PREFIXES = (
     "go", "ts", "js", "py", "c", "bash", "csharp", "kotlin", "unity",
-    "shared", "ddd", "arch", "database", "messaging", "cicd", "pm",
+    "shared", "ddd", "arch", "database", "messaging", "cicd", "pm", "llm",
 )
 REQUIRED_FIELDS = ("id", "title", "lang", "min_version", "category", "tags", "status", "updated")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
