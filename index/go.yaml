@@ -131,6 +131,27 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-24
+  - id: go-websocket
+    title: "Go: WebSocket — handshake, медленные клиенты, переподключение"
+    path: go/snippets/websocket.md
+    tags: [websocket, ws, http, upgrade, origin, ping, backpressure, reconnect, coder-websocket]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: go-metrics
+    title: "Go: метрики Prometheus — RED-middleware, healthz, бизнес-метрики"
+    path: go/snippets/metrics.md
+    tags: [metrics, prometheus, observability, healthz, readiness, histogram, cardinality, pprof, red]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
+  - id: go-proxy
+    title: "Go: прокси и границы времени — таймауты, отмена, 502/503/504"
+    path: go/snippets/proxy.md
+    tags: [proxy, reverse-proxy, timeout, cancellation, streaming, maxbytes, http, statuses]
+    status: stable
+    verified: compiled
+    updated: 2026-11-25
 patterns:
   - id: go-functional-options
     title: "Functional Options"

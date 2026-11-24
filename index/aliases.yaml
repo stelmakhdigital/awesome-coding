@@ -15,6 +15,7 @@
 aliases:
   bundling: [react-vite, react-heavy-widget]
   circuit-breaker: [arch-microservices, csharp-http-client]
+  liveness: [go-metrics]
   frontend: [react-rules, react-decisions, react-feature-structure]
   deadlock: [database-transactions, go-goroutines, go-worker-pool]
   openid: [cicd-secrets]

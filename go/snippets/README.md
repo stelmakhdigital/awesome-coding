@@ -19,3 +19,6 @@
 | `go-grpc` | [grpc.md](grpc.md) | grpc, protobuf, rpc, status |
 | `go-rate-limit` | [rate-limit.md](rate-limit.md) | rate-limit, throttling, retry-after, backpressure |
 | `go-tracing` | [tracing.md](tracing.md) | tracing, opentelemetry, observability |
+| `go-websocket` | [websocket.md](websocket.md) | websocket, origin, ping, backpressure, reconnect |
+| `go-metrics` | [metrics.md](metrics.md) | metrics, prometheus, healthz, readiness, cardinality |
+| `go-proxy` | [proxy.md](proxy.md) | proxy, timeout, cancellation, streaming, statuses |
