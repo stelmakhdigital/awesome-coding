@@ -6,7 +6,7 @@ min_version: "5.3"
 category: snippet
 tags: [bash, checkpoint, state, idempotency, gh, github, dedup, marker, tracker, self-test]
 status: stable
-updated: 2026-11-24
+updated: 2026-11-25
 ---
 
 # Чекпоинт прогона и дедупликация вывода
@@ -16,7 +16,7 @@ updated: 2026-11-24
 
 ## Чекпоинт
 
-```bash
+```bash,run --self-test
 #!/usr/bin/env bash
 # shellcheck shell=bash
 # state.sh — «докуда дошли» между прогонами.

@@ -24,20 +24,20 @@ snippets:
     tags: [bash, flock, lock, concurrency, idempotency, cron, self-test, scheduler]
     status: stable
     verified: executed
-    updated: 2026-11-24
+    updated: 2026-11-25
   - id: agenting-run-state
     title: "bash: чекпоинт прогона и дедупликация вывода в трекере"
     path: agenting/snippets/run-state.md
     tags: [bash, checkpoint, state, idempotency, gh, github, dedup, marker, tracker, self-test]
     status: stable
-    verified: compiled
-    updated: 2026-11-24
+    verified: executed
+    updated: 2026-11-25
   - id: agenting-watchdog
     title: "bash: лимит времени и убийство группы процессов у прогона"
     path: agenting/snippets/watchdog.md
     tags: [bash, timeout, setsid, process-group, watchdog, budget, output-limit, self-test]
     status: stable
-    verified: compiled
+    verified: executed
     updated: 2026-11-25
 patterns:
   - id: agenting-bug-hunter

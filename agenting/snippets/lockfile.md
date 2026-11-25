@@ -6,8 +6,7 @@ min_version: "5.3"
 category: snippet
 tags: [bash, flock, lock, concurrency, idempotency, cron, self-test, scheduler]
 status: stable
-updated: 2026-11-24
-proof: "self-test на flock прогнан в docker (alpine, bash 5.3) 2026-11-24: второй запуск уходит в busy, lock снимается после падения"
+updated: 2026-11-25
 ---
 
 # Единовременный прогон на flock
@@ -17,7 +16,7 @@ proof: "self-test на flock прогнан в docker (alpine, bash 5.3) 2026-11
 
 ## Замок
 
-```bash
+```bash,run --self-test
 #!/usr/bin/env bash
 # shellcheck shell=bash
 # run-once.sh — прогон, который не запускается вторым экземпляром.
@@ -41,7 +40,18 @@ with_lock() {
   # всё время работы команды.
   exec 9>"$lockfile"
 
-  if ! flock -n -w "$LOCK_TIMEOUT" 9; then
+  # `-n` (не ждать) и `-w N` (ждать N) у flock режимы взаимоисключающие:
+  # util-linux 2.41 на «-n -w 0» печатает usage и выходит не ноль, и скрипт
+  # читает это как «замок занят» — единовременный прогон не запускается вовсе.
+  # BusyBox-овский flock в Alpine это молча терпит, поэтому дефект виден не на
+  # каждом хосте.
+  if [[ "$LOCK_TIMEOUT" == 0 ]]; then
+    lock_args=(-n)
+  else
+    lock_args=(-w "$LOCK_TIMEOUT")
+  fi
+
+  if ! flock "${lock_args[@]}" 9; then
     printf '%s: прогон уже выполняется, выхожу\n' "$name" >&2
     return 3
   fi

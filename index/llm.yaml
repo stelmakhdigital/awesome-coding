@@ -52,4 +52,4 @@ snippets:
     tags: [tool-calling, function-calling, agents, tool-loop, budget, fallback, openai-compatible, json-schema]
     status: stable
     verified: executed
-    updated: 2026-11-24
+    updated: 2026-11-25

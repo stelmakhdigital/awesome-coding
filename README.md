@@ -155,7 +155,8 @@ awesome-coding/
 - Релиз: `python3 tools/release.py prepare --version vN.N --date YYYY-MM-DD --body e.md`
   (блок CHANGELOG и пин скилла вместе, `make release-check` перед тегом)
 - Проверка кода: `make verify` (go/tsc/python/node/shellcheck/gcc/PostgreSQL в Docker), `make verify-fix` —
-  поднять `verified` там, где прогон доказал
+  поднять `verified` там, где прогон доказал. Часть блоков ещё и выполняется:
+  пометка `run` в фэнсе, уровень `executed` (ADR-0007)
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле
 
 ## Статус разделов

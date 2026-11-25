@@ -16,7 +16,7 @@ updated: 2026-11-25
 
 ## Скрипт
 
-```bash
+```bash,run --self-test
 #!/usr/bin/env bash
 # shellcheck shell=bash
 # run-capped.sh — запуск с бюджетом времени и потолком вывода.

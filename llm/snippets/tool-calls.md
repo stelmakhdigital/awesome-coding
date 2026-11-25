@@ -6,8 +6,7 @@ min_version: null
 category: snippet
 tags: [tool-calling, function-calling, agents, tool-loop, budget, fallback, openai-compatible, json-schema]
 status: stable
-updated: 2026-11-24
-proof: "SelfCheck на httptest выполнен go run в golang:1.27-alpine 2026-11-24: лента ответов, бюджет раундов и ловля цикла проверены без сети"
+updated: 2026-11-25
 ---
 
 # Вызовы с инструментами: цикл, бюджет, резервная модель
@@ -364,7 +363,7 @@ func retryable(err error) bool {
 
 ## Как это тестировать без сети
 
-```go
+```go,run
 package agent
 
 import (
@@ -376,8 +375,16 @@ import (
 	"net/http/httptest"
 	"strings"
 	"sync/atomic"
+	"testing"
 	"time"
 )
+
+// TestSelfCheck — точка входа для `go test`; сама проверка в SelfCheck() ниже.
+func TestSelfCheck(t *testing.T) {
+	if err := SelfCheck(); err != nil {
+		t.Error(err)
+	}
+}
 
 // SelfCheck — прогон цикла против подставного провайдера: ни сети, ни ключей.
 // Сценарий задаётся списком ответов, проверяются и текст, и лента, и границы.
