@@ -33,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ac
 import check_versions
 import find
+import verify_snippets as vs
 import mcp_server
 import readme
 import release
@@ -105,6 +106,7 @@ def temp_repo(**files: str):
         (validate, "ROOT"): validate.ROOT, (validate, "INDEX_DIR"): validate.INDEX_DIR,
         (validate, "MANIFEST"): validate.MANIFEST,
         (find, "ALIASES_FILE"): find.ALIASES_FILE,
+        (vs, "ROOT"): vs.ROOT,
     }
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp)
@@ -118,6 +120,7 @@ def temp_repo(**files: str):
         validate.ROOT, validate.INDEX_DIR, validate.MANIFEST = (
             root, ac.INDEX_DIR, ac.MANIFEST)
         find.ALIASES_FILE = root / "index" / "aliases.yaml"
+        vs.ROOT = root
         try:
             yield root
         finally:
@@ -346,6 +349,24 @@ class VerifiedClaimsTest(unittest.TestCase):
 
     def test_sql_executed_is_proven_by_ci(self):
         with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": self.SQL_FM}):
+            self.assertEqual(validate.check_verified_claims(), [])
+
+    UNITY_FM = (CLEAN_FM.replace("lang: go", "lang: csharp")
+                .replace("```go\npackage main\n```",
+                         "```csharp\nusing UnityEngine;\n"
+                         "public class A : MonoBehaviour { }\n```"))
+    CS_FM = CLEAN_FM.replace("```go\npackage main\n```",
+                             "```csharp\ninternal sealed class P { static void Main() { } }\n```")
+
+    def test_unity_blocks_are_not_proven_by_the_csharp_runner(self):
+        """Раннер unity-блоки отбрасывает намеренно: compiled без proof — ложь (issue #7)."""
+        with temp_repo(**{"go/snippets/x.md": self.UNITY_FM}):
+            self.assertTrue(has(validate.check_verified_claims(),
+                                "verified=compiled", "proof:"))
+
+    def test_csharp_blocks_the_runner_takes_are_proven(self):
+        """Тот же уровень у записи, чьи блоки раннер действительно берёт."""
+        with temp_repo(**{"go/snippets/x.md": self.CS_FM}):
             self.assertEqual(validate.check_verified_claims(), [])
 
     def test_language_without_runner_needs_proof(self):

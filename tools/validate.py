@@ -430,15 +430,23 @@ def check_verified_claims() -> list[str]:
     CI не проверяется вовсе. Всё остальное требует поля `proof:` в frontmatter:
     чем, где и когда это запускали (ADR-0006).
 
-    Проверка появилась после двух находок одного дня: в C#-разделе 10 записей
-    носили `compiled`, хотя dotnet-джоба в CI никогда не было, а в других
-    разделах 24 записи носили `executed` со ссылкой на прогон, который нечем
-    проверить.
+    Язык «покрыт» только если раннер берёт блоки этой записи в прогон: отбор
+    берётся из `collect()`, а не повторяется здесь. Со своей реализацией проверка
+    разошлась бы с раннером — так она пропускала unity-блоки, которые csharp-
+    раннер отбрасывает намеренно, и разрешала `compiled` там, где CI ничего не
+    собирает (issue #7).
+
+    Чего проверка не видит: вердикты прогона. Запись, все блоки которой дают
+    `deps` или `fragment`, статически выглядит доказуемой; уровень у неё поднимет
+    только `make verify-fix`, а не эта проверка.
     """
-    from verify_snippets import CONFIG_LANGS, RUNNERS  # поздний импорт: раннеры там
+    from verify_snippets import CONFIG_LANGS, RUNNERS, collect  # поздний импорт
 
     exec_proven = {lang for lang, r in RUNNERS.items() if r.executes}
     levels = {str(e.get("path")): str(e.get("verified")) for _, e in index_entries()}
+    taken: dict[str, set[str]] = {}
+    for job in collect(sorted(RUNNERS), None, None):
+        taken.setdefault(job.path, set()).add(job.lang)
 
     issues: list[str] = []
     for path in content_files():
@@ -447,7 +455,7 @@ def check_verified_claims() -> list[str]:
         if LEVEL_RANK.get(level, 0) <= LEVEL_RANK["reviewed"]:
             continue
         langs = code_fences(path.read_text(encoding="utf-8")) - CONFIG_LANGS
-        covered = {lang for lang in langs if lang in RUNNERS}
+        covered = taken.get(rel, set())
         uncovered = langs - covered
         proven = bool(covered) and not uncovered
         if level == "executed":
