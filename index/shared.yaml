@@ -14,15 +14,15 @@ concepts:
     path: shared/error-handling.md
     tags: [errors, error-handling, principles, cross-language]
     status: stable
-    verified: none
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-25
   - id: shared-concurrency
     title: "Shared: Concurrency (кросс-языковые принципы)"
     path: shared/concurrency.md
     tags: [concurrency, parallelism, cancellation, principles]
     status: stable
-    verified: none
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-25
   - id: shared-security
     title: "Shared: Security (кросс-языковые принципы)"
     path: shared/security.md
@@ -70,8 +70,8 @@ concepts:
     path: shared/configuration.md
     tags: [configuration, env, 12-factor, secrets, validation]
     status: stable
-    verified: none
-    updated: 2026-09-06
+    verified: compiled
+    updated: 2026-11-25
   - id: shared-documentation
     title: "Shared: Documentation (документирование проекта, ADR, agent-first)"
     path: shared/documentation.md

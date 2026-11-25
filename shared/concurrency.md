@@ -6,7 +6,7 @@ min_version: null
 category: concept
 tags: [concurrency, parallelism, cancellation, principles]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-25
 ---
 
 # Concurrency — принципы
@@ -47,42 +47,59 @@ updated: 2026-09-06
 ## Пример (Go)
 
 ```go
+package pool
+
+import (
+	"context"
+	"fmt"
+	"sync"
+
+	"golang.org/x/sync/errgroup"
+)
+
+type Result struct{ URL string }
+
+func fetch(_ context.Context, url string) (Result, error) { return Result{URL: url}, nil }
+
 // Ограниченный параллелизм: N воркеров, отмена через context.
 func FetchAll(ctx context.Context, urls []string, workers int) ([]Result, error) {
-    jobs := make(chan string, len(urls))
-    for _, u := range urls {
-        jobs <- u
-    }
-    close(jobs)
+	jobs := make(chan string, len(urls))
+	for _, u := range urls {
+		jobs <- u
+	}
+	close(jobs)
 
-    var (
-        mu     sync.Mutex
-        results []Result
-        errs   []error
-    )
+	var (
+		mu      sync.Mutex
+		results []Result
+		errs    []error
+	)
 
-    g, gctx := errgroup.WithContext(ctx)
-    g.SetLimit(workers)
-    for i := 0; i < workers; i++ {
-        g.Go(func() error {
-            for url := range jobs {
-                r, err := fetch(gctx, url)
-                mu.Lock()
-                if err != nil {
-                    errs = append(errs, err)
-                } else {
-                    results = append(results, r)
-                }
-                mu.Unlock()
-            }
-            return nil
-        })
-    }
-    if err := g.Wait(); err != nil {
-        return nil, fmt.Errorf("fetch all: %w", err)
-    }
-    return results, nil
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(workers)
+	for i := 0; i < workers; i++ {
+		g.Go(func() error {
+			for url := range jobs {
+				r, err := fetch(gctx, url)
+				mu.Lock()
+				if err != nil {
+					errs = append(errs, err)
+				} else {
+					results = append(results, r)
+				}
+				mu.Unlock()
+			}
+			return nil
+		})
+	}
+	if err := g.Wait(); err != nil {
+		return nil, fmt.Errorf("fetch all: %w", err)
+	}
+	return results, nil
 }
+
+// Проверка при сборке: блок — рабочий код, а не выдержка.
+var _ = FetchAll
 ```
 
 ## Related

@@ -6,7 +6,7 @@ min_version: null
 category: concept
 tags: [configuration, env, 12-factor, secrets, validation]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-25
 ---
 
 # Configuration — принципы
@@ -38,30 +38,75 @@ updated: 2026-09-06
 ## Пример (Go)
 
 ```go
-// Типизированный конфиг: валидация на старте, дефолты явные.
+package config
+
+import (
+	"fmt"
+	"os"
+	"time"
+)
+
+// Типизированный конфиг: дефолты явные, обязательное проверяем на старте.
 type Config struct {
-    DatabaseURL string        `env:"DATABASE_URL" envRequired:"true"`
-    LogLevel    string        `env:"LOG_LEVEL" envDefault:"info"`
-    HTTPTimeout time.Duration `env:"HTTP_TIMEOUT" envDefault:"30s"`
+	DatabaseURL string
+	LogLevel    string
+	HTTPTimeout time.Duration
 }
 
+// Load читает окружение и не оставляет невалидного значения без ошибки.
 func Load() (Config, error) {
-    var c Config
-    if err := env.Parse(&c); err != nil { // github.com/caarlos0/env/v11
-        return Config{}, fmt.Errorf("load config: %w", err)
-    }
-    if c.LogLevel != "debug" && c.LogLevel != "info" && c.LogLevel != "warn" && c.LogLevel != "error" {
-        return Config{}, fmt.Errorf("invalid LOG_LEVEL: %q", c.LogLevel)
-    }
-    return c, nil
+	c := Config{
+		DatabaseURL: os.Getenv("DATABASE_URL"),
+		LogLevel:    orDefault(os.Getenv("LOG_LEVEL"), "info"),
+	}
+	var err error
+	if c.HTTPTimeout, err = durationOr("HTTP_TIMEOUT", 30*time.Second); err != nil {
+		return Config{}, err
+	}
+
+	switch c.LogLevel {
+	case "debug", "info", "warn", "error":
+	default:
+		return Config{}, fmt.Errorf("invalid LOG_LEVEL: %q", c.LogLevel)
+	}
+	if c.DatabaseURL == "" {
+		return Config{}, fmt.Errorf("DATABASE_URL is required")
+	}
+	return c, nil
 }
+
+func orDefault(v, def string) string {
+	if v == "" {
+		return def
+	}
+	return v
+}
+
+func durationOr(key string, def time.Duration) (time.Duration, error) {
+	raw := os.Getenv(key)
+	if raw == "" {
+		return def, nil
+	}
+	d, err := time.ParseDuration(raw)
+	if err != nil {
+		return 0, fmt.Errorf("parse %s: %w", key, err)
+	}
+	return d, nil
+}
+
+// Проверка при сборке: блок — рабочий код, а не выдержка.
+var (
+	_ = Load
+	_ = orDefault
+	_ = durationOr
+)
 ```
 
 ## По языкам
 
 | Язык | Инструменты |
 |---|---|
-| Go | `caarlos0/env` (v11), `kelseyhightower/envconfig` |
+| Go | stdlib `os.Getenv` (ниже) или `caarlos0/env` (v11), `kelseyhightower/envconfig` |
 | C# | `IConfiguration` (M.E.Configuration), `IOptions<T>` |
 | Python | `pydantic-settings`, `python-decouple` |
 | TS/JS | `zod` + `process.env`, `envalid` |

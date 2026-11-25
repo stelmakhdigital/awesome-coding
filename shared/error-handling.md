@@ -6,7 +6,7 @@ min_version: null
 category: concept
 tags: [errors, error-handling, principles, cross-language]
 status: stable
-updated: 2026-09-06
+updated: 2026-11-25
 ---
 
 # Error handling — принципы
@@ -49,17 +49,33 @@ updated: 2026-09-06
 ## Пример (Go)
 
 ```go
+package orders
+
+import (
+	"context"
+	"fmt"
+)
+
+type Order struct{ ID string }
+
+// Зависимости даны сигнатурами: суть блока в том, как ошибка переносится наверх.
+func loadOrder(_ context.Context, id string) (*Order, error) { return &Order{ID: id}, nil }
+func validateOrder(*Order) error                             { return nil }
+
 // Цепочка wrap: контекст на каждом уровне, причина — в корне.
 func CreateOrder(ctx context.Context, id string) (*Order, error) {
-    order, err := loadOrder(ctx, id)
-    if err != nil {
-        return nil, fmt.Errorf("create order %s: %w", id, err)
-    }
-    if err := validateOrder(order); err != nil {
-        return nil, fmt.Errorf("create order %s: %w", id, err)
-    }
-    return order, nil
+	order, err := loadOrder(ctx, id)
+	if err != nil {
+		return nil, fmt.Errorf("create order %s: %w", id, err)
+	}
+	if err := validateOrder(order); err != nil {
+		return nil, fmt.Errorf("create order %s: %w", id, err)
+	}
+	return order, nil
 }
+
+// Проверка при сборке: блок — рабочий код, а не выдержка.
+var _ = CreateOrder
 ```
 
 ## Related
