@@ -14,6 +14,8 @@
   Kafka       — GitHub releases (apache/kafka)
   RabbitMQ    — GitHub releases (rabbitmq/rabbitmq-server)
 Остальные (JavaScript/ES, C, Bash, Unity) — «н/д»: проверяйте вручную.
+Сверятся и образы тулчейнов из `verify_snippets.py`: движущийся тег или тег не
+того ряда, что пин технологии, — отдельный блок отчёта (issue #11).
 
 Запуск: make check-versions (нужна сеть).
 Exit code: 0 — всегда (информационный отчёт); устаревшие версии помечаются ⚠️.
@@ -95,6 +97,46 @@ def core(version: str) -> tuple[int, int]:
     """Первые два разряда: «3.15.2», «19.0» и «19» — один и тот же кандидат."""
     parts = list(version_tuple(version)[:2])
     return (parts + [0, 0])[:2]
+
+
+# Язык раннера -> технология из «Версии», чьей версии обязан следовать тег
+# образа. Не в списке — образ живёт своей версией: node (Node в пинах нет), gcc
+# (пinned-разряд там стандарт C, а не gcc), shellcheck (линт-тул).
+IMAGE_TECH = {"go": "Go", "python": "Python", "sql": "PostgreSQL", "csharp": "C#"}
+
+
+def runner_images() -> dict[str, str]:
+    """Образы тулчейнов, которыми `make verify` гоняет код записей."""
+    from verify_snippets import RUNNERS
+
+    return {lang: r.image for lang, r in RUNNERS.items()}
+
+
+def check_images() -> list[tuple[str, str]]:
+    """Каждый образ закреплён тегом и не разошёлся с пином своей технологии.
+
+    Образы живут в `verify_snippets.py`, пины — в AGENTS.md, и ни Dependabot
+    (у этих образов нет манифеста), ни `check-versions` по таблицам их не
+    видели: выход Go 1.28 оставлял CI собирать на 1.27 молча.
+    """
+    issues: list[tuple[str, str]] = []
+    pinned = dict(parse_pinned())
+    for lang, image in sorted(runner_images().items()):
+        if ":" not in image:
+            issues.append((lang, f"{image}: тег не указан"))
+            continue
+        tag = image.rsplit(":", 1)[-1]
+        if tag in {"latest", "stable", "edge", "alpine", "slim", "bookworm"}:
+            issues.append((lang, f"{image}: движущийся тег (ADR-0002 требует версию)"))
+            continue
+        tech = IMAGE_TECH.get(lang)
+        if tech is None:
+            continue
+        want = pinned.get(tech)
+        got = re.search(r"\d+(?:\.\d+)*", tag)
+        if want and (not got or core(got.group(0)) != core(want)):
+            issues.append((lang, f"{image} ≠ пину {tech} {want}"))
+    return issues
 
 
 def current_version(tech: str, pinned: str) -> str | None:
@@ -185,6 +227,14 @@ def main() -> int:
             print(f"{tech:<12} {pinned_v:<10} {cur:<12} ✓ актуальна")
         else:
             print(f"{tech:<12} {pinned_v:<10} {cur:<12} ? закреплена новее (проверьте источник)")
+
+    bad_images = check_images()
+    print()
+    if bad_images:
+        print(f"Образы тулчейнов рассинхронизированы с пинами ({len(bad_images)}):")
+        for lang, why in bad_images:
+            print(f"  - {lang}: {why}")
+        print("  это дефект, а не кандидат: правьте тег образа или пин (ADR-0002).")
 
     print()
     if stale:

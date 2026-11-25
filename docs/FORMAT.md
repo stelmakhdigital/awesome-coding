@@ -71,11 +71,18 @@
 | js | `node --check` |
 | python | `compile()` на 3.14: синтаксис и байт-код (импорты третьих сторон не разрешаются) |
 | c | `gcc -std=c23 -fsyntax-only -Wall -Wextra` |
-| bash, sh | `shellcheck -f gcc` (код 0 — замечаний нет) |
+| bash, sh | `shellcheck -f gcc` (код 0 — замечаний нет; shellcheck 0.11.0) |
 | sql | psql на PostgreSQL 18 (Docker): блоки записи выполняются по порядку в одной схеме; ссылка на таблицу из чужого блока — `deps` |
 | llm | по языку кодового блока (go, python) — отдельного тулчейна у раздела нет |
 | csharp | `dotnet build` .NET 10: проект на блок (Exe, с падением на Library для блоков без точки входа), `FrameworkReference Microsoft.AspNetCore.App`, NuGet-пакеты по признаку блока (OpenApi, resilience, xunit). Блоки с Unity-API в прогон не идут: их собирает только Editor |
 | kotlin, hlsl | раннера в CI нет: уровень выше `reviewed` требует `proof:` (kotlinc локально с версиями библиотек из шапки раздела; HLSL собирает только Unity Editor) |
+
+Образы тулчейнов закреплены тегами в `verify_snippets.py` (`golang:1.27-alpine`,
+`python:3.14-slim`, `node:22-slim`, `gcc:14-bookworm`, `postgres:18-alpine`,
+`sdk:10.0`, `shellcheck-alpine:v0.11.0`). Манифеста у них нет, поэтому Dependabot
+их не видит; вместо него `make check-versions` сверяет тег образа с пином
+технологии и отдельным блоком отчёта ругается на движущийся тег (`:latest`) и на
+тег не того ряда, что пин (ADR-0002).
 
 Вердикты прогона: `ok`, `fail` (код битый — править запись), `fmt` (gofmt
 переформатирует блок), `deps` (не хватает сгенерированных или чужих пакетов —

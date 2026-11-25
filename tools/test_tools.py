@@ -297,7 +297,7 @@ class ReadmeToolsTest(unittest.TestCase):
         self.assertEqual(missing, [], f"инструментов нет в README: {missing}")
 
 
-
+class AgentsRoutingTest(unittest.TestCase):
     """Каждый раздел каталога описан в AGENTS.md.
 
     AGENTS.md — что агент читает первым: путь «прочитать роутер → выбрать
@@ -311,7 +311,40 @@ class ReadmeToolsTest(unittest.TestCase):
         self.assertEqual(missing, [], f"разделов нет в AGENTS.md: {missing}")
 
 
+class RunnerImagesTest(unittest.TestCase):
+    """Образы тулчейнов закреплены и не разошлись с пинами технологий.
 
+    Dependabot их не видит (у образов нет манифеста), а CI собирается именно с
+    них: без сверки выход Go 1.28 оставил бы пин «1.27» и прогон на 1.27 молча.
+    """
+
+    def test_real_images_are_pinned_and_match_pins(self):
+        self.assertEqual(check_versions.check_images(), [])
+
+    def test_moving_tag_and_wrong_row_are_caught(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "AGENTS.md"
+            path.write_text("## Версии\n\n| Технология | Версия | Fallback |\n|---|---|---|\n"
+                            "| Go | 1.27 | 1.26 |\n| PostgreSQL | 18 (18.6) | 17 |\n\n## X\n",
+                            encoding="utf-8")
+            saved_agents = check_versions.AGENTS
+            saved_images = check_versions.runner_images
+            check_versions.AGENTS = path
+            check_versions.runner_images = lambda: {
+                "go": "golang:latest",            # движущийся тег
+                "sql": "postgres:19-alpine",      # ряд не того пина
+                "js": "node:22-slim",             # Node в пинах не закреплён — ок
+                "bash": "koalaman/shellcheck-alpine:v0.11.0",  # своя версия — ок
+            }
+            try:
+                self.assertEqual([lang for lang, _ in check_versions.check_images()],
+                                 ["go", "sql"])
+            finally:
+                check_versions.AGENTS = saved_agents
+                check_versions.runner_images = saved_images
+
+
+class DeclinedCandidatesTest(unittest.TestCase):
     """Решение по кандидатам живёт в AGENTS.md и читается машиной.
 
     Разбор — регулярка по markdown: ровно тот класс кода, который молча

@@ -13,7 +13,7 @@
 #   make verify                — прогон код-блоков через тулчейны в Docker (нужен docker)
 #   make verify-fix            — то же + поднять verified/updated в index/ по итогу
 #   make gofmt RECORD=go/snippets/x.md — отформатировать go-блоки записи на месте (нужен docker)
-#   make check-versions        — сверка закреплённых версий с актуальными (сеть)
+#   make check-versions        — сверка версий (сеть) и образов тулчейнов с пинами
 #   make check-stale           — записи с устаревшим `updated` (квартальный аудит)
 #   make release-check VERSION=vN.N — сверить блок CHANGELOG и пин SKILL.md перед тегом
 

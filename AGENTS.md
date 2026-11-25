@@ -154,7 +154,7 @@ make readme                # перегенерировать «Статус р�
 make search Q="rate limit"   # поиск словами и фразами, от близких к далёким (tools/find.py)
 make verify                # код-блоки через тулчейны в Docker (go/tsc/python/node/shellcheck/gcc/PG 18)
 make verify-fix            # то же + поднять verified/updated, где прогон доказал
-make check-versions        # сверка закреплённых версий с актуальными (сеть)
+make check-versions        # сверка версий (сеть) + образы тулчейнов против пинов
 make check-stale           # записи с устаревшим frontmatter `updated` (квартальный аудит)
 make test                  # тесты самого туллинга (вердикты раннеров, валидатор, поиск)
 ```
