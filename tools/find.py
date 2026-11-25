@@ -43,7 +43,7 @@ except ImportError:
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from ac import INDEX_DIR, index_entries  # noqa: E402
+from ac import INDEX_DIR, index_entries, index_files  # noqa: E402
 
 ALIASES_FILE = INDEX_DIR / "aliases.yaml"
 FIELDS = ("id", "title", "path", "tags", "status", "verified", "updated")
@@ -154,6 +154,23 @@ def term_score(entry: dict, term: str) -> int:
     if term in rid:
         return 20
     return 0
+
+
+# Выдача агентам дороже, чем человеку: пустой или общий запрос возвращал весь
+# каталог (203 строки) прямо в контекст — issue #8.
+LIMIT = 10
+
+
+def cap(hits: list[dict], limit: int = LIMIT) -> tuple[list[dict], str]:
+    """Первые `limit` совпадений и пояснение про остальное."""
+    if len(hits) <= limit:
+        return hits, ""
+    return hits[:limit], f"+{len(hits) - limit} ещё — уточните запрос"
+
+
+def sections() -> list[str]:
+    """Разделы каталога — чем отвечать на пустой запрос вместо всего каталога."""
+    return sorted(p.stem for p in index_files())
 
 
 def find(query: str, section: str | None = None) -> list[dict]:

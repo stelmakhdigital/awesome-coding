@@ -782,6 +782,19 @@ class McpTest(unittest.TestCase):
             self.assertEqual(tool["inputSchema"]["type"], "object")
             self.assertTrue(tool["inputSchema"]["required"])
 
+    def test_search_output_is_capped(self):
+        """Общий запрос не должен вываливать каталог в контекст агента (issue #8)."""
+        body = mcp_server.call_tool("search", {"query": "go"})
+        lines = body.splitlines()
+        self.assertLessEqual(len(lines), find.LIMIT + 1)
+        self.assertIn("ещё", lines[-1])
+
+    def test_empty_query_gets_sections_instead_of_catalog(self):
+        body = mcp_server.call_tool("search", {"query": "   "})
+        self.assertIn("нужен запрос", body)
+        for section in ("go", "react", "llm"):
+            self.assertIn(section, body)
+
     def test_search_and_get_return_text(self):
         hits = mcp_server.call_tool("search", {"query": "http client", "section": "go"})
         self.assertIn("go-http-client", hits)

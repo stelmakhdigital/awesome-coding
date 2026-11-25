@@ -26,13 +26,15 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ac import ROOT, index_entries  # noqa: E402
+from find import cap  # noqa: E402  — предел выдачи
 from find import find as find_entries  # noqa: E402  — ранжирование + алиасы
+from find import sections  # noqa: E402  — подсказка на пустой запрос
 
 PROTOCOL = "2024-11-05"
-SERVER = {"name": "awesome-coding", "version": "1.1"}
+SERVER = {"name": "awesome-coding", "version": "1.2"}
 INSTRUCTIONS = (
     "Библиотека сниппетов и правил awesome-coding. search(query, section) — найти "
-    "записи по тегу/названию/алиасу, от близких к далёким (section: go, typescript, "
+    "записи по тегу/названию/алиасу, от близких к далёким, до 10 самых близких "
     "python, shared, database, …), get(id) — полный текст записи. Перед копированием кода читайте «Когда "
     "использовать / Когда НЕ использовать» и статус verified."
 )
@@ -81,13 +83,20 @@ def get(rid: str) -> str:
 
 def call_tool(name: str, args: dict) -> str:
     if name == "search":
-        hits = find_entries(args.get("query", ""), args.get("section"))
+        query = (args.get("query") or "").strip()
+        if not query:
+            return ("нужен запрос, а не пустая строка. разделы: "
+                    + ", ".join(sections())
+                    + '; пример: {"query": "rate limit", "section": "go"}')
+        hits = find_entries(query, args.get("section"))
         if not hits:
             return "ничего не найдено; попробуйте другой тег или section"
-        return "\n".join(
+        shown, tail = cap(hits)
+        body = "\n".join(
             f"{h['id']} — {h['title']} — {h['path']} — "
             f"status={h['status']} verified={h['verified']} tags={h['tags']}"
-            for h in hits)
+            for h in shown)
+        return body + (f"\n{tail}" if tail else "")
     if name == "get":
         return get(args.get("id", ""))
     raise ValueError(f"неизвестный инструмент: {name}")

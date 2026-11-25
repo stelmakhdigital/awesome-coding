@@ -6,7 +6,8 @@
   python3 tools/search.py "rate limit"   # пробелы и подчёркивания = дефис
   python3 tools/search.py upsert         # по alias из index/aliases.yaml
 
-Вывод: `id — title — path`, по строке на запись, от самых близких к запросу.
+Вывод: `id — title — path`, по строке на запись, от самых близких к запросу;
+не больше 10 строк — остальные сворачиваются в «+N ещё, уточните запрос».
 Порядок и правила — tools/find.py (та же логика у tools/mcp_server.py).
 Exit code: 0 — всегда (пустой результат информационный), 2 — ошибка.
 """
@@ -18,7 +19,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from find import find  # noqa: E402
+from find import cap, find  # noqa: E402
 
 
 def main() -> int:
@@ -30,8 +31,11 @@ def main() -> int:
     if not hits:
         print(f"ничего не найдено по запросу: {sys.argv[1]!r}")
         return 0
-    for hit in hits:
+    shown, tail = cap(hits)
+    for hit in shown:
         print(f"{hit['id']} — {hit['title']} — {hit['path']}")
+    if tail:
+        print(tail)
     return 0
 
 
