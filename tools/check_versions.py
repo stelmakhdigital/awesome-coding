@@ -70,6 +70,33 @@ def parse_pinned() -> list[tuple[str, str]]:
     return out
 
 
+def parse_declined() -> dict[str, str]:
+    """Таблица «Отклонённые кандидаты» в AGENTS.md: технология -> кандидат.
+
+    Нужна, чтобы автоматика не спрашивала одно и то же каждую неделю: решение
+    живёт в репозитории и читается и человеком, и `check-versions`.
+    """
+    text = AGENTS.read_text(encoding="utf-8")
+    if "## Отклонённые кандидаты" not in text:
+        return {}
+    section = text.split("## Отклонённые кандидаты", 1)[1].split("\n## ", 1)[0]
+    out: dict[str, str] = {}
+    for line in section.splitlines():
+        m = re.match(r"^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|", line)
+        if not m or m.group(1) in ("Технология",) or set(m.group(1)) <= {"-"}:
+            continue
+        vm = re.search(r"\d+(?:\.\d+)*", m.group(2))
+        if vm:
+            out[m.group(1)] = vm.group(0)
+    return out
+
+
+def core(version: str) -> tuple[int, int]:
+    """Первые два разряда: «3.15.2», «19.0» и «19» — один и тот же кандидат."""
+    parts = list(version_tuple(version)[:2])
+    return (parts + [0, 0])[:2]
+
+
 def current_version(tech: str, pinned: str) -> str | None:
     try:
         if tech == "Go":
@@ -135,6 +162,8 @@ def main() -> int:
         print("таблица версий в AGENTS.md не найдена", file=sys.stderr)
         return 1
 
+    declined = parse_declined()
+    held: list[str] = []
     stale: list[str] = []
     print(f"{'Технология':<12} {'Закреплено':<10} {'Актуальная':<12} Статус")
     print("-" * 52)
@@ -145,7 +174,11 @@ def main() -> int:
             continue
         p = version_tuple(pinned_v)
         c = version_tuple(cur)[: len(p)]
-        if c > p:
+        if c > p and tech in declined and core(declined[tech]) == core(cur):
+            # Кандидат уже отклонён и с тех пор не перерос самого себя.
+            print(f"{tech:<12} {pinned_v:<10} {cur:<12} отклонено: {declined[tech]}")
+            held.append(f"{tech}: {pinned_v} → {cur} (отклонено {declined[tech]})")
+        elif c > p:
             print(f"{tech:<12} {pinned_v:<10} {cur:<12} есть новее")
             stale.append(f"{tech}: {pinned_v} → {cur}")
         elif c == p:
@@ -157,6 +190,12 @@ def main() -> int:
     if stale:
         print("Вышли новые версии (решение за человеком — см. «Версии» в AGENTS.md):")
         for line in stale:
+            print(f"  - {line}")
+    elif held:
+        # Не «актуальны»: обновления выходили, но по ним уже принято решение.
+        print(f"Новых кандидатов нет; {len(held)} отклонённых — см. "
+              "«Отклонённые кандидаты» в AGENTS.md:")
+        for line in held:
             print(f"  - {line}")
     else:
         print("Все проверяемые версии актуальны.")

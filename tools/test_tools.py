@@ -31,6 +31,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import ac
+import check_versions
 import find
 import mcp_server
 import readme
@@ -281,6 +282,46 @@ class FrontmatterCheckTest(unittest.TestCase):
                 f"    tags: [http, context, client]\n    status: stable\n"
                 f"    verified: compiled\n    updated: '{tomorrow}'\n", encoding="utf-8")
             self.assertTrue(has(validate.check_frontmatter(), "в будущем"))
+
+
+class DeclinedCandidatesTest(unittest.TestCase):
+    """Решение по кандидатам живёт в AGENTS.md и читается машиной.
+
+    Разбор — регулярка по markdown: ровно тот класс кода, который молча
+    перестаёт находить то, что должно находить (CHANGELOG уже терял блоки
+    из-за несовпавшего якоря).
+    """
+
+    AGENTS = """## Версии
+
+| Технология | Версия | Fallback |
+|---|---|---|
+| PostgreSQL | 18 (18.6) | 17 |
+| Redis | 8 | 8.0 |
+
+## Отклонённые кандидаты
+
+| Технология | Кандидат | Решение | Причина | Пересмотр |
+|---|---|---|---|---|
+| PostgreSQL | 19 | отклонено 2026-11-24 | мажору 5 дней | 2027-02 |
+"""
+
+    def test_declined_is_parsed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "AGENTS.md"
+            path.write_text(self.AGENTS, encoding="utf-8")
+            saved, check_versions.AGENTS = check_versions.AGENTS, path
+            try:
+                self.assertEqual(check_versions.parse_declined(), {"PostgreSQL": "19"})
+                self.assertEqual(check_versions.parse_pinned(),
+                                 [("PostgreSQL", "18"), ("Redis", "8")])
+            finally:
+                check_versions.AGENTS = saved
+
+    def test_candidate_core_ignores_patch_release(self):
+        # «19» в таблице против «19.0» в источнике — тот же кандидат
+        self.assertEqual(check_versions.core("19"), check_versions.core("19.0"))
+        self.assertNotEqual(check_versions.core("4.4"), check_versions.core("4.5"))
 
 
 class VerifiedClaimsTest(unittest.TestCase):
