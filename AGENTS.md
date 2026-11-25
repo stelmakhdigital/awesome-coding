@@ -15,6 +15,8 @@
 | Работа с данными: SQL, индексы, транзакции, миграции, кэш | `database/` (PostgreSQL, Redis) |
 | Брокеры сообщений: Kafka, RabbitMQ | `messaging/` |
 | Архитектура, DDD, уровни, bounded contexts, CQRS, event-driven | `architecture/` |
+| Вызов модели: ретраи с бюджетом, стриминг со склейкой tool-call'ов, структурированный
+  вывод с ретраем по схеме, routing и батчи, оценки качества | `llm/` |
 | Агент работает без человека: расписание, замок, чекпоинт, охотник за дефектами, координатор и воркеры | `agenting/` |
 | CI/CD, Docker, Kubernetes, `gh`-автоматизация, интеграционные тесты со стеком | `cicd/` |
 | Игра на Unity (кроссплатформа + Android), включая HLSL-шейдеры | `unity/` |
@@ -120,6 +122,8 @@ Go 1.27, TypeScript 7.0, .NET 10, Redis 8 — актуальны. Следующ
   аутентификация, тесты, API, observability, время, конфигурация).
 - `database/` — PostgreSQL + Redis: правила, решения, сниппеты.
 - `messaging/` — брокеры: Kafka, RabbitMQ.
+- `llm/` — вызовы моделей: ретраи и бюджет, стриминг, структурированный вывод,
+  tool calls, routing/батчи, `evals.md` (как мерять качество промптов).
 - `agenting/` — агентские автоматизации: `README.md`, `rules.md`, `decisions.md`, `snippets/`, `patterns/`. Про прогоны, где агента выпустили из цикла; оркестратор не закреплён намеренно.
 - `cicd/` — GitHub Actions, GitLab CI, Docker, Kubernetes, `gh` в скриптах,
   интеграционные тесты на контейнерах.

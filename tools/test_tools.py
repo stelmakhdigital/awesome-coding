@@ -287,7 +287,21 @@ class FrontmatterCheckTest(unittest.TestCase):
             self.assertTrue(has(validate.check_frontmatter(), "в будущем"))
 
 
-class DeclinedCandidatesTest(unittest.TestCase):
+class AgentsRoutingTest(unittest.TestCase):
+    """Каждый раздел каталога описан в AGENTS.md.
+
+    AGENTS.md — что агент читает первым: путь «прочитать роутер → выбрать
+    раздел» для раздела без строки обрывается, и он находится только через
+    поиск или угадывание имени каталога (так `llm/` жил без роутинга).
+    """
+
+    def test_every_section_is_routable(self):
+        text = (ac.ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        missing = [p.stem for p in ac.index_files() if f"{p.stem}/" not in text]
+        self.assertEqual(missing, [], f"разделов нет в AGENTS.md: {missing}")
+
+
+
     """Решение по кандидатам живёт в AGENTS.md и читается машиной.
 
     Разбор — регулярка по markdown: ровно тот класс кода, который молча
