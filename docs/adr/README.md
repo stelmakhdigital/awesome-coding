@@ -14,3 +14,4 @@ ADR не удаляют: ошибочное решение помечают `sup
 | [0004](0004-no-site-no-embeddings.md) | Ни сайта, ни векторного поиска: файлы и каталог — единственный доступ | accepted |
 | [0005](0005-reviewed-is-ceiling-without-runner.md) | `reviewed` — потолок для разделов без тулчейна в CI | accepted |
 | [0006](0006-tool-writes-metadata.md) | Метаданные выставляет прогон, а не автор | accepted |
+| [0007](0007-executable-self-checks.md) | Самопроверка в помеченном блоке: как `executed` доказывается в CI | accepted |
