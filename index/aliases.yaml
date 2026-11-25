@@ -43,7 +43,9 @@ aliases:
   трассировка: [go-tracing]
   воркер: [go-worker-pool, go-goroutines]
   поток: [llm-streaming, go-file-io]
-  токен: [llm-streaming, shared-authentication]
+  токен: [llm-streaming]  # у аутентификации «токены» есть в названии — алиас не нужен
+  истечение: [database-redis]
+  пул-воркеров: [go-worker-pool]
   инструмент: [llm-tool-calls]
   компонент: [react-components, react-testing]
   slow-client: [go-websocket, go-http-client, csharp-http-client]

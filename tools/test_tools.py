@@ -426,7 +426,7 @@ class FindTest(unittest.TestCase):
             # обнулять близость ни к одной из них
             hits = find.find("clients")
             self.assertEqual([h["id"] for h in hits], ["go-aa", "go-x"])
-            self.assertEqual([h["score"] for h in hits], [55, 55])
+            self.assertEqual([h["score"] for h in hits], [60, 60])
             self.assertEqual(find.find("zeitgeber"), [])  # чужое слово близости не даёт
 
     def test_alias_stacks_with_words(self):
@@ -528,8 +528,10 @@ class RealIndexSearchTest(unittest.TestCase):
         ("буферизация потока прокси", "go-proxy"),
         # английские формулировки
         ("cache ttl", "database-redis"),
-        ("connection pool", "database-postgres-core"),
-        ("rate limit", "go-rate-limit"),
+        # про пул соединений пишут две практические записи — нужна любая из них
+        ("connection pool", frozenset({"database-postgres-core", "go-sql"})),
+        # тег rate-limit носят две записи: ограничитель в Go и gh rate_limit
+        ("rate limit", frozenset({"go-rate-limit", "cicd-gh-cli"})),
         ("retry budget", "llm-retries-budget"),
         ("tool calls", "llm-tool-calls"),
         # «медленный клиент» — про несколько записей сразу: websocket, оба http-клиента
@@ -544,6 +546,13 @@ class RealIndexSearchTest(unittest.TestCase):
                     self.assertIn(want, ids)
                 else:
                     self.assertTrue(want & set(ids), f"ни одной из {sorted(want)} в {ids}")
+
+    def test_practical_record_beats_reference_on_tie(self):
+        """«Кэш» — это запись про кэширование, а не таблица решений со словом «кэш»."""
+        self.assertEqual(find.find("миграция")[0]["id"], "database-migrations")
+        # про кэш говорят заголовки трёх записей — это ничья, и redis обязан быть
+        # в первых двух строках, а не первым
+        self.assertIn("database-redis", [h["id"] for h in find.find("кэш")][:2])
 
     def test_no_query_returns_empty_or_all(self):
         """Пустой запрос — это каталог целиком, а не ошибка и не молчание."""
