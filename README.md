@@ -72,12 +72,18 @@ awesome-coding/
 ├── AGENTS.md                  # точка входа для агента (роутер)
 ├── Makefile                   # make validate — проверки, make verify — прогон кода
 ├── tools/
-│   ├── validate.py            # валидатор: frontmatter, каталог, текст, алиасы, ссылки
+│   ├── validate.py            # валидатор: frontmatter, каталог, verified, текст, алиасы, ссылки
+│   ├── ac.py                  # общий разбор: frontmatter, index/*.yaml (с кэшем), код-блоки
 │   ├── find.py                # поиск: запрос по словам, алиасы, ранжирование
-│   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
+│   ├── search.py              # CLI поиска поверх find (make search Q=...)
 │   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
-│   ├── test_tools.py          # тесты туллинга (make test)
-│   └── readme.py              # генерация блока «Статус разделов»
+│   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker (make verify)
+│   ├── gofmt_records.py       # gofmt по go-блокам записей (make gofmt)
+│   ├── check_versions.py      # сверка версий и отклонённые кандидаты (make check-versions)
+│   ├── check_stale.py         # записи с древним `updated` (make check-stale)
+│   ├── release.py             # релизный обряд: блок CHANGELOG + пин скилла (release-check)
+│   ├── readme.py              # генерация блока «Статус разделов» (make readme)
+│   └── test_tools.py          # тесты туллинга (make test)
 ├── docs/
 │   ├── FORMAT.md              # спецификация формата записей
 │   ├── CONTRIBUTING.md
@@ -144,7 +150,10 @@ awesome-coding/
 
 - Формат записей: [docs/FORMAT.md](docs/FORMAT.md)
 - Правила контрибьюции: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Валидация: `make validate` (frontmatter, каталог, индексы, структура записей, текст, README, ссылки)
+- Валидация: `make validate` (frontmatter, каталог, индексы, `verified`, структура
+  записей, текст, алиасы, README, ссылки); правка в `tools/` — ещё и `make test`
+- Релиз: `python3 tools/release.py prepare --version vN.N --date YYYY-MM-DD --body e.md`
+  (блок CHANGELOG и пин скилла вместе, `make release-check` перед тегом)
 - Проверка кода: `make verify` (go/tsc/python/node/shellcheck/gcc/PostgreSQL в Docker), `make verify-fix` —
   поднять `verified` там, где прогон доказал
 - Релизы: [CHANGELOG.md](CHANGELOG.md) — теги `vN.N`; агенты пинят версию в скилле

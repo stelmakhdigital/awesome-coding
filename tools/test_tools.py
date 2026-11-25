@@ -287,7 +287,17 @@ class FrontmatterCheckTest(unittest.TestCase):
             self.assertTrue(has(validate.check_frontmatter(), "в будущем"))
 
 
-class AgentsRoutingTest(unittest.TestCase):
+class ReadmeToolsTest(unittest.TestCase):
+    """README — точка входа для человека: список инструментов не должен отставать."""
+
+    def test_every_tool_is_listed(self):
+        text = (ac.ROOT / "README.md").read_text(encoding="utf-8")
+        missing = sorted(p.name for p in (ac.ROOT / "tools").glob("*.py")
+                         if p.name not in text)
+        self.assertEqual(missing, [], f"инструментов нет в README: {missing}")
+
+
+
     """Каждый раздел каталога описан в AGENTS.md.
 
     AGENTS.md — что агент читает первым: путь «прочитать роутер → выбрать
