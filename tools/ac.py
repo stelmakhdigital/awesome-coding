@@ -74,6 +74,30 @@ def index_files() -> list[Path]:
     return sorted(p for p in INDEX_DIR.glob("*.yaml") if p.name not in INDEX_AUX)
 
 
+_INDEX_DATA: dict[str, tuple[tuple[int, int], object]] = {}
+
+
+def _index_data(mf: Path):
+    """Разобранный YAML файла каталога; перечитывает, только если файл изменился.
+
+    Поиск и MCP вызывают `index_entries` на каждый запрос, а десять секунд
+    тестового прогона были почти целиком временем yaml.safe_load одних и тех же
+    семнадцати файлов. Копии записей отдаются в `index_entries`, чтобы правки
+    одного вызова не отравили следующий.
+    """
+    stat = mf.stat()
+    stamp = (stat.st_mtime_ns, stat.st_size)
+    key = str(mf)
+    cached = _INDEX_DATA.get(key)
+    if cached is None or cached[0] != stamp:
+        try:
+            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
+        except yaml.YAMLError:
+            data = None  # невалидный YAML отмечает validate.py
+        _INDEX_DATA[key] = (stamp, data)
+    return _INDEX_DATA[key][1]
+
+
 def index_entries() -> list[tuple[Path, dict]]:
     """Все записи каталога: (секция-путь, entry). Секция = `<section>/<ключ>`,
     напр. `go/snippets` или `csharp/rule_set`."""
@@ -82,7 +106,7 @@ def index_entries() -> list[tuple[Path, dict]]:
     def walk(node, section: Path):
         if isinstance(node, dict):
             if "path" in node and "id" in node:
-                entries.append((section, node))
+                entries.append((section, dict(node)))
             for key, value in node.items():
                 if isinstance(value, (dict, list)):
                     walk(value, section / str(key))
@@ -91,10 +115,7 @@ def index_entries() -> list[tuple[Path, dict]]:
                 walk(item, section)
 
     for mf in index_files():
-        try:
-            data = yaml.safe_load(mf.read_text(encoding="utf-8"))
-        except yaml.YAMLError:
-            continue  # невалидный YAML отмечает validate.py
+        data = _index_data(mf)
         if not isinstance(data, dict):
             continue
         for key, value in data.items():

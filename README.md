@@ -73,7 +73,7 @@ awesome-coding/
 ├── Makefile                   # make validate — проверки, make verify — прогон кода
 ├── tools/
 │   ├── validate.py            # валидатор: frontmatter, каталог, текст, алиасы, ссылки
-│   ├── find.py                # поиск по каталогу: нормализация, алиасы, ранжирование
+│   ├── find.py                # поиск: запрос по словам, алиасы, ранжирование
 │   ├── verify_snippets.py     # код-блоки записей через тулчейны в Docker
 │   ├── mcp_server.py          # MCP: search/get поверх index/*.yaml
 │   ├── test_tools.py          # тесты туллинга (make test)

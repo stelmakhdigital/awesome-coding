@@ -9,7 +9,8 @@
 
 Что покрыто: вердикты раннеров, разбор формата (frontmatter, блоки каталога),
 вердикты раннеров, разбор формата (frontmatter, блоки каталога), текстовые и
-структурные проверки, каталог, алиасы, порядок поиска, русские формы счётчика,
+структурные проверки, каталог, алиасы, порядок поиска (в том числе на реальных
+формулировках запросов), русские формы счётчика,
 MCP-протокол (ответы и stdio-обвязка), шаги релиза. Проверки, которым нужен живой тулчейн или сеть (verify,
 check-versions, mermaid), здесь не запускаются.
 
@@ -20,6 +21,7 @@ from __future__ import annotations
 
 import contextlib
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -268,7 +270,6 @@ class FrontmatterCheckTest(unittest.TestCase):
             write(root, "go/snippets/x.md", CLEAN_FM.replace("id: go-x", "id: rust-x"))
             self.assertTrue(has(validate.check_frontmatter(), "известного префикса"))
 
-
 class ManifestCheckTest(unittest.TestCase):
     def test_clean(self):
         with temp_repo():
@@ -378,8 +379,59 @@ class FindTest(unittest.TestCase):
 
     def test_hyphen_and_space_forms_meet(self):
         with temp_repo(**self.FIXTURE):
-            self.assertEqual(find.find("rate limit")[0]["score"], 100)
-            self.assertEqual(find.find("Rate_Limit")[0]["score"], 100)
+            # Цифры многословного запроса — сумма слов + вес фразы, поэтому
+            # проверяется порядок и то, что дословный тег не обходится словами.
+            hits = find.find("rate limit")
+            self.assertEqual(hits[0]["id"], "go-x")
+            self.assertGreaterEqual(hits[0]["score"], 100)
+            self.assertEqual(find.find("Rate_Limit")[0]["id"], "go-x")
+            # однословный запрос остаётся на чистой шкале: тег = 100
+            self.assertEqual(find.find("rate-limit")[0]["score"], 100)
+
+    def test_words_sum_and_phrase_adds_weight(self):
+        """Запрос из двух слов не обязан быть дословным тегом."""
+        with temp_repo(**self.FIXTURE):
+            both = find.find("http client")[0]["score"]
+            one = find.find("http")[0]["score"]
+            self.assertGreater(both, one)
+
+    def test_stopwords_do_not_pull_the_catalog(self):
+        """Союз «и» — подстрока большинства названий; с ним в выдаче всё подряд."""
+        with temp_repo(**self.FIXTURE):
+            self.assertEqual(find.tokens("rate limit и"), ["rate", "limit"])
+            self.assertEqual(find.tokens("go ci c"), ["go", "ci", "c"])  # латиница короткая — названия
+            self.assertEqual(find.tokens("что за час"), ["час"])  # «за» — союз, «час» — слово
+            self.assertEqual(find.tokens("и в на"), [])
+
+    def test_word_forms_meet(self):
+        self.assertTrue(find.same_stem("клиент", "клиенты"))
+        self.assertTrue(find.same_stem("параллельность", "параллельности"))
+        self.assertFalse(find.same_stem("час", "часто"))          # короткое слово
+        self.assertFalse(find.same_stem("тесты", "тесткомпонента"))  # разная длина
+        with temp_repo(**self.FIXTURE):
+            # обе записи носят тег client: форма множественного числа не должна
+            # обнулять близость ни к одной из них
+            hits = find.find("clients")
+            self.assertEqual([h["id"] for h in hits], ["go-aa", "go-x"])
+            self.assertEqual([h["score"] for h in hits], [55, 55])
+            self.assertEqual(find.find("zeitgeber"), [])  # чужое слово близости не даёт
+
+    def test_alias_stacks_with_words(self):
+        """Алиас — указатель, он складывается со словами, а не заменяет их."""
+        with temp_repo(**self.FIXTURE):
+            alone = find.find("upsert")[0]["score"]
+            with_word = find.find("upsert http")[0]["score"]
+            self.assertEqual(alone, 80)
+            self.assertGreater(with_word, alone)
+
+    def test_find_cli_matches_search_cli(self):
+        """Молчание find.py агент читает как «записей нет»: вывод один на двоих."""
+        tools = Path(find.__file__).resolve().parent
+        out = [subprocess.run([sys.executable, str(tools / f), "http"],
+                              capture_output=True, text=True).stdout
+               for f in ("find.py", "search.py")]
+        self.assertEqual(out[0], out[1])
+        self.assertIn("go-http-client", out[0])  # subprocess читает настоящий каталог
 
     def test_alias_adds_record_by_foreign_word(self):
         with temp_repo(**self.FIXTURE):
@@ -402,6 +454,88 @@ class FindTest(unittest.TestCase):
     def test_empty_query_returns_catalog(self):
         with temp_repo(**self.FIXTURE):
             self.assertEqual([h["score"] for h in find.find("")], [0, 0])
+
+
+class RealIndexSearchTest(unittest.TestCase):
+    """Поиск проверяется формулировками задачи, а не однословными тегами.
+
+    До разбора запроса по словам `make search Q=async` оставался зелёным, пока
+    любой запрос из двух слов не давал пустой результат: сравнение было по фразе
+    целиком. Формулировки ниже взяты из работы — русские вопросы к латинскому
+    словарю тегов, английские фразы, описание проблемы вместо названия записи.
+
+    Ожидание — запись в топ-3: выше ставило бы ранжирование в догму, ниже —
+    превращало тест в вечно красный. Где понятие закрыт несколькими записями,
+    ожидается любое из списка.
+    """
+
+    EXPECTED: list[tuple[str, str | frozenset[str]]] = [
+        # русская лексика против латинских тегов
+        ("сигнал", "go-graceful-shutdown"),
+        ("остановка", "go-graceful-shutdown"),
+        ("обработать сигнал остановки", "go-graceful-shutdown"),
+        ("отмена", "go-context"),
+        ("таймаут", "go-context"),
+        ("отменить долгий запрос", "go-context"),
+        ("кэш", "database-redis"),
+        ("кэш с истечением срока", "database-redis"),
+        ("постранично", "database-pagination"),
+        ("курсор", "database-pagination"),
+        ("миграция", "database-migrations"),
+        ("не сломать прода при миграции", "database-migrations"),
+        ("индекс", "database-postgres-core"),
+        ("транзакция", "database-transactions"),
+        ("идемпотентность", "messaging-consumer-groups"),
+        ("единовременный запуск", "agenting-lockfile"),
+        ("медленные клиенты", "go-websocket"),
+        ("переподключение websocket", "go-websocket"),
+        ("песочница", "arch-code-sandbox"),
+        ("песочница для чужого кода", "arch-code-sandbox"),
+        ("секреты", "cicd-secrets"),
+        ("докерфайл", "cicd-docker"),
+        ("настройки", "shared-configuration"),
+        ("конфиг из окружения", "shared-configuration"),
+        ("аутентификация", "shared-authentication"),
+        ("пароли", "shared-authentication"),
+        ("права", "shared-security"),
+        ("журнал", "shared-observability"),
+        ("метрики", "go-metrics"),
+        ("трассировка", "go-tracing"),
+        ("распределённая трассировка", "go-tracing"),
+        ("автомат состояний", "go-state-machine"),
+        ("пул воркеров", "go-worker-pool"),
+        ("ограничить параллельность", "go-rate-limit"),
+        ("поток токенов", "llm-streaming"),
+        ("стриминг", "llm-streaming"),
+        ("инструменты модели", "llm-tool-calls"),
+        ("тяжёлый виджет", "react-heavy-widget"),
+        ("тест компонента", "react-testing"),
+        ("чанки", "react-vite"),
+        ("проверка вёрстки", "react-ui-check"),
+        ("буферизация потока прокси", "go-proxy"),
+        # английские формулировки
+        ("cache ttl", "database-redis"),
+        ("connection pool", "database-postgres-core"),
+        ("rate limit", "go-rate-limit"),
+        ("retry budget", "llm-retries-budget"),
+        ("tool calls", "llm-tool-calls"),
+        # «медленный клиент» — про несколько записей сразу: websocket, оба http-клиента
+        ("slow client", frozenset({"go-websocket", "go-http-client", "csharp-http-client"})),
+    ]
+
+    def test_catalog_queries_rank_the_record_high(self):
+        for query, want in self.EXPECTED:
+            with self.subTest(query=query):
+                ids = [h["id"] for h in find.find(query)][:3]
+                if isinstance(want, str):
+                    self.assertIn(want, ids)
+                else:
+                    self.assertTrue(want & set(ids), f"ни одной из {sorted(want)} в {ids}")
+
+    def test_no_query_returns_empty_or_all(self):
+        """Пустой запрос — это каталог целиком, а не ошибка и не молчание."""
+        self.assertEqual(find.find("")[0]["score"], 0)
+        self.assertGreater(len(find.find("")), 150)
 
 
 class CountFormTest(unittest.TestCase):

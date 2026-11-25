@@ -23,3 +23,28 @@ aliases:
   rtl: [react-testing]
   percentile: [shared-observability]
   upsert: [database-transactions, kotlin-room, messaging-outbox]
+
+# Русские запросы к латинскому словарю тегов. Теги в каталоге — латиница
+# (1129 тегов, ни одного кириллического), а ищут по-русски: «остановка» против
+# shutdown в тегах не совпадёт никогда, морфология тут не поможет — дело в
+# другом алфавите. Формы слова подбирает same_stem («отмена» покрывает
+# «отменить»), поэтому ключ даётся в именительном падеже единственного числа.
+  сигнал: [go-graceful-shutdown]
+  остановка: [go-graceful-shutdown]
+  отмена: [go-context]
+  таймаут: [go-context]
+  постранично: [database-pagination]
+  докерфайл: [cicd-docker]
+  настройки: [shared-configuration]
+  конфиг: [shared-configuration]
+  права: [shared-security]
+  доступ: [shared-security, shared-authentication]
+  журнал: [shared-observability]
+  трассировка: [go-tracing]
+  воркер: [go-worker-pool, go-goroutines]
+  поток: [llm-streaming, go-file-io]
+  токен: [llm-streaming, shared-authentication]
+  инструмент: [llm-tool-calls]
+  компонент: [react-components, react-testing]
+  slow-client: [go-websocket, go-http-client, csharp-http-client]
+  буферизация: [go-proxy, go-websocket]

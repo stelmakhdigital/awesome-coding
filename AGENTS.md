@@ -136,7 +136,7 @@ make validate-aliases      # index/aliases.yaml: форма ключей и су
 make validate-links        # только ссылки
 make validate-mermaid      # синтаксис mermaid-блоков (node + cd tools && npm install)
 make readme                # перегенерировать «Статус разделов» из index/*.yaml
-make search Q=async        # поиск по тегу/названию/алиасу, от близких к далёким (tools/find.py)
+make search Q="rate limit"   # поиск словами и фразами, от близких к далёким (tools/find.py)
 make verify                # код-блоки через тулчейны в Docker (go/tsc/python/node/shellcheck/gcc/PG 18)
 make verify-fix            # то же + поднять verified/updated, где прогон доказал
 make check-versions        # сверка закреплённых версий с актуальными (сеть)
