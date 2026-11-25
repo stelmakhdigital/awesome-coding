@@ -736,6 +736,17 @@ class ReleaseTest(unittest.TestCase):
 
     LOG = "# CHANGELOG\n\nОписание процесса.\n\n## v1.1 — 2026-01-02\n\nСтарый блок.\n"
 
+    def test_release_date_is_the_commit_day(self):
+        """Дату релиза больше нельзя взять «на память» из прошлой сессии."""
+        import datetime as dt
+
+        today = dt.datetime.now(dt.UTC).date().isoformat()
+        self.assertEqual(release.release_date(None), today)
+        self.assertEqual(release.release_date(today), today)
+        for bad in ("2026-11-24", "вчера", "2026-13-45"):
+            with self.assertRaises(ValueError):
+                release.release_date(bad)
+
     def test_check_without_version_uses_top_heading(self):
         """CI-шагу не нужно знать следующий номер: ждём версию из верхнего блока."""
         changelog = ("# CHANGELOG\n\n## v2.0 — 2026-01-02\n\n- X\n\n"

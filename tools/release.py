@@ -7,7 +7,7 @@
 отсутствующий пин — это падение, а не тихий пропуск.
 
 Использование:
-  python3 tools/release.py prepare --version v1.12 --date 2026-11-25 --body entry.md
+  python3 tools/release.py prepare --version v1.12 --body entry.md   # дата — сегодня
   python3 tools/release.py check --version v1.12   # перед тегом
   python3 tools/release.py check                   # CI: пин против верхнего блока
 
@@ -18,6 +18,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import re
 import sys
 
@@ -30,6 +31,25 @@ VERSION_RE = re.compile(r"^v\d+\.\d+(\.\d+)?$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 PIN_RE = re.compile(r"^ac=(v[\d.]+)\s*(#.*)?$", re.M)
 HEADING_RE = re.compile(r"^## v", re.M)
+
+
+def release_date(raw: str | None) -> str:
+    """Дата релиза — день коммита; без `--date` берается сегодняшний UTC.
+
+    Дату раньше передавали «по памяти» и ставили вчерашнюю: v1.15 закоммичен
+    2026-11-25, а в CHANGELOG был записан 24-м. Та же форма отказа, что пин без
+    записи (ADR-0006): полю поверили на слово.
+    """
+    today = dt.datetime.now(dt.UTC).date().isoformat()
+    if raw is None:
+        return today
+    if not DATE_RE.match(raw):
+        raise ValueError(f"дата в формате YYYY-MM-DD: {raw!r}")
+    if raw != today:
+        raise ValueError(
+            f"дата релиза — день коммита: сегодня {today}, передано {raw}. "
+            "Запись задним числом правится в CHANGELOG руками, с причиной в коммите")
+    return raw
 
 
 def insert_entry(changelog: str, version: str, date: str, body: str) -> str:
@@ -116,7 +136,7 @@ def main() -> int:
 
     prep = sub.add_parser("prepare", help="вставить блок CHANGELOG и поднять пин")
     prep.add_argument("--version", required=True)
-    prep.add_argument("--date", required=True)
+    prep.add_argument("--date", help="по умолчанию — сегодня (UTC); другой день отвергается")
     prep.add_argument("--body", required=True, help="файл с текстом записи")
     prep.add_argument("--allow-downgrade", action="store_true",
                       help="разрешить понижение пина (переиздание старой версии)")
@@ -139,14 +159,15 @@ def main() -> int:
         return 0
 
     body = (ROOT / args.body).read_text(encoding="utf-8") if (ROOT / args.body).exists() else args.body
-    new_changelog = insert_entry(changelog, args.version, args.date, body)
+    date = release_date(args.date)
+    new_changelog = insert_entry(changelog, args.version, date, body)
     new_skill = bump_pin(skill, args.version, allow_downgrade=args.allow_downgrade)
 
     CHANGELOG.write_text(new_changelog, encoding="utf-8")
     SKILL.write_text(new_skill, encoding="utf-8")
 
     old = PIN_RE.search(skill)
-    print(f"CHANGELOG: добавлен блок {args.version} ({args.date})")
+    print(f"CHANGELOG: добавлен блок {args.version} ({date})")
     print(f"SKILL.md: пин {old.group(1) if old else '—'} → {args.version}")
 
     problems = check(new_changelog, new_skill, args.version)

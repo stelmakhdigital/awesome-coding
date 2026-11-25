@@ -63,7 +63,8 @@
 
 1. `make validate` и `make check-versions` — зелёные.
 2. Блок CHANGELOG и пин — инструментом, а не `str.replace`:
-   `python3 tools/release.py prepare --version vN.N --date YYYY-MM-DD --body entry.md`.
+   `python3 tools/release.py prepare --version vN.N --body entry.md` (дата — день
+   коммита, `--date` другого дня отвергается).
    Тело блока — что добавлено/изменено с прошлого тега (источник —
    `git log <prev-tag>..HEAD --oneline`). Правка руками опасна: несовпавший якорь
    заголовка не вставляет блок молча, и три релиза так вышли с пином без записи.
