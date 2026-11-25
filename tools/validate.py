@@ -132,6 +132,11 @@ def check_frontmatter() -> list[str]:
             or isinstance(updated, _dt.date)
         ):
             issues.append(f"{rel}: updated должен быть датой YYYY-MM-DD")
+        elif (iso := norm_date(updated)) and iso > _dt.date.today().isoformat():
+            # Дата ставится по коммиту, который трогает запись. Три релиза были
+            # подписаны завтрашним числом: дату пишут руки, проверить нечему, и
+            # «свежесть» записи превращается в догадку.
+            issues.append(f"{rel}: updated={iso} в будущем (сегодня {_dt.date.today().isoformat()})")
         mv = fm.get("min_version")
         if mv is not None and not isinstance(mv, (str, int, float)):
             issues.append(f"{rel}: min_version должен быть строкой/числом или null")

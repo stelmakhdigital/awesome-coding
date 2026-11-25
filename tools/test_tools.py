@@ -270,6 +270,19 @@ class FrontmatterCheckTest(unittest.TestCase):
             write(root, "go/snippets/x.md", CLEAN_FM.replace("id: go-x", "id: rust-x"))
             self.assertTrue(has(validate.check_frontmatter(), "известного префикса"))
 
+    def test_updated_in_future_is_error(self):
+        """Дата ставится по коммиту: «свежая» запись с датой из завтра не проходит."""
+        from datetime import date, timedelta
+        tomorrow = (date.today() + timedelta(days=1)).isoformat()
+        fm = re.sub(r"updated: [\d-]+", f"updated: {tomorrow}", CLEAN_FM, count=1)
+        with temp_repo(**{"go/snippets/x.md": fm}) as root:
+            ac.INDEX_DIR.joinpath("go.yaml").write_text(
+                f"snippets:\n  - id: go-x\n    title: Go X\n    path: go/snippets/x.md\n"
+                f"    tags: [http, context, client]\n    status: stable\n"
+                f"    verified: compiled\n    updated: '{tomorrow}'\n", encoding="utf-8")
+            self.assertTrue(has(validate.check_frontmatter(), "в будущем"))
+
+
 class ManifestCheckTest(unittest.TestCase):
     def test_clean(self):
         with temp_repo():
