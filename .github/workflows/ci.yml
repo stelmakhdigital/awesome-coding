@@ -38,6 +38,13 @@ jobs:
       - name: Validate (frontmatter + каталог + текст + ссылки)
         run: make validate
 
+      # Обряд релиза (CONTRIBUTING) требует запускать это руками перед тегом, а
+      # обряд, который требует запустить руками, — это проверка, которая не
+      # запускается. Здесь сверяется пин скилла с верхним блоком CHANGELOG; за
+      # тем, что тег выпущен с этого же состояния, следит сам обряд.
+      - name: Release consistency (пин скилла против CHANGELOG)
+        run: python3 tools/release.py check
+
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22

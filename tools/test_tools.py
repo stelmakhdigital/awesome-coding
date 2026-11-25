@@ -736,6 +736,17 @@ class ReleaseTest(unittest.TestCase):
 
     LOG = "# CHANGELOG\n\nОписание процесса.\n\n## v1.1 — 2026-01-02\n\nСтарый блок.\n"
 
+    def test_check_without_version_uses_top_heading(self):
+        """CI-шагу не нужно знать следующий номер: ждём версию из верхнего блока."""
+        changelog = ("# CHANGELOG\n\n## v2.0 — 2026-01-02\n\n- X\n\n"
+                     "## v1.9 — 2026-01-01\n\n- Y\n")
+        self.assertEqual(release.top_version(changelog), "v2.0")
+        self.assertEqual(release.check(changelog, "ac=v2.0\n"), [])
+        self.assertTrue(has(release.check(changelog, "ac=v1.9\n"), "пин в SKILL.md = v1.9"))
+        self.assertEqual(release.top_version("без блоков версии"), None)
+        self.assertTrue(has(release.check("без блоков версии", "ac=v1.0\n"),
+                            "нет ни одного блока"))
+
     def test_insert_before_first_version_block(self):
         out = release.insert_entry(self.LOG, "v1.2", "2026-02-03", "Тело записи.")
         self.assertIn("## v1.2 — 2026-02-03", out)

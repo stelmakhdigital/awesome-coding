@@ -8,7 +8,11 @@
 
 Использование:
   python3 tools/release.py prepare --version v1.12 --date 2026-11-25 --body entry.md
-  python3 tools/release.py check --version v1.12
+  python3 tools/release.py check --version v1.12   # перед тегом
+  python3 tools/release.py check                   # CI: пин против верхнего блока
+
+Без `--version` ожидается версия из верхнего блока CHANGELOG: так шаг живёт в CI
+на каждый push и ловит разъезд пина и записи без участия человека.
 """
 
 from __future__ import annotations
@@ -72,9 +76,23 @@ def bump_pin(skill: str, version: str, allow_downgrade: bool = False) -> str:
     return PIN_RE.sub(sub, skill, count=1)
 
 
-def check(changelog: str, skill: str, version: str) -> list[str]:
-    """Список проблем; пустой список — к тегу готов."""
+def top_version(changelog: str) -> str | None:
+    """Версия из верхнего блока CHANGELOG."""
+    m = re.search(r"^## (v[\d.]+)", changelog, re.M)
+    return m.group(1) if m else None
+
+
+def check(changelog: str, skill: str, version: str | None = None) -> list[str]:
+    """Список проблем; пустой список — к тегу готов.
+
+    Без `version` ожидается та, что в верхнем блоке CHANGELOG: проверке в CI не
+    нужно знать, какой релиз следующий, — ей достаточно, что пин смотрит туда же.
+    """
     problems: list[str] = []
+    if version is None:
+        version = top_version(changelog)
+        if version is None:
+            return ["в CHANGELOG нет ни одного блока версии"]
 
     if not re.search(rf"^## {re.escape(version)}(?:\s|—|$)", changelog, re.M):
         problems.append(f"в CHANGELOG нет блока {version}")
@@ -103,20 +121,21 @@ def main() -> int:
     prep.add_argument("--allow-downgrade", action="store_true",
                       help="разрешить понижение пина (переиздание старой версии)")
 
-    chk = sub.add_parser("check", help="проверить готовность к тегу")
-    chk.add_argument("--version", required=True)
+    chk = sub.add_parser("check", help="проверить готовность к тегу (без версии — верхний блок CHANGELOG)")
+    chk.add_argument("--version")
 
     args = parser.parse_args()
     changelog = CHANGELOG.read_text(encoding="utf-8")
     skill = SKILL.read_text(encoding="utf-8")
 
     if args.cmd == "check":
+        version = args.version or top_version(changelog) or "—"
         problems = check(changelog, skill, args.version)
         for p in problems:
             print(f"ПРОБЛЕМА: {p}")
         if problems:
             return 1
-        print(f"{args.version}: CHANGELOG и пин согласованы")
+        print(f"{version}: CHANGELOG и пин согласованы")
         return 0
 
     body = (ROOT / args.body).read_text(encoding="utf-8") if (ROOT / args.body).exists() else args.body
