@@ -17,6 +17,7 @@
 
 Вердикты:
   ok        — тулчейн принял код
+  executed  — и выполнил самопроверку: блок помечен `run`, exit 0 и строка успеха
   fail      — отверг: код в записи битый или устарел (находка)
   fmt       — формат не выдержан (gofmt переформатирует блок)
   deps      — не хватает пакетов: сгенерированных (grpc stub) или из другой записи
@@ -33,6 +34,7 @@ import datetime as dt
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -76,6 +78,7 @@ TS_TSC = ["node", "/w/node_modules/typescript/bin/tsc", "--noEmit", "--strict",
           "--types", "node"]
 PG_CONTAINER = "ac-verify-pg"
 PG_IMAGE = "postgres:18-alpine"
+BASH_IMAGE = "bash:5.3"   # образ самопроверок: в образе shellcheck bash не входит
 # SQLSTATE «объекта нет»: блок ссылается на схему из соседнего блока. Это deps —
 # проверить нельзя, а не сломано.
 PG_MISSING = {"42P01", "42703", "42883", "42P02", "42704", "42P10"}
@@ -96,6 +99,12 @@ class Runner:
     probe: str = "test -n \"$(ls -A /deps)\""       # том уже прогрет?
     preamble: Callable[[str], str] = lambda t: t    # обрамление блока-фрагмента
     executes: bool = False                          # раннер выполняет блок, а не собирает
+    # Чем выполнить блок, помеченный `run`, и что искать в выводе. Без этого
+    # пометка `run` — обещание, которое нечем проверить (ADR-0007).
+    exec_cmd: list[str] | None = None
+    exec_image: str | None = None                   # образ выполнения, если не тот же
+    exec_marker: str = "ok:"                        # строка успеха в выводе
+    exec_uses_args: bool = True                     # блок ждёт свои аргументы
     env: dict[str, str] = field(default_factory=dict)
     run_as_host_user: bool = False                  # тулчейн пишет артефакты в монт
     timeout: int = 900
@@ -105,6 +114,11 @@ class Runner:
             target = workdir / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(body if body.endswith("\n") else body + "\n", encoding="utf-8")
+        proc = subprocess.run(self._docker(workdir, self.cmd), capture_output=True,
+                              text=True, timeout=self.timeout)
+        return classify(proc.returncode, proc.stdout + proc.stderr)
+
+    def _docker(self, workdir: Path, cmd: list[str], image: str | None = None) -> list[str]:
         args = ["docker", "run", "--rm", "-v", f"{workdir}:/w", "-w", "/w"]
         if self.volume and self.mount:
             args += ["-v", f"{self.volume}:{self.mount}"]
@@ -114,9 +128,20 @@ class Runner:
             args += ["-u", f"{os.getuid()}:{os.getgid()}", "-e", "HOME=/tmp"]
         for key, value in self.env.items():
             args += ["-e", f"{key}={value}"]
-        proc = subprocess.run(args + [self.image, *self.cmd], capture_output=True,
-                              text=True, timeout=self.timeout)
-        return classify(proc.returncode, proc.stdout + proc.stderr)
+        return args + [image or self.image, *cmd]
+
+    def run_exec(self, workdir: Path, args: str) -> tuple[str, str]:
+        """Выполнить блок, помеченный `run`: exit 0 и строка успеха.
+
+        Строка нужна затем, что файл с одними определениями завершается с нулём,
+        не проверив ничего: `executed` обнулился бы по смыслу (issue #6).
+        """
+        if args and not self.exec_uses_args:
+            return "fail", f"{self.lang}: раннер не передаёт блоку аргументы ({args!r})"
+        proc = subprocess.run(self._docker(workdir, [*self.exec_cmd, *shlex.split(args)],
+                                            self.exec_image),
+                              capture_output=True, text=True, timeout=self.timeout)
+        return exec_verdict(proc.returncode, proc.stdout + proc.stderr, self.exec_marker)
 
 
 GO_SCRIPT = """
@@ -305,6 +330,22 @@ def cs_project_files(blocks: list[tuple[int, str]]) -> dict[str, str]:
         files[f"b{i}/Program.cs"] = code
     return files
 
+def exec_verdict(code: int, out: str, marker: str) -> tuple[str, str]:
+    """Итог самопроверки: нужен нулевой выход И строка успеха в выводе.
+
+    Нулевой выход сам по себе ничего не доказывает — файл с одними определениями
+    завершается именно так; строка `ok:` / `--- PASS` и есть «что-то проверилось».
+    """
+    lines = [x for x in out.strip().splitlines() if x.strip()]
+    if code != 0:
+        return "fail", "самопроверка: " + (lines[-1] if lines else f"exit {code}")[:180]
+    hit = [x for x in lines if marker in x]
+    if not hit:
+        return ("fail", f"самопроверка: в выводе нет строки «{marker}» — "
+                        "прогоны есть, проверки нет")
+    return "executed", hit[-1].strip()[:180]
+
+
 def classify(code: int, out: str) -> tuple[str, str]:
     # Маркеры скриптовых раннеров: что они увидели, решают они сами.
     for marker, verdict in (("AC:FAIL", "fail"), ("AC:DEPS", "deps")):
@@ -328,13 +369,16 @@ RUNNERS: dict[str, Runner] = {
     "go": Runner(
         "go", "golang:1.27-alpine", ["sh", "/w/run.sh"],
         what="gofmt + go build 1.27 (модуль на запись, кэш модулей в томе ac-gomod)",
-        volume="ac-gomod", mount=GO_MOD_CACHE),
+        volume="ac-gomod", mount=GO_MOD_CACHE,
+        exec_cmd=["sh", "-c", "cd /w && { go mod tidy >/dev/null 2>&1 || true; } && go test -v ./..."],
+        exec_marker="--- PASS", exec_uses_args=False),
     "python": Runner(
         "python", "python:3.14-slim",
         ["python", "-c",
          "import sys; compile(open(sys.argv[1], encoding='utf-8').read(), 'block.py', 'exec')",
          "/w/block.py"],
-        what="compile(): синтаксис Python 3.14 (импорты третьих сторон не разрешаются)"),
+        what="compile(): синтаксис Python 3.14 (импорты третьих сторон не разрешаются)",
+        exec_cmd=["python", "/w/block.py"]),
     "ts": Runner(
         "ts", "node:22-slim", TS_TSC + ["/w/block.ts"],
         what="tsc 7.0 --noEmit --strict --lib es2024 (typescript, @types/node, zod, vitest,"
@@ -360,11 +404,15 @@ RUNNERS: dict[str, Runner] = {
         probe=TS_PROBE,
         preamble=TS_MODULE),
     "js": Runner("js", "node:22-slim", ["node", "--check", "/w/block.js"],
+                 exec_cmd=["node", "/w/block.js"],
                  what="node --check: синтаксис JS"),
     "bash": Runner("bash", "koalaman/shellcheck-alpine:v0.11.0",
                    ["shellcheck", "-f", "gcc", "/w/block.sh"],
                    what="shellcheck -f gcc (код 0 = замечаний нет)",
-                   preamble=BASH_SHELL),
+                   preamble=BASH_SHELL, exec_cmd=["bash", "/w/block.sh"],
+                   # В образе shellcheck нет bash — только утилита: выполнять
+                   # идём туда, где bash есть, и той же закреплённой версии.
+                   exec_image=BASH_IMAGE),
     "sh": Runner("sh", "koalaman/shellcheck-alpine:v0.11.0",
                  ["shellcheck", "-f", "gcc", "/w/block.sh"],
                  what="shellcheck -f gcc", preamble=BASH_SHELL),
@@ -389,6 +437,7 @@ RUNNERS: dict[str, Runner] = {
 FNAME = {"sql": "block.sql", "python": "block.py", "ts": "block.ts", "tsx": "block.tsx",
          "js": "block.js", "bash": "block.sh", "sh": "block.sh", "c": "block.c"}
 PACKAGE_RE = re.compile(r"^package\s+(\w+)", re.M)
+GO_TEST_FUNC = re.compile(r"^func (Test\w*|Benchmark\w*)\(", re.M)
 
 
 @dataclass
@@ -399,6 +448,7 @@ class Job:
     blocks: list[int]
     files: dict[str, str] = field(default_factory=dict)
     codes: list[tuple[int, str]] = field(default_factory=list)   # go: сборка на запись
+    run_args: str | None = None                     # блок-самопроверка: его аргументы
     result: dict = field(default_factory=dict)
 
     @property
@@ -430,7 +480,9 @@ def go_module_files(blocks: list[tuple[int, str]], isolated: bool = False) -> di
                 break
         else:
             dir_ = f"{pkg}/" if len(pkgs) > 1 else ""
-        files[f"{dir_}block{i}.go"] = code
+        # Test-функцию компилирует только `go test`, и только в _test.go.
+        name = ("block%d_test.go" if GO_TEST_FUNC.search(code) else "block%d.go") % i
+        files[f"{dir_}{name}"] = code
     return files
 
 
@@ -446,28 +498,38 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
         if record and rid != record:
             continue
         by_lang: dict[str, list[tuple[int, str]]] = {}
-        for i, (lang, code) in enumerate(fence_blocks(text, set(langs)), 1):
-            by_lang.setdefault(lang, []).append((i, code))
+        for i, (lang, code, run) in enumerate(fence_blocks(text, set(langs)), 1):
+            by_lang.setdefault(lang, []).append((i, code, run))
         for lang, blocks in by_lang.items():
+            def run_args_of(picked) -> str | None:
+                marked = [r for _, _, r in picked if r is not None]
+                return marked[0] if marked else None
+
             if lang == "go":
-                for i, code in blocks:
+                for i, code, _ in blocks:
                     if not PACKAGE_RE.search(code):
                         jobs.append(Job(rel, rid, lang, [i], {},
                                         result={"verdict": "fragment",
                                                 "note": "нет объявления package"}))
-                whole = [(i, c) for i, c in blocks if PACKAGE_RE.search(c)]
+                whole = [(i, c) for i, c, _ in blocks if PACKAGE_RE.search(c)]
                 if whole:
-                    jobs.append(Job(rel, rid, lang, [i for i, _ in whole], codes=whole))
+                    # Выполняется весь модуль: у самопроверки-теста те же типы,
+                    # что у соседних блоков записи.
+                    jobs.append(Job(rel, rid, lang, [i for i, _ in whole], codes=whole,
+                                    run_args=run_args_of(blocks)))
             elif lang == "sql":
                 if blocks:
-                    jobs.append(Job(rel, rid, lang, [i for i, _ in blocks], codes=blocks))
+                    jobs.append(Job(rel, rid, lang, [i for i, _, _ in blocks],
+                                codes=[(i, c) for i, c, _ in blocks]))
             elif lang == "csharp":
-                checkable = [(i, c) for i, c in blocks if not CS_UNITY.search(c)]
+                checkable = [(i, c) for i, c, _ in blocks if not CS_UNITY.search(c)]
                 if checkable:
                     jobs.append(Job(rel, rid, lang, [i for i, _ in checkable], codes=checkable))
             else:
-                for i, code in blocks:
-                    jobs.append(Job(rel, rid, lang, [i], {FNAME[lang]: RUNNERS[lang].preamble(code)}))
+                for i, code, run in blocks:
+                    jobs.append(Job(rel, rid, lang, [i],
+                                    {FNAME[lang]: RUNNERS[lang].preamble(code)},
+                                    run_args=run))
     return jobs
 
 
@@ -482,7 +544,7 @@ CONFIG_LANGS = {"yaml", "json", "dockerfile", "caddy", "protobuf", "mermaid"}
 def present_langs() -> set[str]:
     langs: set[str] = set()
     for path in content_files():
-        for lang, _ in fence_blocks(path.read_text(encoding="utf-8"), None):
+        for lang, _, _ in fence_blocks(path.read_text(encoding="utf-8"), None):
             if lang not in NOT_CODE:
                 langs.add(lang)
     return langs
@@ -547,6 +609,13 @@ def run_job(job: Job) -> Job:
                 go_runsh(d)
                 verdict, note = runner.run(d, go_module_files(job.codes, isolated=True))
                 note = "варианты одного пакета, собраны отдельно; " + note
+            if job.run_args is not None and verdict == "ok":
+                # Пометка `run`: собираем — и выполняем. Без поддержки выполнения
+                # у раннера это fail, а не тихо проигнорировавший шаг: иначе пометка
+                # означает «уровень выше», которого никто не проверял.
+                verdict, note = (runner.run_exec(d, job.run_args) if runner.exec_cmd
+                                 else ("fail", f"{job.lang}: раннер не выполняет блоки, "
+                                               "а блок помечен run"))
         except subprocess.TimeoutExpired:
             verdict, note = "fail", "timeout 900s"
         except subprocess.CalledProcessError as e:
@@ -601,19 +670,22 @@ def _entry_value(text: str, rel: str, field: str) -> str | None:
 def fix_index(jobs: list[Job], today: str) -> list[str]:
     """Поднять `verified` до уровня, доказанного прогоном, и обновить `updated`.
 
-    Уровень только растёт (`executed` не понижается). Запись получает `compiled`,
-    если все её проверяемые блоки прошли тулчейн; `fragment` (нет package) не
-    мешает — его проверить нельзя в принципе.
+    Уровень только растёт. Запись получает `compiled`, если все её проверяемые
+    блоки прошли тулчейн, и `executed`, если хотя бы один прошёл ещё и
+    выполнением (блок с `run`); `fragment` (нет package) не мешает — его проверить
+    нельзя в принципе.
     """
     rank = {"none": 0, "reviewed": 1, "compiled": 2, "executed": 3}
+    passed = ("ok", "executed")
     by_path: dict[str, list[str]] = {}
     for j in jobs:
         by_path.setdefault(j.path, []).append(j.result["verdict"])
     changed: list[str] = []
     for path, verdicts in sorted(by_path.items()):
         checkable = [v for v in verdicts if v != "fragment"]
-        if not checkable or any(v != "ok" for v in checkable):
+        if not checkable or any(v not in passed for v in checkable):
             continue
+        want = "executed" if "executed" in checkable else "compiled"
         target = ROOT / path
         idx_file = INDEX_DIR / f"{Path(path).parts[0]}.yaml"
         fm_text = target.read_text(encoding="utf-8")
@@ -621,9 +693,9 @@ def fix_index(jobs: list[Job], today: str) -> list[str]:
             continue
         text = idx_file.read_text(encoding="utf-8")
         current = _entry_value(text, path, "verified")
-        if current not in rank or rank[current] >= rank["compiled"]:
+        if current not in rank or rank[current] >= rank[want]:
             continue
-        text, was = _entry_patch(text, path, {"verified": "compiled", "updated": today})
+        text, was = _entry_patch(text, path, {"verified": want, "updated": today})
         if not was:
             continue
         idx_file.write_text(text, encoding="utf-8")
@@ -681,7 +753,7 @@ def main() -> int:
               (": " + ", ".join(touched) if touched else ""))
 
     skipped = sorted(present_langs() - set(RUNNERS))
-    order = {"fail": 0, "fmt": 1, "deps": 2, "fragment": 3, "ok": 4}
+    order = {"fail": 0, "fmt": 1, "deps": 2, "fragment": 3, "executed": 4, "ok": 5}
     if args.json:
         print(json.dumps({
             "results": [{"path": j.path, "id": j.rid, "lang": j.lang, "blocks": j.blocks,

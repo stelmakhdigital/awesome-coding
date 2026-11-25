@@ -46,6 +46,7 @@ from ac import (  # noqa: E402  — разбор формата один на в
     all_md_files,
     code_fences,
     content_files,
+    fence_blocks,
     index_entries,
     index_files,
     needs_frontmatter,
@@ -425,10 +426,16 @@ LEVEL_RANK = {"none": 0, "reviewed": 1, "compiled": 2, "executed": 3}
 def check_verified_claims() -> list[str]:
     """`verified` не может быть выше того, что способно доказать о записи.
 
-    Раннер языка доказывает `compiled` (блоки прошли тулчейн), а `executed` —
-    только там, где он блок выполняет, а не собирает (SQL). Язык без раннера в
-    CI не проверяется вовсе. Всё остальное требует поля `proof:` в frontmatter:
-    чем, где и когда это запускали (ADR-0006).
+    Раннер языка доказывает `compiled` (блоки прошли тулчейн). `executed` —
+    если блок реально выполняется в CI: блоки SQL выполняются всегда, остальным
+    нужна пометка `run` в fence-info (```go,run, ```bash,run --self-test) — это
+    и есть требование «не только собралось, но и проверило» (ADR-0007). Язык без
+    раннера в CI не проверяется вовсе. Всё остальное требует поля `proof:` во
+    frontmatter: чем, где и когда это запускали (ADR-0006).
+
+    Пометка `run` без раннера, которому чем выполнить, — та же ложь в другую
+    сторону: она обещает уровень, которого нечем проверить. Это ошибка, и она
+    ищется во всех записях, а не только там, где уровень выше `reviewed`.
 
     Язык «покрыт» только если раннер берёт блоки этой записи в прогон: отбор
     берётся из `collect()`, а не повторяется здесь. Со своей реализацией проверка
@@ -443,6 +450,7 @@ def check_verified_claims() -> list[str]:
     from verify_snippets import CONFIG_LANGS, RUNNERS, collect  # поздний импорт
 
     exec_proven = {lang for lang, r in RUNNERS.items() if r.executes}
+    exec_capable = {lang for lang, r in RUNNERS.items() if r.exec_cmd}
     levels = {str(e.get("path")): str(e.get("verified")) for _, e in index_entries()}
     taken: dict[str, set[str]] = {}
     for job in collect(sorted(RUNNERS), None, None):
@@ -451,18 +459,26 @@ def check_verified_claims() -> list[str]:
     issues: list[str] = []
     for path in content_files():
         rel = path.relative_to(ROOT).as_posix()
+        text = path.read_text(encoding="utf-8")
+        marked = {lang for lang, _, run in fence_blocks(text, None) if run is not None}
+        dead = marked - exec_capable
+        if dead:
+            issues.append(
+                f"{rel}: пометка run на {', '.join(sorted(dead))}, а выполнить эти "
+                "блоки нечем — раннер их только собирает (или раннера нет)")
+
         level = levels.get(rel, "")
         if LEVEL_RANK.get(level, 0) <= LEVEL_RANK["reviewed"]:
             continue
-        langs = code_fences(path.read_text(encoding="utf-8")) - CONFIG_LANGS
+        langs = code_fences(text) - CONFIG_LANGS
         covered = taken.get(rel, set())
         uncovered = langs - covered
         proven = bool(covered) and not uncovered
         if level == "executed":
-            # Достаточно, чтобы хотя бы один язык записи выполнялся в CI: в
-            # смешанных записях (SQL + Go) предмет записи — запрос, и он
-            # прогоняется; собранные блоки ниже этого уровня и не тянут.
-            proven = proven and bool(covered & exec_proven)
+            # Достаточно одного выполняемого языка: в смешанных записях
+            # (SQL + Go) предмет записи — запрос, и он прогоняется.
+            runs = bool(covered & exec_proven) or bool(marked & covered & exec_capable)
+            proven = proven and runs
         if proven:
             continue
         fm = parse_frontmatter(path) or {}
@@ -474,7 +490,8 @@ def check_verified_claims() -> list[str]:
         if not covered:
             why = "нет блоков, которые CI умеет прогонять (" + all_langs + ")"
         elif level == "executed":
-            why = "раннеры " + only_lint + " блоки не выполняют"
+            why = ("ни один блок не помечен `run`, а раннеры " + only_lint +
+                   " блоки только собирают")
         else:
             why = "нет раннера для " + not_covered
         issues.append(

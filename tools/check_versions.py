@@ -102,14 +102,22 @@ def core(version: str) -> tuple[int, int]:
 # Язык раннера -> технология из «Версии», чьей версии обязан следовать тег
 # образа. Не в списке — образ живёт своей версией: node (Node в пинах нет), gcc
 # (пinned-разряд там стандарт C, а не gcc), shellcheck (линт-тул).
-IMAGE_TECH = {"go": "Go", "python": "Python", "sql": "PostgreSQL", "csharp": "C#"}
+IMAGE_TECH = {"go": "Go", "python": "Python", "sql": "PostgreSQL", "csharp": "C#",
+              "bash+exec": "Bash"}
 
 
 def runner_images() -> dict[str, str]:
-    """Образы тулчейнов, которыми `make verify` гоняет код записей."""
+    """Образы тулчейнов, которыми `make verify` гоняет код записей.
+
+    Отдельная строка на exec-образ: у bash-самопроверок он свой (в образе
+    shellcheck нет bash), и он обязан следовать тому же пину.
+    """
     from verify_snippets import RUNNERS
 
-    return {lang: r.image for lang, r in RUNNERS.items()}
+    out = {lang: r.image for lang, r in RUNNERS.items()}
+    out.update({f"{lang}+exec": r.exec_image
+                for lang, r in RUNNERS.items() if r.exec_image})
+    return out
 
 
 def check_images() -> list[tuple[str, str]]:

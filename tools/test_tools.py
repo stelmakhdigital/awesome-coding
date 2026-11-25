@@ -183,10 +183,29 @@ class AcParseTest(unittest.TestCase):
         text = "```go\npackage a\n```\n```sql\nSELECT 1\n```\n```text\nнет\n```\n"
         self.assertEqual(ac.code_fences(text), {"go", "sql"})
 
-    def test_fence_blocks_pairs(self):
+    def test_fence_blocks(self):
         text = "```go\npackage a\n```\n```sql\nSELECT 1;\n```\n"
-        self.assertEqual(ac.fence_blocks(text), [("go", "package a"), ("sql", "SELECT 1;")])
-        self.assertEqual(ac.fence_blocks(text, {"sql"}), [("sql", "SELECT 1;")])
+        self.assertEqual(ac.fence_blocks(text),
+                         [("go", "package a", None), ("sql", "SELECT 1;", None)])
+        self.assertEqual(ac.fence_blocks(text, {"sql"}), [("sql", "SELECT 1;", None)])
+
+    def test_fence_run_attribute_and_args(self):
+        """Язык — первое слово fence-info, `run` и его аргументы — атрибуты.
+
+        Regex «язык + пробел» терял блоки с атрибутами: проверки не видели их
+        ни в code_fences, ни в fence_blocks и молчали про запись целиком.
+        """
+        text = ("```bash,run --self-test\nsleep 1\necho ok: работает\n```\n"
+                "```go,run\npackage a\n```\n"
+                "```bash\necho мимо\n```\n"
+                "```sql runner=run\nselect 1;\n```\n")
+        self.assertEqual(ac.fence_blocks(text),
+                         [("bash", "sleep 1\necho ok: работает", "--self-test"),
+                          ("go", "package a", ""),
+                          ("bash", "echo мимо", None),
+                          ("sql", "select 1;", None)])
+        # Языки блоков с атрибутом не исчезают из каталога кода
+        self.assertEqual(ac.code_fences(text), {"bash", "go", "sql"})
 
     def test_needs_frontmatter(self):
         with temp_repo() as root:
@@ -384,6 +403,50 @@ class DeclinedCandidatesTest(unittest.TestCase):
         self.assertNotEqual(check_versions.core("4.4"), check_versions.core("4.5"))
 
 
+class SelfCheckTest(unittest.TestCase):
+    """Пометка `run`: блок обязаны не только собрать, но и выполнить (ADR-0007)."""
+
+    def test_exec_verdict_needs_zero_exit_and_success_line(self):
+        self.assertEqual(vs.exec_verdict(0, "ok: работает\n", "ok:")[:2],
+                         ("executed", "ok: работает"))
+        self.assertEqual(vs.exec_verdict(0, "--- PASS: TestX\n", "--- PASS")[0],
+                         "executed")
+        self.assertEqual(vs.exec_verdict(1, "FAIL: не сошлось", "ok:")[0], "fail")
+        # Ноль без проверки — не доказательство: файл с определениями и так 0.
+        verdict, note = vs.exec_verdict(0, "mimo\n", "ok:")
+        self.assertEqual(verdict, "fail")
+        self.assertIn("ok:", note)
+
+    def test_run_attribute_and_args_reach_the_job(self):
+        go = CLEAN_FM.replace(
+            "```go\npackage main\n```",
+            "```go,run\npackage main\n\nfunc TestX(t *testing.T) { }\n```")
+        bash = CLEAN_FM.replace("id: go-x", "id: go-y").replace("# Go X", "# Go Y").replace(
+            "```go\npackage main\n```", "```bash,run --self-test\necho ok: готово\n```")
+        with temp_repo(**{"go/snippets/x.md": go, "go/snippets/y.md": bash}):
+            jobs = vs.collect(["go", "bash"], None, None)
+        by_lang = {j.lang: j.run_args for j in jobs}
+        self.assertEqual(by_lang["go"], "")        # аргументов нет, выполняется модуль
+        self.assertEqual(by_lang["bash"], "--self-test")
+
+    def test_job_codes_are_pairs_for_every_language(self):
+        """`codes` задачи — пары (номер, код) у всех языков.
+
+        Тройки с пометкой `run` расходятся по веткам collect по-разному: sql и
+        csharp раскладывают `codes` руками, и тройка там всплывает только в
+        прогоне — то есть в CI, а не в тесте.
+        """
+        for job in vs.collect(sorted(vs.RUNNERS), None, None):
+            self.assertTrue(all(len(item) == 2 for item in job.codes), job.label)
+
+    def test_go_test_block_lands_in_a_test_file(self):
+        """Test-функцию компилирует только `go test`, и только из _test.go."""
+        files = vs.go_module_files([(1, "package agent\n\nfunc TestX(t *testing.T) { }\n")])
+        self.assertIn("block1_test.go", files)
+        plain = vs.go_module_files([(1, "package agent\n\nfunc F() { }\n")])
+        self.assertIn("block1.go", plain)
+
+
 class VerifiedClaimsTest(unittest.TestCase):
     """`verified` не может быть выше того, что способно доказать о записи."""
 
@@ -403,6 +466,23 @@ class VerifiedClaimsTest(unittest.TestCase):
                               'status: stable\nproof: "go run в golang:1.27-alpine, 2026-01-01"')
         with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": fm}):
             self.assertEqual(validate.check_verified_claims(), [])
+
+    RUN_MARKED_FM = CLEAN_FM.replace(
+        "```go\npackage main\n```",
+        "```go,run\npackage main\n\nfunc TestX(t *testing.T) { }\n```")
+    TS_RUN_FM = (CLEAN_FM.replace("lang: go", "lang: ts")
+                 .replace("```go\npackage main\n```",
+                          "```ts,run\nconst x: number = 1;\n```"))
+
+    def test_executed_is_proven_by_a_marked_block(self):
+        with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": self.RUN_MARKED_FM}):
+            self.assertEqual(validate.check_verified_claims(), [])
+
+    def test_run_mark_on_a_build_only_runner_is_a_lie(self):
+        """Пометка есть, выполнить нечем — это ошибка, а не молчаливый `ok`."""
+        with temp_repo(**{"go/snippets/x.md": self.TS_RUN_FM}):
+            self.assertTrue(has(validate.check_verified_claims(),
+                                "пометка run", "ts"))
 
     def test_sql_executed_is_proven_by_ci(self):
         with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": self.SQL_FM}):

@@ -37,7 +37,7 @@ GO_IMAGE = "golang:1.27-alpine"
 def fix_record(path: pathlib.Path) -> int:
     """Отформатировать go-блоки одной записи. Возвращает число изменённых блоков."""
     text = path.read_text(encoding="utf-8")
-    blocks = [(i, code) for i, (_, code) in enumerate(fence_blocks(text, {"go"}), 1)]
+    blocks = [(i, code) for i, (_, code, _) in enumerate(fence_blocks(text, {"go"}), 1)]
     if not blocks:
         return 0
 

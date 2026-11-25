@@ -37,7 +37,8 @@ SKIP_DIRS = {".git", "node_modules"}
 # (dockerfile, yaml, protobuf) и компилируемые только в Editor (hlsl) сюда не входят.
 CODE_LANGS = {"go", "c", "csharp", "kotlin", "python", "bash", "sh",
               "ts", "tsx", "js", "sql"}
-CODE_FENCE_RE = re.compile(r"^```([a-zA-Z]+)[ \n]", re.M)
+FENCE_INFO_RE = re.compile(r"^```([a-zA-Z]+)((?:[ ,][^\n]*)?)$")
+FENCE_RUN_RE = re.compile(r"(?:^|[ ,])run(?:$|[\s,])")
 
 
 def parse_frontmatter(path: Path) -> dict | None:
@@ -125,26 +126,55 @@ def index_entries() -> list[tuple[Path, dict]]:
     return entries
 
 
+def fence_info(text: str) -> list[tuple[str, str | None]]:
+    """Пары (язык, аргументы самопроверки) по всем открывающим фэнсам.
+
+    Язык — первое слово fence-info, остальное — атрибуты. Пометка `run`
+    (```go,run или ```bash,run --self-test) значит «этот блок — самопроверка,
+    выполни его»; аргументы после `run` передаются блоку. Всё, что читает
+    фэнсы, обязано проходить отсюда: `CODE_FENCE_RE` вида «язык + пробел» уже
+    терял блоки с атрибутами, и проверки молчали про них.
+    """
+    out: list[tuple[str, str | None]] = []
+    for line in text.splitlines():
+        m = FENCE_INFO_RE.match(line)
+        if not m:
+            continue
+        attrs = m.group(2).lstrip()
+        run = FENCE_RUN_RE.search(attrs)
+        out.append((m.group(1).lower(), attrs[run.end():].strip() if run else None))
+    return out
+
+
 def code_fences(text: str) -> set[str]:
-    """Языки код-блоков, только из CODE_LANGS (```<lang> в начале строки)."""
-    return {lang.lower() for lang in CODE_FENCE_RE.findall(text)} & CODE_LANGS
+    """Языки код-блоков, только из CODE_LANGS (с атрибутами и без)."""
+    return {lang for lang, _ in fence_info(text)} & CODE_LANGS
 
 
-def fence_blocks(text: str, langs: set[str] | None = None) -> list[tuple[str, str]]:
-    """Код-блоки записи: [(lang, code), ...]. langs — фильтр; None = все языки."""
-    out: list[tuple[str, str]] = []
+def fence_blocks(
+    text: str, langs: set[str] | None = None
+) -> list[tuple[str, str, str | None]]:
+    """Код-блоки записи: [(lang, code, run), ...]; run — None или строка аргументов.
+
+    langs — фильтр; None = все языки.
+    """
+    out: list[tuple[str, str, str | None]] = []
     lang: str | None = None
+    run: str | None = None
     buf: list[str] = []
     for line in text.splitlines():
         if lang is None:
-            m = re.match(r"^```([a-zA-Z]+)[ \n]*$", line)
+            m = FENCE_INFO_RE.match(line)
             if m and (langs is None or m.group(1).lower() in langs):
                 lang = m.group(1).lower()
+                attrs = m.group(2).lstrip()
+                mark = FENCE_RUN_RE.search(attrs)
+                run = attrs[mark.end():].strip() if mark else None
                 buf = []
             continue
         if line.startswith("```"):
-            out.append((lang, "\n".join(buf).strip("\n")))
-            lang = None
+            out.append((lang, "\n".join(buf).strip("\n"), run))
+            lang = run = None
             continue
         buf.append(line)
     return out
