@@ -23,3 +23,4 @@
 | `go-websocket` | [websocket.md](websocket.md) | websocket, origin, ping, backpressure, reconnect |
 | `go-metrics` | [metrics.md](metrics.md) | metrics, prometheus, healthz, readiness, cardinality |
 | `go-proxy` | [proxy.md](proxy.md) | proxy, timeout, cancellation, streaming, statuses |
+| `go-periodic-jobs` | [periodic-jobs.md](periodic-jobs.md) | ticker, schedule, background-job, cron, backoff, jitter, overlap, single-instance, flock |

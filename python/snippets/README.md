@@ -12,3 +12,4 @@
 | `py-web-server` | [web-server.md](web-server.md) | fastapi, web, pydantic, api |
 
 Код проверен на Python 3.14.7 (выполнен).
+| `py-stdlib-data` | [stdlib-data.md](stdlib-data.md) | csv, jsonl, datetime, zoneinfo, decimal, counter, stdlib, encoding, money |

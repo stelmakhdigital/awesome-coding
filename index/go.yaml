@@ -159,6 +159,13 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-11-24
+  - id: go-periodic-jobs
+    title: "Go: периодическая работа — тикер, пропуск тика, backoff, один экземпляр"
+    path: go/snippets/periodic-jobs.md
+    tags: [ticker, schedule, background-job, cron, backoff, jitter, overlap, single-instance, flock]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
 patterns:
   - id: go-functional-options
     title: "Functional Options"

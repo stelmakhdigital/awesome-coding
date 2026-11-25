@@ -68,3 +68,10 @@ snippets:
     status: stable
     verified: compiled
     updated: 2026-09-07
+  - id: py-stdlib-data
+    title: "Python: CSV, JSONL и даты (stdlib) — выгрузка, итоги по дням, часовой пояс"
+    path: python/snippets/stdlib-data.md
+    tags: [csv, jsonl, datetime, zoneinfo, decimal, counter, stdlib, encoding, money]
+    status: stable
+    verified: compiled
+    updated: 2026-11-24
