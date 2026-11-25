@@ -38,7 +38,7 @@ snippets:
     tags: [bash, timeout, setsid, process-group, watchdog, budget, output-limit, self-test]
     status: stable
     verified: compiled
-    updated: 2026-11-24
+    updated: 2026-11-25
 patterns:
   - id: agenting-bug-hunter
     title: "Периодический охотник за дефектами по диффу"
