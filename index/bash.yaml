@@ -15,7 +15,7 @@ idioms:
     path: bash/idioms.md
     tags: [idioms, style, arrays, mapfile, functions]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
 decisions:
   - id: bash-decisions
@@ -31,26 +31,26 @@ snippets:
     path: bash/snippets/error-handling.md
     tags: [errors, traps, strict-mode, cleanup]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: bash-functions
     title: "Bash: функции (ошибки, таймауты, параллелизм)"
     path: bash/snippets/functions.md
     tags: [functions, errors, timeout, parallel, xargs]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: bash-files
     title: "Bash: файлы (безопасность, блокировки, temp)"
     path: bash/snippets/files.md
     tags: [files, temp, flock, safety, paths]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: bash-curl
     title: "Bash: curl в скриптах (ошибки, JSON, ретраи, загрузка)"
     path: bash/snippets/curl.md
     tags: [curl, http, networking, json, retry, download]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-07

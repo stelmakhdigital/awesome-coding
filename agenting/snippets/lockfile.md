@@ -7,6 +7,7 @@ category: snippet
 tags: [bash, flock, lock, concurrency, idempotency, cron, self-test, scheduler]
 status: stable
 updated: 2026-11-24
+proof: "self-test на flock прогнан в docker (alpine, bash 5.3) 2026-11-24: второй запуск уходит в busy, lock снимается после падения"
 ---
 
 # Единовременный прогон на flock

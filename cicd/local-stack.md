@@ -7,6 +7,7 @@ category: snippet
 tags: [local-stack, docker-compose, caddy, https, internal-ca, reverse-proxy, healthcheck, sse, secure-context]
 status: stable
 updated: 2026-11-24
+proof: "compose + Caddy caddy:2 прогнаны docker 2026-11-24: https через внутренний CA на localhost:8443, отклик бэкенда, pg healthcheck"
 ---
 
 # Локальный стек: compose + обратный прокси с внутренним TLS

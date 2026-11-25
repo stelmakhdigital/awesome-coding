@@ -15,7 +15,7 @@ idioms:
     path: c/idioms.md
     tags: [idioms, style, c23, structs, static-assert]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
 decisions:
   - id: c-decisions
@@ -31,26 +31,26 @@ snippets:
     path: c/snippets/error-handling.md
     tags: [errors, errno, cleanup, memory]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: c-memory
     title: "C: память (ownership, cleanup, arena)"
     path: c/snippets/memory.md
     tags: [memory, malloc, cleanup, arena, ownership]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: c-strings
     title: "C: строки (размеры, snprintf, builder)"
     path: c/snippets/strings.md
     tags: [strings, buffer, snprintf, memcpy, builder]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-11-24
   - id: c-testing
     title: "C: Testing (harness + assert, санитайзеры)"
     path: c/snippets/testing.md
     tags: [testing, assert, harness, sanitizers, unit-tests]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06

@@ -7,6 +7,7 @@ category: concept
 tags: [dev-machine, git, ssh, worktree, credentials, non-interactive, toolchain, doctor, cleanup]
 status: stable
 updated: 2026-11-24
+proof: "doctor, wt_add/wt_rm, maintenance и clean_tree прогнаны в bash 5.3 + git 2026-11-24: upstream у новой ветки не main, .env переживает clean"
 ---
 
 # Машина под агента: неинтерактивный git, ключи, worktree, проверка тулчейна

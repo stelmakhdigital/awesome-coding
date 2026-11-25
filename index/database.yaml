@@ -58,7 +58,7 @@ snippets:
     path: database/snippets/redis.md
     tags: [redis, caching, cache-aside, ttl, data-structures, streams]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-11-24
 
   - id: database-dialect-portability

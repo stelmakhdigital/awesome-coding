@@ -95,6 +95,7 @@ class Runner:
     prepare: list[str] | None = None
     probe: str = "test -n \"$(ls -A /deps)\""       # том уже прогрет?
     preamble: Callable[[str], str] = lambda t: t    # обрамление блока-фрагмента
+    executes: bool = False                          # раннер выполняет блок, а не собирает
     env: dict[str, str] = field(default_factory=dict)
     run_as_host_user: bool = False                  # тулчейн пишет артефакты в монт
     timeout: int = 900
@@ -381,7 +382,8 @@ RUNNERS: dict[str, Runner] = {
         run_as_host_user=True, timeout=1800),
     "sql": Runner("sql", PG_IMAGE, [],
                   what="psql на PostgreSQL 18: блок выполняется в чистой схеме; "
-                       "ссылки на таблицы из чужих блоков — deps, не fail"),
+                       "ссылки на таблицы из чужих блоков — deps, не fail",
+                  executes=True),
 }
 # Имя файла, в который кладётся блок (go собирается иначе — см. go_files).
 FNAME = {"sql": "block.sql", "python": "block.py", "ts": "block.ts", "tsx": "block.tsx",
@@ -471,6 +473,10 @@ def collect(langs: list[str], section: str | None, record: str | None) -> list[J
 
 # Не код, а оформление: их отсутствие раннера — не пробел в покрытии.
 NOT_CODE = {"", "text", "console", "diff", "markdown"}
+# Конфиг и разметка: компилятор к ним неприменим. Если в записи есть блоки на
+# настоящем языке, их отсутствие не делает `compiled` недоказуемым — код записи
+# доказывают эти другие блоки (проверку описывает validate.check_verified_claims).
+CONFIG_LANGS = {"yaml", "json", "dockerfile", "caddy", "protobuf", "mermaid"}
 
 
 def present_langs() -> set[str]:

@@ -283,6 +283,36 @@ class FrontmatterCheckTest(unittest.TestCase):
             self.assertTrue(has(validate.check_frontmatter(), "в будущем"))
 
 
+class VerifiedClaimsTest(unittest.TestCase):
+    """`verified` не может быть выше того, что способно доказать о записи."""
+
+    EXECUTED = CLEAN_INDEX.replace("verified: compiled", "verified: executed")
+    SQL_FM = CLEAN_FM.replace("```go\npackage main\n```", "```sql\nselect 1;\n```")
+    KOTLIN_FM = (CLEAN_FM.replace("lang: go", "lang: kotlin")
+                 .replace("```go\npackage main\n```", "```kotlin\nfun main() {}\n```"))
+
+    def test_executed_needs_a_runner_that_runs_the_block(self):
+        """Go в CI собирается, а не выполняется: executed без proof — ложь."""
+        with temp_repo(**{"index/go.yaml": self.EXECUTED}):
+            self.assertTrue(has(validate.check_verified_claims(),
+                                "verified=executed", "proof:"))
+
+    def test_executed_passes_when_the_run_is_described(self):
+        fm = CLEAN_FM.replace("status: stable",
+                              'status: stable\nproof: "go run в golang:1.27-alpine, 2026-01-01"')
+        with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": fm}):
+            self.assertEqual(validate.check_verified_claims(), [])
+
+    def test_sql_executed_is_proven_by_ci(self):
+        with temp_repo(**{"index/go.yaml": self.EXECUTED, "go/snippets/x.md": self.SQL_FM}):
+            self.assertEqual(validate.check_verified_claims(), [])
+
+    def test_language_without_runner_needs_proof(self):
+        with temp_repo(**{"index/go.yaml": self.EXECUTED.replace("executed", "compiled"),
+                          "go/snippets/x.md": self.KOTLIN_FM}):
+            self.assertTrue(has(validate.check_verified_claims(), "kotlin", "proof:"))
+
+
 class ManifestCheckTest(unittest.TestCase):
     def test_clean(self):
         with temp_repo():

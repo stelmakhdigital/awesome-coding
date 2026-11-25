@@ -15,7 +15,7 @@ idioms:
     path: javascript/idioms.md
     tags: [idioms, style, destructuring, iterators, es2025]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
 decisions:
   - id: js-decisions
@@ -31,26 +31,26 @@ snippets:
     path: javascript/snippets/error-handling.md
     tags: [errors, async, node, timeout]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: js-testing
     title: "JavaScript: Testing (node:test, stdlib)"
     path: javascript/snippets/testing.md
     tags: [testing, node-test, unit-tests, mocking, stdlib]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: js-json
     title: "JavaScript: JSON (валидация, structuredClone, Date)"
     path: javascript/snippets/json.md
     tags: [json, validation, structured-clone, api]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06
   - id: js-async
     title: "JavaScript: async (таймауты, ретраи, лимит параллелизма)"
     path: javascript/snippets/async.md
     tags: [async, timeout, retry, abort, concurrency, promise]
     status: stable
-    verified: executed
+    verified: compiled
     updated: 2026-09-06

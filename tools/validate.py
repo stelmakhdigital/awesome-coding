@@ -419,10 +419,67 @@ def check_text() -> list[str]:
     return issues
 
 
+LEVEL_RANK = {"none": 0, "reviewed": 1, "compiled": 2, "executed": 3}
+
+
+def check_verified_claims() -> list[str]:
+    """`verified` не может быть выше того, что способно доказать о записи.
+
+    Раннер языка доказывает `compiled` (блоки прошли тулчейн), а `executed` —
+    только там, где он блок выполняет, а не собирает (SQL). Язык без раннера в
+    CI не проверяется вовсе. Всё остальное требует поля `proof:` в frontmatter:
+    чем, где и когда это запускали (ADR-0006).
+
+    Проверка появилась после двух находок одного дня: в C#-разделе 10 записей
+    носили `compiled`, хотя dotnet-джоба в CI никогда не было, а в других
+    разделах 24 записи носили `executed` со ссылкой на прогон, который нечем
+    проверить.
+    """
+    from verify_snippets import CONFIG_LANGS, RUNNERS  # поздний импорт: раннеры там
+
+    exec_proven = {lang for lang, r in RUNNERS.items() if r.executes}
+    levels = {str(e.get("path")): str(e.get("verified")) for _, e in index_entries()}
+
+    issues: list[str] = []
+    for path in content_files():
+        rel = path.relative_to(ROOT).as_posix()
+        level = levels.get(rel, "")
+        if LEVEL_RANK.get(level, 0) <= LEVEL_RANK["reviewed"]:
+            continue
+        langs = code_fences(path.read_text(encoding="utf-8")) - CONFIG_LANGS
+        covered = {lang for lang in langs if lang in RUNNERS}
+        uncovered = langs - covered
+        proven = bool(covered) and not uncovered
+        if level == "executed":
+            # Достаточно, чтобы хотя бы один язык записи выполнялся в CI: в
+            # смешанных записях (SQL + Go) предмет записи — запрос, и он
+            # прогоняется; собранные блоки ниже этого уровня и не тянут.
+            proven = proven and bool(covered & exec_proven)
+        if proven:
+            continue
+        fm = parse_frontmatter(path) or {}
+        if str(fm.get("proof", "")).strip():
+            continue
+        all_langs = ", ".join(sorted(langs)) or "нет кода"
+        not_covered = ", ".join(sorted(uncovered))
+        only_lint = ", ".join(sorted(covered))
+        if not covered:
+            why = "нет блоков, которые CI умеет прогонять (" + all_langs + ")"
+        elif level == "executed":
+            why = "раннеры " + only_lint + " блоки не выполняют"
+        else:
+            why = "нет раннера для " + not_covered
+        issues.append(
+            f"{rel}: verified={level} не доказан CI ({why}), нужно поле `proof:` "
+            "в frontmatter — чем, где и когда это запускали")
+    return issues
+
+
 CHECKS = {
     "frontmatter": check_frontmatter,
     "manifest": check_manifest,
     "indexes": check_indexes,
+    "verified": check_verified_claims,
     "structure": check_structure,
     "text": check_text,
     "aliases": check_aliases,

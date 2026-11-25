@@ -7,6 +7,7 @@ category: snippet
 tags: [integration-tests, docker-compose, healthcheck, ci, github-actions, teardown, artifacts, port-conflict]
 status: stable
 updated: 2026-11-24
+proof: "стек из compose (2 сервиса) поднимался docker 2026-11-24: healthcheck, тестовый прогон, down -v; volumes и логи проверены руками"
 ---
 
 # CI: интеграционные тесты на реальном стеке контейнеров

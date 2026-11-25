@@ -7,6 +7,7 @@ category: snippet
 tags: [tool-calling, function-calling, agents, tool-loop, budget, fallback, openai-compatible, json-schema]
 status: stable
 updated: 2026-11-24
+proof: "SelfCheck на httptest выполнен go run в golang:1.27-alpine 2026-11-24: лента ответов, бюджет раундов и ловля цикла проверены без сети"
 ---
 
 # Вызовы с инструментами: цикл, бюджет, резервная модель

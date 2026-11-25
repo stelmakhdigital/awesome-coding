@@ -7,6 +7,7 @@ category: snippet
 tags: [coroutines, flow, suspend, cancellation, scope]
 status: stable
 updated: 2026-09-06
+proof: "собран и запущен локальным kotlinc (версии библиотек в разделе kotlin/README.md, 2026-09); CI не повторяет — ADR-0005"
 ---
 
 # Корутины (Kotlin)

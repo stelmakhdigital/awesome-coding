@@ -7,6 +7,7 @@ category: snippet
 tags: [http, ktor, client, timeout, retry]
 status: stable
 updated: 2026-09-06
+proof: "собран локальным kotlinc (версии библиотек в разделе kotlin/README.md, 2026-09); CI не повторяет — ADR-0005"
 ---
 
 # HTTP-клиент (Ktor)
